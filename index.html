@@ -1264,12 +1264,7 @@ window.addEventListener('load', function() {
       <button class="ntab" onclick="setV('deposit',this)">Deposit</button>
       <button class="ntab" onclick="setV('portfolio',this)">Portfolio</button>
     </div>
-    <div class="nav-gap"></div>
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input class="search-inp" id="search-inp" type="text" placeholder="Search markets..." oninput="handleSearch(this.value)" onfocus="showSearch()" onblur="setTimeout(hideSearch,220)">
-      <div class="search-results" id="search-results"></div>
-    </div>
+    <div style="flex:1"></div>
     <div class="live-pill"><span class="ld"></span>LIVE</div>
     <div style="position:relative;display:flex;align-items:center;gap:4px;flex-shrink:0">
       <button class="notif-btn" onclick="toggleNotif()" id="notif-btn" title="Notifications">🔔<span class="notif-dot" id="notif-dot"></span></button>
@@ -1280,8 +1275,8 @@ window.addEventListener('load', function() {
       </div>
     </div>
     <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">🌙</button>
-    <button class="hiw-btn" onclick="openHIW()" style="background:#ffffff;color:#1a1a2e;border:none;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.15);padding:6px 10px;font-size:11px;flex-shrink:0">
-      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" style="flex-shrink:0"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <button class="hiw-btn" onclick="openHIW()" style="background:#ffffff;color:#1a1a2e;border:none;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.15);padding:6px 12px;font-size:12px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;gap:5px">
+      <svg width="13" height="13" viewBox="0 0 20 20" fill="none" style="flex-shrink:0"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <span>How it works</span>
     </button>
     <button class="w-btn" id="wbtn" onclick="openAuth()"><div class="wdot" id="wdot"></div><span id="wbtxt">Sign In</span></button>

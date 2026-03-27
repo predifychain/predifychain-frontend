@@ -1822,22 +1822,29 @@ function getOrCreateRound(sym, durationMins) {
 // Fetch real prices from Binance and update immediately
 async function initPrices() {
   try {
-    const syms = Object.entries(BINANCE_SYMBOLS).map(([,v])=>'"'+v.toUpperCase()+'"').join(',');
-    const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbols=['+syms+']');
+    const symArr = Object.values(BINANCE_SYMBOLS).map(function(v){return v.toUpperCase();});
+    const url = 'https://api.binance.com/api/v3/ticker/price?symbols=' + encodeURIComponent(JSON.stringify(symArr));
+    const res = await fetch(url);
     const data = await res.json();
     if(Array.isArray(data)) {
-      data.forEach(item => {
-        const sym = Object.keys(BINANCE_SYMBOLS).find(k => BINANCE_SYMBOLS[k].toUpperCase() === item.symbol);
-        if(sym) {
-          const asset = allAssets().find(a => a.s === sym);
-          if(asset) {
-            asset.p = parseFloat(item.price);
-            asset.sp = Array.from({length:26},()=>asset.p*(1+R(-.005,.005)));
+      const symKeys = Object.keys(BINANCE_SYMBOLS);
+      data.forEach(function(item) {
+        let sym = null;
+        for(let i=0;i<symKeys.length;i++){
+          if(BINANCE_SYMBOLS[symKeys[i]].toUpperCase()===item.symbol){sym=symKeys[i];break;}
+        }
+        if(!sym) return;
+        const assets = allAssets();
+        for(let j=0;j<assets.length;j++){
+          if(assets[j].s===sym){
+            assets[j].p=parseFloat(item.price);
+            assets[j].sp=Array.from({length:26},function(){return assets[j].p*(1+R(-.003,.003));});
+            break;
           }
         }
       });
     }
-  } catch(e) { console.warn('Init price fetch failed:', e); }
+  } catch(e){console.warn('Init price fetch failed');}
   updatePriceDisplays();
 }
 

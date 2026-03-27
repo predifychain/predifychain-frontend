@@ -851,7 +851,7 @@ body.dark .alert-price-wrap{background:var(--c3)}
 
 /* ── MARKET RESOLUTION ── */
 .mc-resolved{position:relative}
-.mc-resolved-overlay{position:absolute;inset:0;backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;border-radius:16px;opacity:0;pointer-events:none;transition:opacity .3s}
+.mc-resolved-overlay{position:absolute;inset:0;backdrop-filter:blur(2px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;border-radius:16px;opacity:0;pointer-events:none;transition:all .3s}
 .mc-resolved-overlay.show{opacity:1;pointer-events:all;display:flex!important}
 body.dark .mc-resolved-overlay{background:rgba(12,12,20,.92)}
 .mc-res-ico{font-size:36px;margin-bottom:8px;animation:popIn .4s cubic-bezier(.34,1.6,.64,1)}
@@ -2162,17 +2162,7 @@ const allAssets=()=>[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.f
 function render(){
   const assets=getAssets();
   const g=document.getElementById('mgrid');
-  // Don't clear timers on re-render — just update existing cards
-  const existingCards = {};
-  g.querySelectorAll('[id^="mc_"]').forEach(el => {
-    existingCards[el.id.replace('mc_','')] = true;
-  });
-  // Only rebuild if assets changed
-  const needsRebuild = assets.some(a => !existingCards[a.s]) || 
-                       Object.keys(existingCards).length !== assets.length;
-  if(needsRebuild){
-    Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
-  }
+  Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
   assets.forEach(a=>{
     a.yp=Math.max(22,Math.min(78,a.yp));
     const np=100-a.yp,chg=(R(-2,2)).toFixed(2),up=parseFloat(chg)>=0;
@@ -2273,18 +2263,14 @@ function render(){
       if(e.target.closest('.mc-trade'))return;
       openDetail(a.s,a.n,a.yp,np,a.p,chg,a.yes,a.no,a.sp);
     });
-    // Keep timer state per asset — don't reset on re-render
-    if(!a._timerS) a._timerS = AT*60+Math.floor(R(2,58));
-    let s = a._timerS;
+    let s=AT*60+Math.floor(R(2,58));
     // Lock start price when round begins
-    if(!a._startPrice) a._startPrice = a.p;
+    a._startPrice = a.p;
     a._roundLocked = false;
-    // Clear old timer if exists
-    if(timers[a.s]) { clearInterval(timers[a.s]); }
     timers[a.s]=setInterval(()=>{
-      s--;a._timerS=s;if(s<0){
+      s--;if(s<0){
         // ── ROUND END — lock final price, resolve
-        s=AT*60;a._timerS=s;
+        s=AT*60;
         a._endPrice = wsPriceBuffer[a.s] || a.p; // use real WS price
         const priceWentUp = a._endPrice > a._startPrice;
         const priceSame   = Math.abs(a._endPrice - a._startPrice) < 0.01;
@@ -2303,7 +2289,12 @@ function render(){
               ov.style.background = priceWentUp ? 'rgba(5,150,105,.95)' : 'rgba(225,29,72,.95)';
             }
             ov.classList.add('show');
-            setTimeout(()=>ov.classList.remove('show'), 3500);
+            setTimeout(()=>{
+              ov.classList.remove('show');
+              ov.style.background='';
+              ov.style.opacity='0';
+              ov.style.pointerEvents='none';
+            }, 2000);
           }
         }
         // New round — lock new start price

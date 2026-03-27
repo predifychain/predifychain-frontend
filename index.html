@@ -2971,27 +2971,26 @@ function showWSStatus(connected) {
 }
 
 
-// ── MASTER TIMER LOOP — runs once, never stops, survives re-renders ──
-function startMasterTimerLoop() {
-  // Initialize round states for all assets
-  allAssets().forEach(a => {
-    if (!roundState[a.s]) {
-      roundState[a.s] = {
-        s: AT * 60 + Math.floor(Math.random() * 58),
-        startPrice: a.p,
-        duration: AT
-      };
-    }
-  });
+// ── MASTER TIMER LOOP — runs once on page load, NEVER stops ──
+// Timer state is stored in roundState{} which survives re-renders
+// render() just rebuilds HTML — this loop updates timer text independently
 
+function startMasterTimerLoop() {
   setInterval(() => {
     allAssets().forEach(a => {
+      // Initialize if first time
+      if (!roundState[a.s]) {
+        roundState[a.s] = {
+          s: AT * 60 + Math.floor(Math.random() * 58),
+          startPrice: a.p,
+          duration: AT
+        };
+      }
+
       const rs = roundState[a.s];
-      if (!rs) return;
+      if (rs.s > 0) rs.s--;
 
-      rs.s--;
-
-      // Update timer display
+      // Only update DOM if element exists (it might not if view changed)
       const timerEl = document.getElementById('tmr_' + a.s);
       if (timerEl) {
         const m = Math.floor(rs.s / 60);
@@ -3001,23 +3000,23 @@ function startMasterTimerLoop() {
         if (rs.s >= 30) timerEl.style.color = a.c || '#4f46e5';
       }
 
-      // Entry cutoff overlay
+      // Entry cutoff
       const card = document.getElementById('mc_' + a.s);
       if (card) {
         const co = card.querySelector('.mc-cutoff-overlay');
-        if (co) co.classList.toggle('show', rs.s < 20 && rs.s > 0);
+        if (co) co.classList.toggle('show', rs.s > 0 && rs.s < 20);
       }
 
-      // Round end
+      // Round end — start new round
       if (rs.s <= 0) {
-        rs.s = rs.duration * 60; // reset for next round
-        rs.startPrice = a.p;     // new start price
+        rs.s = rs.duration * 60;
+        rs.startPrice = a.p;
       }
     });
   }, 1000);
 }
 
-// Start master timer once on page load
+// Start once on page load — NEVER call again
 startMasterTimerLoop();
 
 // ── REAL PRICE SYSTEM ──

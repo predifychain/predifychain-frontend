@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-  window.PRIVY_APP_ID = 'cmn75qduy02j30cl5lgdmd672';
-</script>
-<script src="https://unpkg.com/@privy-io/js-sdk-core@latest/dist/index.browser.js"></script>
+
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PredifyChain — AI Prediction Markets on BSC</title>
@@ -1208,25 +1206,8 @@ body.dark .tfr{background:linear-gradient(270deg,#0a0e1a,transparent)!important}
 
 </style>
 
-<!-- Privy Auth -->
-<script>
-window.PRIVY_APP_ID = 'cmn75qduy02j30cl5lgdmd672';
-// Initialize Privy when page loads
-window.addEventListener('load', function() {
-  if(typeof PrivyClient !== 'undefined') {
-    window.__privy = new PrivyClient(window.PRIVY_APP_ID, {
-      loginMethods: ['email', 'google', 'wallet'],
-      appearance: {
-        theme: 'light',
-        accentColor: '#4f46e5',
-        logo: 'https://predifychain.com/logo.png'
-      }
-    });
-    console.log('✅ Privy initialized');
-  }
-});
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@privy-io/js-sdk-core/dist/browser/index.umd.js" defer></script>
+
+
 </head>
 <body>
 <div class="mesh"><div class="mb mb1"></div><div class="mb mb2"></div><div class="mb mb3"></div>
@@ -2165,23 +2146,6 @@ function verifyOTP(){
 
 function authSocial(provider){
   authStep='loading';renderAuthStep();
-  // Real Privy Auth
-  if(window.__privy){
-    const loginMethod = provider==='Google'?'google':provider==='Apple'?'apple':'email';
-    window.__privy.login({loginMethod}).then(result=>{
-      const user = result?.user;
-      const email = user?.google?.email || user?.email?.address || user?.apple?.email || provider+'@predifychain.com';
-      const name = user?.google?.name || email.split('@')[0] || provider+' User';
-      authStep='success';renderAuthStep();
-      setTimeout(()=>{closeAuth();finalizeLogin(name,email,'via '+provider);},1400);
-    }).catch(()=>{
-      // Fallback if Privy fails
-      authStep='success';renderAuthStep();
-      setTimeout(()=>{closeAuth();finalizeLogin(provider+' User',provider.toLowerCase()+'@predifychain.com','via '+provider);},1400);
-    });
-    return;
-  }
-  // Demo fallback
   const demos={Google:'john@gmail.com',Facebook:'mark@fb.com',Apple:'user@icloud.com'};
   setTimeout(()=>{
     authStep='success';renderAuthStep();
@@ -2194,25 +2158,9 @@ function authSocial(provider){
 
 function connectWallet(name,addr){
   authStep='loading';renderAuthStep();
-  // Real Privy Wallet Auth
-  if(window.__privy && (name==='MetaMask'||name==='WalletConnect')){
-    window.__privy.login({loginMethod:'wallet'}).then(result=>{
-      const walletAddr = result?.user?.wallet?.address || addr;
-      const shortName = walletAddr.slice(0,6)+'...'+walletAddr.slice(-4);
-      authStep='success';renderAuthStep();
-      setTimeout(()=>{closeAuth();finalizeLogin(shortName,walletAddr,'Wallet');},1400);
-    }).catch(()=>{
-      authStep='success';renderAuthStep();
-      setTimeout(()=>{closeAuth();finalizeLogin(name,addr,'Wallet');},1400);
-    });
-    return;
-  }
   setTimeout(()=>{
     authStep='success';renderAuthStep();
-    setTimeout(()=>{
-      closeAuth();
-      finalizeLogin(name,addr,'Wallet');
-    },1400);
+    setTimeout(()=>{closeAuth();finalizeLogin(name,addr,'Wallet');},1400);
   },1000);
 }
 

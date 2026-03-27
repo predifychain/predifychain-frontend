@@ -1815,10 +1815,17 @@ function updateTicker(){
   const half=Math.floor(items.length/2);
   items.forEach((item,i)=>{
     const a=all[i%half];if(!a)return;
-    const chg=(R(-.9,.9)).toFixed(2),up=parseFloat(chg)>=0;
+    // Use real direction from price movement
+    const dir=a._lastDir||'up';
+    const baseChg=a._chgPct||(dir==='up'?0.12:-0.18);
+    const up=dir==='up'||baseChg>=0;
     const pe=item.querySelector('.tk-price'),ce=item.querySelector('.tk-up,.tk-dn');
     if(pe)pe.textContent=fmt(a.p);
-    if(ce){ce.textContent=(up?'+':'')+chg+'%';ce.className=up?'tk-up':'tk-dn';}
+    if(ce){
+      const pct=Math.abs(baseChg).toFixed(2);
+      ce.textContent=(up?'+':'-')+pct+'%';
+      ce.className=up?'tk-up':'tk-dn';
+    }
   });
 }
 
@@ -2754,42 +2761,33 @@ function renderAI(sym,d){
   if(!badge||!out)return;
 
   const isBuy=d.direction==='BUY';
-  const barColor=isBuy?'#16a34a':'#e11d48';
-  const bgColor=isBuy?'rgba(22,163,74,.08)':'rgba(225,29,72,.08)';
-  const borderColor=isBuy?'rgba(22,163,74,.2)':'rgba(225,29,72,.2)';
-  const dirLabel=isBuy?'▲ BUY':'▼ SELL';
+  const clr=isBuy?'#16a34a':'#e11d48';
+  const bg=isBuy?'rgba(22,163,74,.07)':'rgba(225,29,72,.07)';
+  const brd=isBuy?'rgba(22,163,74,.18)':'rgba(225,29,72,.18)';
   const conf=Math.min(91,Math.max(52,d.confidence||65));
-  const sugPct=Math.min(40,Math.max(5,d.suggest_pct||15));
-  const arrow=isBuy?'↑':'↓';
+  const sug=Math.min(40,Math.max(5,d.suggest_pct||15));
 
-  const sigs=(d.signals||[]).slice(0,3).map((s,i)=>{
-    const t=(d.signal_types||[])[i]||'neutral';
-    const c=t==='up'?'#16a34a':t==='down'?'#e11d48':'#6366f1';
-    const ic=t==='up'?'↑':t==='down'?'↓':'→';
-    return`<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t2);font-family:var(--ff)"><span style="color:${c};font-weight:700">${ic}</span>${s}</div>`;
-  }).join('');
-
-  badge.textContent='AI Live';
+  badge.textContent='AI';
   badge.className='ai-badge';
 
   out.innerHTML=`
-    <div style="background:${bgColor};border:1px solid ${borderColor};border-radius:10px;padding:8px 10px;margin-bottom:7px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <span style="font-size:13px;font-weight:800;color:${barColor};font-family:var(--ff);letter-spacing:-.2px">${arrow} ${dirLabel}</span>
-        <span style="font-size:11px;font-weight:700;color:${barColor};font-family:var(--fm);background:${bgColor};border:1px solid ${borderColor};padding:2px 8px;border-radius:6px">${conf}% confidence</span>
+    <div style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:${bg};border:1px solid ${brd};border-radius:10px">
+      <div style="text-align:center;flex:1">
+        <div style="font-size:14px;font-weight:900;color:${clr};font-family:var(--ff)">${isBuy?'▲ BUY':'▼ SELL'}</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:1px">AI Signal</div>
       </div>
-      <div style="height:4px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden;margin-bottom:6px">
-        <div style="height:100%;width:${conf}%;background:${barColor};border-radius:2px;transition:width .5s ease"></div>
+      <div style="width:1px;height:32px;background:${brd}"></div>
+      <div style="text-align:center;flex:1">
+        <div style="font-size:14px;font-weight:900;color:${clr};font-family:var(--fm)">${conf}%</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:1px">Win chance</div>
       </div>
-      <div style="font-size:10px;color:var(--t2);font-family:var(--ff);line-height:1.4">${d.reason||'Analyzing market conditions.'}</div>
-    </div>
-    ${sigs?`<div style="display:flex;flex-direction:column;gap:3px;margin-bottom:6px">${sigs}</div>`:''}
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <span style="font-size:9px;color:var(--t3);font-family:var(--ff)">Suggested: <b style="color:${barColor}">${sugPct}% of balance</b></span>
-      <span style="font-size:9px;color:var(--t3);font-family:var(--ff);opacity:.6">Not financial advice</span>
+      <div style="width:1px;height:32px;background:${brd}"></div>
+      <div style="text-align:center;flex:1">
+        <div style="font-size:14px;font-weight:900;color:${clr};font-family:var(--fm)">${sug}%</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:1px">Use balance</div>
+      </div>
     </div>`;
 }
-
 function renderAIFallback(sym,yp,np,chg){
   const badge=document.getElementById('aibadge_'+sym);
   const out=document.getElementById('aiout_'+sym);

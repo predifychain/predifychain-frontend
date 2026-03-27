@@ -2728,6 +2728,7 @@ Rules:
       body:JSON.stringify({
         symbol:sym,
         name:name||sym,
+        price:parseFloat(price),
         yesOdds:yp,
         noOdds:np,
         expiryMinutes:AT,

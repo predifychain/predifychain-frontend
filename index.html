@@ -2162,7 +2162,17 @@ const allAssets=()=>[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.f
 function render(){
   const assets=getAssets();
   const g=document.getElementById('mgrid');
-  Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
+  // Don't clear timers on re-render — just update existing cards
+  const existingCards = {};
+  g.querySelectorAll('[id^="mc_"]').forEach(el => {
+    existingCards[el.id.replace('mc_','')] = true;
+  });
+  // Only rebuild if assets changed
+  const needsRebuild = assets.some(a => !existingCards[a.s]) || 
+                       Object.keys(existingCards).length !== assets.length;
+  if(needsRebuild){
+    Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
+  }
   assets.forEach(a=>{
     a.yp=Math.max(22,Math.min(78,a.yp));
     const np=100-a.yp,chg=(R(-2,2)).toFixed(2),up=parseFloat(chg)>=0;
@@ -2198,7 +2208,7 @@ function render(){
     <div class="mc-clock"><div class="mc-timer" id="${tid}" style="color:${a.c}">0${AT}:00</div><div class="mc-tlbl">${AT}m expiry</div></div>
   </div>
   <div class="mc-prow">
-    <span class="mc-price">${fmt(a.p)}</span>
+    <span class="mc-price" id="mcprice_${a.s}">${fmt(a.p)}</span>
     <span class="mc-chg ${up?'cup':'cdn'}">${up?'+':''}${chg}%</span>
     <span class="mc-cl"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3L4 9.5v13L16 29l12-6.5v-13L16 3z" fill="#375bd2"/><path d="M16 7l-8 4.5v9L16 25l8-4.5v-9L16 7z" fill="#4a6ef5"/><path d="M16 11l-4 2.5v5L16 21l4-2.5v-5L16 11z" fill="#fff"/></svg>${a.feed||a.s+'/USD'}</span>
   </div>
@@ -2318,6 +2328,20 @@ function render(){
       }
     },1000);
   });
+}
+
+
+// Lightweight price update — just update price text without rebuilding cards
+function updatePriceDisplays() {
+  allAssets().forEach(a => {
+    const priceEl = document.getElementById('mcprice_' + a.s);
+    if (priceEl) {
+      const formatted = a.p >= 1000 ? '$' + a.p.toLocaleString('en', {maximumFractionDigits: 0}) :
+                        a.p >= 1 ? '$' + a.p.toFixed(2) : '$' + a.p.toFixed(4);
+      priceEl.textContent = formatted;
+    }
+  });
+  updateTicker();
 }
 
 function calcWin(sym,yp,np){
@@ -3018,9 +3042,7 @@ async function fetchAllPrices() {
     });
     
     if (updated > 0) {
-      const isMarket = ['crypto','stocks','commodities','forex','defi','indices'].includes(view);
-      if (isMarket) render();
-      updateTicker();
+      updatePriceDisplays();
     }
   } catch(e) {
     console.warn('Price fetch failed, using simulated');
@@ -3052,9 +3074,7 @@ function startSimulatedPrices() {
       a.no  = Math.max(600, a.no  + Math.round(R(-120, 200)));
     });
     
-    const isMarket = ['crypto','stocks','commodities','forex','defi','indices'].includes(view);
-    if (isMarket) render();
-    updateTicker();
+    updatePriceDisplays();
   }, 3000);
 }
 

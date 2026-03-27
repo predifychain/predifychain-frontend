@@ -1477,7 +1477,7 @@ window.addEventListener('load', function() {
           <div>
             <div class="chart-sym" id="chart-sym-lbl">BTC/USD</div>
             <div style="display:flex;align-items:center;gap:8px;margin-top:3px">
-              <span class="chart-price" id="chart-price-lbl">$95,480</span>
+              <span class="chart-price" id="chart-price-lbl">$--</span>
               <span class="chart-chg cup" id="chart-chg-lbl">+1.2%</span>
             </div>
           </div>
@@ -1812,7 +1812,30 @@ function getOrCreateRound(sym, durationMins) {
   return roundState[sym];
 }
 
-[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices].forEach(a=>{a.sp=Array.from({length:26},()=>a.p*(1+R(-.02,.02)));});
+// Fetch real prices from Binance REST API immediately
+async function initPrices() {
+  try {
+    const syms = Object.entries(BINANCE_SYMBOLS).map(([,v])=>'"'+v.toUpperCase()+'"').join(',');
+    const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbols=[${syms}]`);
+    const data = await res.json();
+    if(Array.isArray(data)) {
+      data.forEach(item => {
+        const sym = Object.keys(BINANCE_SYMBOLS).find(k => BINANCE_SYMBOLS[k].toUpperCase() === item.symbol);
+        if(sym) {
+          const asset = allAssets().find(a => a.s === sym);
+          if(asset) asset.p = parseFloat(item.price);
+        }
+      });
+    }
+  } catch(e) { console.warn('Init price fetch failed'); }
+  // Initialize sparklines with real prices
+  allAssets().forEach(a=>{a.sp=Array.from({length:26},()=>a.p*(1+R(-.005,.005)));});
+  render();
+  triggerAllAI();
+}
+
+// Don't render yet - wait for prices
+[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices].forEach(a=>{a.sp=[];});
 
 function spPath(d,W,H){
   const mn=Math.min(...d),mx=Math.max(...d),rng=mx-mn||1;
@@ -3123,10 +3146,11 @@ function wsRenderLoop() {
   requestAnimationFrame(wsRenderLoop);
 }
 
-// Start everything
+// Start everything - fetch real prices first, then render
+initPrices(); // fetch Binance prices → then render
 connectBinanceWS();
-startSimulatedPrices();   // for stocks/forex/commodities
-requestAnimationFrame(wsRenderLoop); // smooth 60fps updates
+startSimulatedPrices();
+requestAnimationFrame(wsRenderLoop);
 
 // AI analysis refresh every 90 seconds
 setInterval(()=>{

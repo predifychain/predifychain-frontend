@@ -2263,14 +2263,18 @@ function render(){
       if(e.target.closest('.mc-trade'))return;
       openDetail(a.s,a.n,a.yp,np,a.p,chg,a.yes,a.no,a.sp);
     });
-    let s=AT*60+Math.floor(R(2,58));
+    // Keep timer state per asset — don't reset on re-render
+    if(!a._timerS) a._timerS = AT*60+Math.floor(R(2,58));
+    let s = a._timerS;
     // Lock start price when round begins
-    a._startPrice = a.p;
+    if(!a._startPrice) a._startPrice = a.p;
     a._roundLocked = false;
+    // Clear old timer if exists
+    if(timers[a.s]) { clearInterval(timers[a.s]); }
     timers[a.s]=setInterval(()=>{
-      s--;if(s<0){
+      s--;a._timerS=s;if(s<0){
         // ── ROUND END — lock final price, resolve
-        s=AT*60;
+        s=AT*60;a._timerS=s;
         a._endPrice = wsPriceBuffer[a.s] || a.p; // use real WS price
         const priceWentUp = a._endPrice > a._startPrice;
         const priceSame   = Math.abs(a._endPrice - a._startPrice) < 0.01;
@@ -2979,54 +2983,84 @@ function showWSStatus(connected) {
   }
 }
 
-// Fallback: simulated prices if WS fails (non-crypto assets always use this)
+// ── REAL PRICE SYSTEM ──
+// Binance symbol map (crypto only)
+const PRICE_MAP = {
+  // Crypto → Binance symbols
+  'BTC':'btcusdt','ETH':'ethusdt','SOL':'solusdt','BNB':'bnbusdt',
+  'AVAX':'avaxusdt','DOGE':'dogeusdt','LINK':'linkusdt','ARB':'arbusdt',
+  'MATIC':'maticusdt','XRP':'xrpusdt','UNI':'uniusdt','AAVE':'aaveusdt',
+};
+
+// Fetch ALL prices from server (Chainlink + CoinGecko)
+async function fetchAllPrices() {
+  try {
+    const API = 'https://predifychain-server-production.up.railway.app';
+    const res = await fetch(`${API}/api/markets/prices`, {
+      headers: {'Content-Type': 'application/json'}
+    });
+    if (!res.ok) return;
+    const prices = await res.json();
+    
+    let updated = 0;
+    allAssets().forEach(a => {
+      // Try symbol directly, then with /USD suffix
+      const price = prices[a.s] || prices[a.s+'/USD'] || prices[a.feed] || 0;
+      if (price > 0) {
+        const old = a.p;
+        a.p = price;
+        // Track change direction
+        a._dir = price > old ? 1 : price < old ? -1 : 0;
+        a.sp.push(price);
+        if (a.sp.length > 26) a.sp.shift();
+        updated++;
+      }
+    });
+    
+    if (updated > 0) {
+      const isMarket = ['crypto','stocks','commodities','forex','defi','indices'].includes(view);
+      if (isMarket) render();
+      updateTicker();
+    }
+  } catch(e) {
+    console.warn('Price fetch failed, using simulated');
+  }
+}
+
+// Simulated price movement (fallback + add micro-volatility between fetches)
 function startSimulatedPrices() {
   setInterval(() => {
     allAssets().forEach(a => {
-      // Skip crypto — WS handles those
+      // For crypto: Binance WS handles it
       if (BINANCE_SYMBOLS[a.s] && wsConnected) return;
-      // Realistic volatility per category
+      
       const vol = {
-        stocks:0.003, forex:0.0008, commodities:0.002,
-        indices:0.002, defi:0.006
-      }[a.cat] || 0.004;
+        stocks:0.0015, forex:0.0004, commodities:0.001,
+        indices:0.001, defi:0.004
+      }[a.cat] || 0.002;
+      
       a.p = parseFloat((a.p * (1 + R(-vol, vol))).toFixed(
-        a.p > 1000 ? 2 : a.p > 10 ? 3 : a.p > 1 ? 4 : 6
+        a.p > 10000 ? 0 : a.p > 1000 ? 1 : a.p > 10 ? 2 : a.p > 1 ? 4 : 6
       ));
       a.sp.push(a.p);
       if (a.sp.length > 26) a.sp.shift();
     });
-    // Update odds slowly
+    
     allAssets().forEach(a => {
       a.yp = Math.max(22, Math.min(78, a.yp + Math.round(R(-2, 2))));
       a.yes = Math.max(800, a.yes + Math.round(R(-150, 250)));
       a.no  = Math.max(600, a.no  + Math.round(R(-120, 200)));
     });
+    
     const isMarket = ['crypto','stocks','commodities','forex','defi','indices'].includes(view);
     if (isMarket) render();
     updateTicker();
-  }, 4000); // every 4s for non-crypto
+  }, 3000);
 }
 
-// Fetch real prices from our server every 30 seconds
-async function fetchServerPrices() {
-  try {
-    const API_SERVER = 'https://predifychain-server-production.up.railway.app';
-    const res = await fetch(`${API_SERVER}/api/markets/prices`);
-    if (!res.ok) return;
-    const prices = await res.json();
-    allAssets().forEach(a => {
-      if (prices[a.s] && prices[a.s] > 0) {
-        a.p = prices[a.s];
-        a.sp.push(a.p);
-        if (a.sp.length > 26) a.sp.shift();
-      }
-    });
-  } catch(e) { /* use simulated */ }
-}
-// Fetch real prices on load + every 30s
-fetchServerPrices();
-setInterval(fetchServerPrices, 30000);
+// Start fetching real prices immediately and every 15 seconds
+fetchAllPrices();
+setInterval(fetchAllPrices, 15000);
 
 // Also update odds/pools every 8 seconds for all assets
 setInterval(() => {

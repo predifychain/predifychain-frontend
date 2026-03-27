@@ -2731,21 +2731,28 @@ Return ONLY valid JSON, no markdown:
 signal_types: each must be "up", "down", or "neutral".`;
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    // Route through our server to avoid CORS + hide API key
+    const API_SERVER = 'https://predifychain-server-production.up.railway.app';
+    const res=await fetch(`${API_SERVER}/api/ai/analyze`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user',content:prompt}]
+        symbol:sym,
+        name:name||sym,
+        yesOdds:yp,
+        noOdds:np,
+        expiryMinutes:AT,
+        yesPool:Math.round(R(1000,50000)),
+        noPool:Math.round(R(800,40000))
       })
     });
     const data=await res.json();
-    const text=data?.content?.[0]?.text||'';
-    const clean=text.replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(clean);
-    aiCache[key]={data:parsed,ts:Date.now()};
-    renderAI(sym,parsed);
+    if(data.direction){
+      aiCache[key]={data,ts:Date.now()};
+      renderAI(sym,data);
+    } else {
+      renderAIFallback(sym,yp,np,parseFloat(chg));
+    }
   }catch(e){
     renderAIFallback(sym,yp,np,parseFloat(chg));
   }
@@ -2831,10 +2838,14 @@ function renderAIFallback(sym,yp,np,chg){
 
 // Map our symbols to Binance stream symbols
 const BINANCE_SYMBOLS = {
+  // Crypto
   'BTC':   'btcusdt','ETH':   'ethusdt','SOL':   'solusdt',
   'BNB':   'bnbusdt','AVAX':  'avaxusdt','DOGE': 'dogeusdt',
   'LINK':  'linkusdt','ARB':  'arbusdt','MATIC': 'maticusdt',
   'XRP':   'xrpusdt','UNI':  'uniusdt','AAVE':  'aaveusdt',
+  // DeFi
+  'DOT':   'dotusdt','ADA':  'adausdt','ATOM':  'atomusdt',
+  'FTM':   'ftmusdt','NEAR': 'nearusdt','APT':  'aptusdt',
 };
 
 // Binance WS connection state
@@ -3001,6 +3012,26 @@ function startSimulatedPrices() {
     updateTicker();
   }, 4000); // every 4s for non-crypto
 }
+
+// Fetch real prices from our server every 30 seconds
+async function fetchServerPrices() {
+  try {
+    const API_SERVER = 'https://predifychain-server-production.up.railway.app';
+    const res = await fetch(`${API_SERVER}/api/markets/prices`);
+    if (!res.ok) return;
+    const prices = await res.json();
+    allAssets().forEach(a => {
+      if (prices[a.s] && prices[a.s] > 0) {
+        a.p = prices[a.s];
+        a.sp.push(a.p);
+        if (a.sp.length > 26) a.sp.shift();
+      }
+    });
+  } catch(e) { /* use simulated */ }
+}
+// Fetch real prices on load + every 30s
+fetchServerPrices();
+setInterval(fetchServerPrices, 30000);
 
 // Also update odds/pools every 8 seconds for all assets
 setInterval(() => {

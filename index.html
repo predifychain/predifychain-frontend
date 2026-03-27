@@ -117,7 +117,7 @@ html,body{background:var(--bg);color:var(--t0);font-family:var(--ff);min-height:
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:11px}
 
 /* ── MARKET CARD ── */
-.mcard{background:#fff;border:1px solid rgba(99,102,241,.1);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .22s cubic-bezier(.34,1.4,.64,1),border-color .2s,box-shadow .2s;box-shadow:0 2px 16px rgba(99,102,241,.07)}
+.mcard{background:#fff;border:1px solid rgba(99,102,241,.1);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .22s cubic-bezier(.34,1.4,.64,1),border-color .2s,box-shadow .2s;box-shadow:0 2px 16px rgba(99,102,241,.07);position:relative}
 .mcard:hover{transform:translateY(-4px) scale(1.006);border-color:rgba(99,102,241,.22);box-shadow:0 16px 48px rgba(99,102,241,.14),0 4px 16px rgba(0,0,0,.06)}
 .mcard.sel{border-color:rgba(99,102,241,.4);box-shadow:0 0 0 3px rgba(99,102,241,.1),0 16px 48px rgba(99,102,241,.14)}
 .mc-stripe{height:2px;width:100%}
@@ -851,8 +851,8 @@ body.dark .alert-price-wrap{background:var(--c3)}
 
 /* ── MARKET RESOLUTION ── */
 .mc-resolved{position:relative}
-.mc-resolved-overlay{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:10;border-radius:16px;opacity:0;pointer-events:none}
-.mc-resolved-overlay.show{opacity:0;pointer-events:none;display:none!important}
+.mc-resolved-overlay{display:none!important;opacity:0!important;pointer-events:none!important}
+.mc-resolved-overlay.show{display:none!important;opacity:0!important}
 body.dark .mc-resolved-overlay{background:rgba(12,12,20,.92)}
 .mc-res-ico{font-size:36px;margin-bottom:8px;animation:popIn .4s cubic-bezier(.34,1.6,.64,1)}
 .mc-res-title{font-size:16px;font-weight:700;font-family:var(--ff);margin-bottom:4px}

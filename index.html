@@ -1836,30 +1836,29 @@ function getOrCreateRound(sym, durationMins) {
   return roundState[sym];
 }
 
-// Fetch real prices from Binance REST API immediately
+[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices].forEach(a=>{a.sp=Array.from({length:26},()=>a.p*(1+R(-.02,.02)));});
+
+// Fetch real prices from Binance and update immediately
 async function initPrices() {
   try {
     const syms = Object.entries(BINANCE_SYMBOLS).map(([,v])=>'"'+v.toUpperCase()+'"').join(',');
-    const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbols=[${syms}]`);
+    const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbols=['+syms+']');
     const data = await res.json();
     if(Array.isArray(data)) {
       data.forEach(item => {
         const sym = Object.keys(BINANCE_SYMBOLS).find(k => BINANCE_SYMBOLS[k].toUpperCase() === item.symbol);
         if(sym) {
           const asset = allAssets().find(a => a.s === sym);
-          if(asset) asset.p = parseFloat(item.price);
+          if(asset) {
+            asset.p = parseFloat(item.price);
+            asset.sp = Array.from({length:26},()=>asset.p*(1+R(-.005,.005)));
+          }
         }
       });
     }
-  } catch(e) { console.warn('Init price fetch failed'); }
-  // Initialize sparklines with real prices
-  allAssets().forEach(a=>{a.sp=Array.from({length:26},()=>a.p*(1+R(-.005,.005)));});
-  render();
-  triggerAllAI();
+  } catch(e) { console.warn('Init price fetch failed:', e); }
+  updatePriceDisplays();
 }
-
-// Don't render yet - wait for prices
-[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices].forEach(a=>{a.sp=[];});
 
 function spPath(d,W,H){
   const mn=Math.min(...d),mx=Math.max(...d),rng=mx-mn||1;
@@ -3170,11 +3169,12 @@ function wsRenderLoop() {
   requestAnimationFrame(wsRenderLoop);
 }
 
-// Start everything - fetch real prices first, then render
-initPrices(); // fetch Binance prices → then render
-connectBinanceWS();
+// Start everything
+render(); // render cards immediately with initial prices
+connectBinanceWS(); // then connect WS for real-time updates
 startSimulatedPrices();
 requestAnimationFrame(wsRenderLoop);
+initPrices(); // fetch real prices and update displays
 
 // AI analysis refresh every 90 seconds
 setInterval(()=>{

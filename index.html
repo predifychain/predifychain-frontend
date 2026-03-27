@@ -1263,7 +1263,6 @@ window.addEventListener('load', function() {
       <button class="ntab" onclick="setV('indices',this)">Indices</button>
       <button class="ntab" onclick="setV('deposit',this)">Deposit</button>
       <button class="ntab" onclick="setV('portfolio',this)">Portfolio</button>
-      <button class="ntab" onclick="openHIW()" style="opacity:0.7;font-size:11px">❓ How it works</button>
     </div>
     <div style="flex:1"></div>
     <div class="live-pill"><span class="ld"></span>LIVE</div>
@@ -1277,6 +1276,10 @@ window.addEventListener('load', function() {
     </div>
     <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">🌙</button>
 
+    <button onclick="openHIW()" style="background:#fff;color:#0d1333;border:none;font-weight:700;padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15)">
+      <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#0d1333" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="#0d1333" stroke-width="1.8" stroke-linecap="round"/></svg>
+      How it works
+    </button>
     <button class="w-btn" id="wbtn" onclick="openAuth()"><div class="wdot" id="wdot"></div><span id="wbtxt">Sign In</span></button>
     <button class="nav-avatar" id="nav-av" style="display:none" onclick="setV('profile',null)">?</button>
   </div>
@@ -1554,8 +1557,8 @@ window.addEventListener('load', function() {
         <div class="of-head"><div class="of-sym" id="of-sym">Select a market</div><div class="of-sub-txt" id="of-sub">Click BUY or SELL on any card</div></div>
         <div class="of-body">
           <div class="dir-row">
-            <div class="d-buy on" id="d-buy" onclick="setDir('buy')"><div class="d-lbl">▲ BUY</div><div class="d-pct" id="dpct-b">YES — %</div></div>
-            <div class="d-sell" id="d-sell" onclick="setDir('sell')"><div class="d-lbl">▼ SELL</div><div class="d-pct" id="dpct-s">NO — %</div></div>
+            <div class="d-buy on" id="d-buy" onclick="setDir('buy')"><div class="d-lbl">▲ BUY</div><div class="d-pct" id="dpct-b">BUY %</div></div>
+            <div class="d-sell" id="d-sell" onclick="setDir('sell')"><div class="d-lbl">▼ SELL</div><div class="d-pct" id="dpct-s">SELL %</div></div>
           </div>
           <div class="of-flbl">Amount</div>
           <div class="of-amt-wrap"><span class="of-pfx">$</span><input class="of-input" id="of-inp" type="number" value="50" min="1" step="1" oninput="recalc()"><span class="of-sfx">USDC</span></div>
@@ -1880,8 +1883,8 @@ function renderHIW(){
     <div class="hiw-mini-card">
       <div class="hiw-mini-q">Will BTC/USD be higher in 5 minutes?</div>
       <div class="hiw-mini-btns">
-        <div class="hiw-mini-yes"><div class="hiw-mini-dir">▲ BUY YES</div><div class="hiw-mini-pct">63% odds</div></div>
-        <div class="hiw-mini-no"><div class="hiw-mini-dir">▼ SELL NO</div><div class="hiw-mini-pct">37% odds</div></div>
+        <div class="hiw-mini-yes"><div class="hiw-mini-dir">▲ BUY</div><div class="hiw-mini-pct">63% odds</div></div>
+        <div class="hiw-mini-no"><div class="hiw-mini-dir">▼ SELL</div><div class="hiw-mini-pct">37% odds</div></div>
       </div>
     </div>`:
     s.extra==='payout'?`
@@ -2247,8 +2250,8 @@ function render(){
     <div style="text-align:right"><div class="mc-win-lbl">Net profit</div><div class="mc-win-prof" id="mcp_${a.s}">+$${(50/a.yp*100-50).toFixed(2)}</div></div>
   </div>
   <div class="mc-btns">
-    <button class="mc-buy-btn" onclick="event.stopPropagation();qbet('${a.s}','${a.n}',${a.yp},${np},'buy')">▲ BUY YES ${a.yp}%</button>
-    <button class="mc-sell-btn" onclick="event.stopPropagation();qbet('${a.s}','${a.n}',${a.yp},${np},'sell')">▼ SELL NO ${np}%</button>
+    <button class="mc-buy-btn" onclick="event.stopPropagation();qbet('${a.s}','${a.n}',${a.yp},${np},'buy')">▲ BUY ${a.yp}%</button>
+    <button class="mc-sell-btn" onclick="event.stopPropagation();qbet('${a.s}','${a.n}',${a.yp},${np},'sell')">▼ SELL ${np}%</button>
   </div>
   <div style="display:flex;gap:6px;margin-top:6px">
     <button class="mc-repeat-btn" onclick="event.stopPropagation();repeatBet()" style="flex:1">↺ Repeat Bet</button>
@@ -2677,6 +2680,11 @@ buildTicker();render();renderLeaderboard();renderNotifs();
 const aiCache={};
 
 async function fetchAI(sym,name,price,yp,np,chg,yesAmt,noAmt){
+  // Skip if price is 0 or invalid — use smart fallback
+  if(!price || parseFloat(price) <= 0) {
+    renderAIFallback(sym,yp,np,chg);
+    return;
+  }
   const key=sym+'_'+AT;
   if(aiCache[key]&&Date.now()-aiCache[key].ts<90000){
     renderAI(sym,aiCache[key].data);return;
@@ -2745,7 +2753,7 @@ function renderAI(sym,d){
   const barColor=isBuy?'#16a34a':'#e11d48';
   const bgColor=isBuy?'rgba(22,163,74,.08)':'rgba(225,29,72,.08)';
   const borderColor=isBuy?'rgba(22,163,74,.2)':'rgba(225,29,72,.2)';
-  const dirLabel=isBuy?'▲ BUY YES':'▼ SELL NO';
+  const dirLabel=isBuy?'▲ BUY':'▼ SELL';
   const conf=Math.min(91,Math.max(52,d.confidence||65));
   const sugPct=Math.min(40,Math.max(5,d.suggest_pct||15));
   const arrow=isBuy?'↑':'↓';
@@ -2790,12 +2798,12 @@ function renderAIFallback(sym,yp,np,chg){
   const sugPct=Math.min(35,Math.max(5,Math.round((conf-50)/2)));
 
   const reasons={
-    BUY:`YES pool stronger at ${yp}% — bullish edge`,
-    SELL:`NO pool dominant at ${np}% — bearish lean`
+    BUY:`BUY pool at ${yp}% — market favors upward move`,
+    SELL:`SELL pool at ${np}% — market favors downward move`
   };
   const sigMap={
-    BUY:[{l:`YES ${yp}% dominant`,t:'up'},{l:chg>0?'Price rising':'Odds favor YES',t:chg>0?'up':'neutral'},{l:'Pool depth supports',t:'up'}],
-    SELL:[{l:`NO ${np}% dominant`,t:'down'},{l:chg<0?'Price falling':'Odds favor NO',t:chg<0?'down':'neutral'},{l:'Selling pressure',t:'down'}]
+    BUY:[{l:`BUY pool ${yp}% dominant`,t:'up'},{l:chg>0?'Positive price momentum':'Odds advantage confirmed',t:chg>0?'up':'neutral'},{l:'Pool depth supports BUY',t:'up'}],
+    SELL:[{l:`SELL pool ${np}% dominant`,t:'down'},{l:chg<0?'Negative price momentum':'Risk/reward favors SELL',t:chg<0?'down':'neutral'},{l:'Bears in control this round',t:'down'}]
   };
   renderAI(sym,{
     direction:dir,
@@ -3175,12 +3183,12 @@ function renderDetailLeft(){
     <div class="dm-sec-title">Current odds</div>
     <div class="dm-big-odds">
       <div class="dm-odd dm-odd-yes">
-        <div class="dm-odd-label">YES — Price goes UP</div>
+        <div class="dm-odd-label">BUY — Price goes UP</div>
         <div class="dm-odd-pct">${m.yp}%</div>
         <div class="dm-odd-pool">Pool: ${yesAmt}</div>
       </div>
       <div class="dm-odd dm-odd-no">
-        <div class="dm-odd-label">NO — Price goes DOWN</div>
+        <div class="dm-odd-label">SELL — Price goes DOWN</div>
         <div class="dm-odd-pct">${100-m.yp}%</div>
         <div class="dm-odd-pool">Pool: ${noAmt}</div>
       </div>
@@ -3315,7 +3323,7 @@ function renderDetailRight(){
         <span class="dm-ai-title">AI Analysis</span>
         <span class="dm-ai-conf" style="color:${isBuy?'#16a34a':'#e5294a'}">${conf}%</span>
       </div>
-      <div class="dm-ai-dir" style="color:${isBuy?'#16a34a':'#e5294a'}">${isBuy?'▲ BUY YES':'▼ SELL NO'} — Suggested ${sugPct}%</div>
+      <div class="dm-ai-dir" style="color:${isBuy?'#16a34a':'#e5294a'}">${isBuy?'▲ BUY':'▼ SELL'} — Suggested ${sugPct}%</div>
       <div class="dm-ai-reason">${reason}</div>
     </div>
 
@@ -3610,7 +3618,7 @@ function showOrderConfirm(sym,name,dir,amt,yp,payout){
   document.getElementById('oc-sub').textContent=`Your prediction on ${name} is live. ${AT} minutes to resolve.`;
   document.getElementById('oc-stats').innerHTML=`
     <div class="oc-row"><span class="oc-lbl">Market</span><span class="oc-val">${sym}/USD</span></div>
-    <div class="oc-row"><span class="oc-lbl">Direction</span><span class="oc-val" style="color:${isBuy?'#16a34a':'#e5294a'}">${isBuy?'▲ BUY YES':'▼ SELL NO'}</span></div>
+    <div class="oc-row"><span class="oc-lbl">Direction</span><span class="oc-val" style="color:${isBuy?'#16a34a':'#e5294a'}">${isBuy?'▲ BUY':'▼ SELL'}</span></div>
     <div class="oc-row"><span class="oc-lbl">Amount</span><span class="oc-val">$${amt.toFixed(2)}</span></div>
     <div class="oc-row"><span class="oc-lbl">Odds</span><span class="oc-val">${isBuy?yp:100-yp}%</span></div>
     <div class="oc-row"><span class="oc-lbl">Expires in</span><span class="oc-val">${AT} minutes</span></div>

@@ -2745,17 +2745,99 @@ function renderAIFallback(sym,yp,np,chg){
   });
 }
 
-setInterval(()=>{
-  allAssets().forEach(a=>{
-    a.p=parseFloat((a.p*(1+R(-.004,.004))).toFixed(a.p>100?2:a.p>1?3:5));
+// ── BINANCE WEBSOCKET for real-time crypto prices ──
+const BSYMS = {
+  'BTC':'btcusdt','ETH':'ethusdt','BNB':'bnbusdt','SOL':'solusdt',
+  'XRP':'xrpusdt','AVAX':'avaxusdt','DOT':'dotusdt','LINK':'linkusdt',
+  'LTC':'ltcusdt','UNI':'uniusdt','AAVE':'aaveusdt','ATOM':'atomusdt',
+  'FIL':'filusdt','NEAR':'nearusdt','ARB':'arbusdt','SUI':'suiusdt',
+  'APT':'aptusdt','INJ':'injusdt','DOGE':'dogeusdt','ADA':'adausdt',
+};
+
+// Fetch real prices from Binance REST on load
+(function fetchBinancePrices(){
+  const symList = Object.values(BSYMS).map(function(v){return '"'+v.toUpperCase()+'"';});
+  fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+symList.join(',')+']')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!Array.isArray(data)) return;
+      data.forEach(function(item){
+        const keys = Object.keys(BSYMS);
+        for(let i=0;i<keys.length;i++){
+          if(BSYMS[keys[i]].toUpperCase()===item.symbol){
+            const asset = allAssets().find(function(a){return a.s===keys[i];});
+            if(asset){
+              asset.p = parseFloat(item.lastPrice);
+              asset._chg = parseFloat(item.priceChangePercent);
+              asset.sp.push(asset.p);
+              if(asset.sp.length>26) asset.sp.shift();
+            }
+            break;
+          }
+        }
+      });
+      const isM=['crypto','stocks','commodities','forex','defi','indices'].includes(view);
+      if(isM) render();
+      updateTicker();
+    }).catch(function(){});
+})();
+
+// Binance WebSocket for live updates
+(function startBinanceWS(){
+  const streams = Object.values(BSYMS).map(function(s){return s+'@ticker';}).join('/');
+  let ws;
+  function connect(){
+    ws = new WebSocket('wss://stream.binance.com:9443/stream?streams='+streams);
+    ws.onmessage = function(e){
+      try{
+        const msg = JSON.parse(e.data);
+        if(!msg.data) return;
+        const d = msg.data;
+        const sym = d.s; // e.g. "BTCUSDT"
+        const keys = Object.keys(BSYMS);
+        for(let i=0;i<keys.length;i++){
+          if(BSYMS[keys[i]].toUpperCase()===sym){
+            const asset = allAssets().find(function(a){return a.s===keys[i];});
+            if(asset){
+              const newP = parseFloat(d.c);
+              if(newP>0){
+                asset._lastDir = newP>asset.p?'up':'dn';
+                asset.p = newP;
+                asset._chg = parseFloat(d.P);
+                asset.sp.push(newP);
+                if(asset.sp.length>26) asset.sp.shift();
+              }
+            }
+            break;
+          }
+        }
+      }catch(ex){}
+    };
+    ws.onerror = function(){};
+    ws.onclose = function(){ setTimeout(connect, 3000); };
+  }
+  connect();
+})();
+
+// Update card prices every 2 seconds without full re-render
+setInterval(function(){
+  // Update price displays inline
+  allAssets().forEach(function(a){
+    const el = document.getElementById('price_'+a.s);
+    if(el) el.textContent = a.p>1000?'$'+a.p.toFixed(2):a.p>1?'$'+a.p.toFixed(3):'$'+a.p.toFixed(5);
+  });
+  updateTicker();
+}, 2000);
+
+// Keep odds/pools moving + re-render every 60s
+setInterval(function(){
+  allAssets().forEach(function(a){
     a.yp=Math.max(22,Math.min(78,a.yp+Math.round(R(-2,2))));
     a.yes=Math.max(800,a.yes+Math.round(R(-150,250)));
     a.no=Math.max(600,a.no+Math.round(R(-120,200)));
-    a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();
   });
   const isMarket=['crypto','stocks','commodities','forex','defi','indices'].includes(view);
-  if(isMarket){render();triggerAllAI();}
-  updateTicker();
+  if(isMarket){render();}
 },60000);
 
 setTimeout(()=>triggerAllAI(),800);

@@ -2687,34 +2687,33 @@ async function fetchAI(sym,name,price,yp,np,chg,yesAmt,noAmt){
   }
   const key=sym+'_'+AT;
   if(aiCache[key]&&Date.now()-aiCache[key].ts<90000){
-    renderAI(sym,aiCache[key].data);return;
+    const cd = aiCache[key].data;
+    // Skip bad cache (from $0 price era)
+    const badSigs = ['zero','anomaly','failure','error','corruption','$0','suspicious'];
+    const isBad = cd && cd.signals && badSigs.some(b=>cd.signals.join(' ').toLowerCase().includes(b));
+    if(!isBad){renderAI(sym,cd);return;}
+    else{delete aiCache[key];} // clear bad cache
   }
-  const prompt=`You are a sharp crypto prediction market analyst. Give a direct, specific suggestion.
+  const prompt=`You are a crypto prediction market analyst for ${name} (${sym}).
 
-Asset: ${name} (${sym})
-Current price: $${price}
-Recent change: ${chg}%
-Market odds: YES ${yp}% / NO ${np}%
-YES pool: $${yesAmt} | NO pool: $${noAmt}
-Expiry: ${AT} minutes
+Price: $${price} | Change: ${chg}% | Expiry: ${AT}min
+Market: YES ${yp}% pool=$${yesAmt} vs NO ${np}% pool=$${noAmt}
 
-Rules:
-- NEVER say NEUTRAL. Always pick BUY or SELL.
-- suggest_pct = how much % of available balance to bet (5 to 40)
-- If conviction is low, suggest low % like 5-10%
-- If conviction is high, suggest higher % like 25-40%
-- Keep reason under 12 words
-
-Return ONLY valid JSON, no markdown:
+Analyze and respond with ONLY valid JSON:
 {
   "direction": "BUY" or "SELL",
-  "confidence": number 52-91,
-  "suggest_pct": number 5-40,
-  "reason": "under 12 words why",
-  "signals": ["signal1","signal2","signal3"],
+  "confidence": 55-88,
+  "suggest_pct": 5-35,
+  "reason": "max 10 words, specific price/momentum reason",
+  "signals": ["Short human-readable signal 1","Signal 2","Signal 3"],
   "signal_types": ["up","down","up"]
 }
-signal_types: each must be "up", "down", or "neutral".`;
+
+Rules:
+- signals must be human readable like "Bullish momentum building" NOT "price_anomaly"
+- reason must mention actual price action or trend
+- signal_types: "up"=bullish, "down"=bearish, "neutral"=sideways
+- NO technical jargon tags, NO underscores in signals`;
 
   try{
     // Route through our server to avoid CORS + hide API key
@@ -3005,6 +3004,12 @@ function startMasterTimerLoop() {
 
 // Start once on page load
 startMasterTimerLoop();
+
+// Clear AI cache so fresh analysis loads with real prices
+setTimeout(()=>{ 
+  for(const k in aiCache) delete aiCache[k]; 
+  triggerAllAI();
+}, 3000);
 
 // ── REAL PRICE SYSTEM ──
 // Binance symbol map (crypto only)

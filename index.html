@@ -1831,13 +1831,13 @@ function setT(t,el){
   AT=t;
   document.querySelectorAll('.tp').forEach(x=>x.classList.remove('on'));
   el.classList.add('on');
-  // Reset round states when duration changes
+  // Reset ALL round states with SAME start time (no random offset)
   allAssets().forEach(a => {
-    if(roundState[a.s]) {
-      roundState[a.s].s = AT * 60 + Math.floor(Math.random() * 58);
-      roundState[a.s].duration = AT;
-      roundState[a.s].startPrice = a.p;
-    }
+    roundState[a.s] = {
+      s: AT * 60,
+      duration: AT,
+      startPrice: a.p
+    };
   });
   render();
 }
@@ -2980,7 +2980,7 @@ function startMasterTimerLoop() {
       // Initialize if first time
       if (!roundState[a.s]) {
         roundState[a.s] = {
-          s: AT * 60 + Math.floor(Math.random() * 58),
+          s: AT * 60,
           startPrice: a.p,
           duration: AT
         };

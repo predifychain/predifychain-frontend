@@ -851,8 +851,8 @@ body.dark .alert-price-wrap{background:var(--c3)}
 
 /* ── MARKET RESOLUTION ── */
 .mc-resolved{position:relative}
-.mc-resolved-overlay{position:absolute;inset:0;backdrop-filter:blur(2px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;border-radius:16px;opacity:0;pointer-events:none;transition:all .3s}
-.mc-resolved-overlay.show{opacity:1;pointer-events:all;display:flex!important}
+.mc-resolved-overlay{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:10;border-radius:16px;opacity:0;pointer-events:none}
+.mc-resolved-overlay.show{opacity:0;pointer-events:none;display:none!important}
 body.dark .mc-resolved-overlay{background:rgba(12,12,20,.92)}
 .mc-res-ico{font-size:36px;margin-bottom:8px;animation:popIn .4s cubic-bezier(.34,1.6,.64,1)}
 .mc-res-title{font-size:16px;font-weight:700;font-family:var(--ff);margin-bottom:4px}
@@ -2921,11 +2921,10 @@ function applyWSPrices() {
     anyChange = true;
   });
 
-  // Re-render UI every 3 seconds (not every 100ms — too expensive)
-  if (anyChange && now - wsLastRender > 3000) {
+  // Update price displays without rebuilding cards (preserves timers)
+  if (anyChange && now - wsLastRender > 500) {
     wsLastRender = now;
-    const isMarket = ['crypto','stocks','commodities','forex','defi','indices'].includes(view);
-    if (isMarket) render();
+    updatePriceDisplays();
     updateTicker();
   }
 
@@ -3087,7 +3086,7 @@ function startSimulatedPrices() {
     });
     
     updatePriceDisplays();
-  }, 3000);
+  }, 5000);
 }
 
 // Start fetching real prices immediately and every 15 seconds

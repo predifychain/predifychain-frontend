@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PredictX — On-Chain Prediction Markets</title>
+<title>PredifyChain — On-Chain Prediction Markets</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
@@ -1216,7 +1216,7 @@ body.dark .tfr{background:linear-gradient(270deg,#0a0e1a,transparent)!important}
     <div class="auth-head">
       <div class="auth-logo">
         <div class="auth-logo-box">PX</div>
-        <span class="auth-logo-name">PredictX</span>
+        <span class="auth-logo-name">PredifyChain</span>
       </div>
       <button class="auth-close" onclick="closeAuth()">&#x2715;</button>
     </div>
@@ -1229,7 +1229,7 @@ body.dark .tfr{background:linear-gradient(270deg,#0a0e1a,transparent)!important}
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-in">
-    <div class="logo"><div class="logo-box">PX</div><div class="logo-name">PredictX<sup>BETA</sup></div></div>
+    <div class="logo"><div class="logo-box">PX</div><div class="logo-name">PredifyChain<sup>BETA</sup></div></div>
     <div class="nav-tabs">
       <button class="ntab on" onclick="setV('crypto',this)">Crypto</button>
       <button class="ntab" onclick="setV('stocks',this)">Stocks</button>
@@ -1406,7 +1406,7 @@ body.dark .tfr{background:linear-gradient(270deg,#0a0e1a,transparent)!important}
               <input class="dep-inp" id="dep-inp" type="number" value="100" min="1">
               <span class="dep-sfx">USDC</span>
             </div>
-            <div class="dep-info-box">Funds will be credited as <b>USDC</b> to your PredictX wallet. Minimum deposit: <b>$10</b>. No deposit fees.</div>
+            <div class="dep-info-box">Funds will be credited as <b>USDC</b> to your PredifyChain wallet. Minimum deposit: <b>$10</b>. No deposit fees.</div>
             <button class="dep-submit" onclick="submitDeposit()" id="dep-btn">${wOn?'Deposit Now':'Sign In to Deposit'}</button>
           </div>
         </div>
@@ -1613,7 +1613,7 @@ body.dark .tfr{background:linear-gradient(270deg,#0a0e1a,transparent)!important}
     <div class="hiw-modal-head">
       <div class="hiw-modal-logo">
         <div class="hiw-modal-logobox">PX</div>
-        <span class="hiw-modal-logoname">PredictX</span>
+        <span class="hiw-modal-logoname">PredifyChain</span>
       </div>
       <button class="hiw-x" onclick="closeHIW()">&#x2715;</button>
     </div>
@@ -1864,7 +1864,7 @@ function renderHIW(){
     </div>`:'';
 
   document.getElementById('hiw-body').innerHTML=`
-    <div class="hiw-main-title">How PredictX works</div>
+    <div class="hiw-main-title">How PredifyChain works</div>
     <div class="hiw-main-sub">Trade prediction markets in 3 simple steps. Powered by Chainlink for tamper-proof results.</div>
 
     <div class="hiw-dots">
@@ -1928,7 +1928,7 @@ function renderAuthStep(){
       <button class="mode-btn demo-mode-btn" id="demo-mode-btn" onclick="switchAuthMode('demo')">🎮 Demo Mode</button>
     </div>
     <div id="auth-mode-content">
-      <div class="auth-title">Sign in to PredictX</div>
+      <div class="auth-title">Sign in to PredifyChain</div>
       <div class="auth-sub">Trade prediction markets powered by Chainlink oracles.</div>
     <div class="social-btns">
       <button class="social-btn" onclick="authSocial('Google')">
@@ -1980,7 +1980,7 @@ function renderAuthStep(){
         <div class="wallet-info"><div class="wallet-name">Coinbase Wallet</div><div class="wallet-tag">Beginner friendly</div></div>
       </button>
     </div>
-    <div class="auth-terms">By continuing, you agree to PredictX <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Trading involves risk.</div>
+    <div class="auth-terms">By continuing, you agree to PredifyChain <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Trading involves risk.</div>
     </div>
     <div class="demo-signin-box" id="demo-signin-section" style="display:none">
       <div class="demo-signin-ico">🎮</div>
@@ -2008,7 +2008,7 @@ function renderAuthStep(){
     <div class="auth-success">
       <div class="auth-success-ico">✓</div>
       <div class="auth-success-title">You're signed in!</div>
-      <div class="auth-success-sub">Welcome to PredictX. Your wallet has been created and funded with demo USDC.</div>
+      <div class="auth-success-sub">Welcome to PredifyChain. Your wallet has been created and funded with demo USDC.</div>
     </div>`;
 }
 
@@ -2093,7 +2093,7 @@ function finalizeLogin(name,identifier,method){
   btn.disabled=false;updateBtn();
   const dbtn=document.getElementById('dep-btn');
   if(dbtn)dbtn.textContent='Deposit Now';
-  notifData.unshift({ico:'👋',bg:'rgba(45,96,240,.1)',text:`<b>Welcome to PredictX!</b> You signed in ${method}. Start trading now.`,time:'just now',read:false});
+  notifData.unshift({ico:'👋',bg:'rgba(45,96,240,.1)',text:`<b>Welcome to PredifyChain!</b> You signed in ${method}. Start trading now.`,time:'just now',read:false});
   renderNotifs();
   toast('Welcome, '+name+' ('+method+')','var(--g)');
 }

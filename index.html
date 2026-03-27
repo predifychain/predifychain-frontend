@@ -1827,7 +1827,20 @@ function updateTicker(){
   });
 }
 
-function setT(t,el){AT=t;document.querySelectorAll('.tp').forEach(x=>x.classList.remove('on'));el.classList.add('on');render();}
+function setT(t,el){
+  AT=t;
+  document.querySelectorAll('.tp').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  // Reset round states when duration changes
+  allAssets().forEach(a => {
+    if(roundState[a.s]) {
+      roundState[a.s].s = AT * 60 + Math.floor(Math.random() * 58);
+      roundState[a.s].duration = AT;
+      roundState[a.s].startPrice = a.p;
+    }
+  });
+  render();
+}
 function setCat(el){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('on'));el.classList.add('on');}
 /* ── HOW IT WORKS ── */
 let hiwStep=0;
@@ -2175,8 +2188,7 @@ const allAssets=()=>[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.f
 function render(){
   const assets=getAssets();
   const g=document.getElementById('mgrid');
-  // Stop old intervals but KEEP roundState (timer continues from where it left off)
-  Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
+  g.innerHTML=''; // Just rebuild DOM, timers run separately
   assets.forEach(a=>{
     a.yp=Math.max(22,Math.min(78,a.yp));
     const np=100-a.yp,chg=(R(-2,2)).toFixed(2),up=parseFloat(chg)>=0;
@@ -2277,57 +2289,7 @@ function render(){
       if(e.target.closest('.mc-trade'))return;
       openDetail(a.s,a.n,a.yp,np,a.p,chg,a.yes,a.no,a.sp);
     });
-    // Use persistent round state so timer survives re-renders
-    const rs = getOrCreateRound(a.s, AT);
-    if (!rs.startPrice) rs.startPrice = a.p;
-    let s = rs.s;
-    a._startPrice = rs.startPrice;
-    a._roundLocked = false;
-    timers[a.s]=setInterval(()=>{
-      s--;rs.s=s;if(s<0){
-        // ── ROUND END — lock final price, resolve
-        s=AT*60;rs.s=s;rs.startPrice=a.p;
-        a._endPrice = wsPriceBuffer[a.s] || a.p; // use real WS price
-        const priceWentUp = a._endPrice > a._startPrice;
-        const priceSame   = Math.abs(a._endPrice - a._startPrice) < 0.01;
-        // Show resolution on card briefly
-        const card = document.getElementById('mc_'+a.s);
-        if(card){
-          const ov = card.querySelector('.mc-resolved-overlay');
-          if(ov){
-            if(priceSame){
-              ov.querySelector('.mro-result').textContent='⚡ DRAW';
-              ov.querySelector('.mro-sub').textContent='Same price — refund issued';
-              ov.style.background='rgba(217,119,6,.92)';
-            } else {
-              ov.querySelector('.mro-result').textContent = priceWentUp ? '▲ UP WON' : '▼ DOWN WON';
-              ov.querySelector('.mro-sub').textContent=`${fmt(a._startPrice)} → ${fmt(a._endPrice)}`;
-              ov.style.background = priceWentUp ? 'rgba(5,150,105,.95)' : 'rgba(225,29,72,.95)';
-            }
-            // Silent resolve - no overlay flash
-          }
-        }
-        // New round — lock new start price
-        a._startPrice = wsPriceBuffer[a.s] || a.p;
-        a._roundLocked = false;
-      }
-      const e=document.getElementById(tid);
-      if(e){
-        const m=Math.floor(s/60),sc=s%60;
-        e.textContent=String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');
-        // Entry cutoff: last 20 seconds
-        const isUrgent = s < 30;
-        const isCutoff = s < 20;
-        e.className='mc-timer'+(isUrgent?' red':'');
-        if(s>=30) e.style.color=a.c;
-        // Show/hide cutoff overlay
-        const card=document.getElementById('mc_'+a.s);
-        if(card){
-          const co=card.querySelector('.mc-cutoff-overlay');
-          if(co) co.classList.toggle('show', isCutoff);
-        }
-      }
-    },1000);
+    // Timer handled by masterTimerLoop
   });
 }
 
@@ -3007,6 +2969,56 @@ function showWSStatus(connected) {
     }
   }
 }
+
+
+// ── MASTER TIMER LOOP — runs once, never stops, survives re-renders ──
+function startMasterTimerLoop() {
+  // Initialize round states for all assets
+  allAssets().forEach(a => {
+    if (!roundState[a.s]) {
+      roundState[a.s] = {
+        s: AT * 60 + Math.floor(Math.random() * 58),
+        startPrice: a.p,
+        duration: AT
+      };
+    }
+  });
+
+  setInterval(() => {
+    allAssets().forEach(a => {
+      const rs = roundState[a.s];
+      if (!rs) return;
+
+      rs.s--;
+
+      // Update timer display
+      const timerEl = document.getElementById('tmr_' + a.s);
+      if (timerEl) {
+        const m = Math.floor(rs.s / 60);
+        const sc = rs.s % 60;
+        timerEl.textContent = String(m).padStart(2, '0') + ':' + String(sc).padStart(2, '0');
+        timerEl.className = 'mc-timer' + (rs.s < 30 ? ' red' : '');
+        if (rs.s >= 30) timerEl.style.color = a.c || '#4f46e5';
+      }
+
+      // Entry cutoff overlay
+      const card = document.getElementById('mc_' + a.s);
+      if (card) {
+        const co = card.querySelector('.mc-cutoff-overlay');
+        if (co) co.classList.toggle('show', rs.s < 20 && rs.s > 0);
+      }
+
+      // Round end
+      if (rs.s <= 0) {
+        rs.s = rs.duration * 60; // reset for next round
+        rs.startPrice = a.p;     // new start price
+      }
+    });
+  }, 1000);
+}
+
+// Start master timer once on page load
+startMasterTimerLoop();
 
 // ── REAL PRICE SYSTEM ──
 // Binance symbol map (crypto only)

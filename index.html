@@ -38,7 +38,7 @@ html,body{background:var(--bg);color:var(--t0);font-family:var(--ff);min-height:
 
 /* ── NAV ── */
 .nav{position:sticky;top:0;z-index:200;background:#0d1333;backdrop-filter:blur(24px);border-bottom:1px solid rgba(99,102,241,.2);box-shadow:0 4px 24px rgba(0,0,0,.35)}
-.nav-in{max-width:1400px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:12px;height:60px}
+.nav-in{max-width:1400px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:8px;height:56px;flex-wrap:nowrap;overflow:hidden}
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:8px}
 .logo-box{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;letter-spacing:-.5px;box-shadow:0 0 20px rgba(99,102,241,.5);font-family:var(--ff)}
 .logo-name{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.5px;font-family:var(--ff)}
@@ -47,7 +47,7 @@ html,body{background:var(--bg);color:var(--t0);font-family:var(--ff);min-height:
 .ntab{padding:5px 12px;border-radius:7px;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);border:none;background:transparent;cursor:pointer;font-family:var(--ff);transition:all .15s;letter-spacing:-.1px}
 .ntab:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.07)}
 .ntab.on{color:#fff;background:rgba(99,102,241,.25);font-weight:600;box-shadow:0 0 0 1px rgba(99,102,241,.3)}
-.nav-gap{flex:1}
+.nav-gap{flex:0 0 8px}
 .live-pill{display:flex;align-items:center;gap:5px;background:rgba(5,150,105,.12);border:1px solid rgba(5,150,105,.3);border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;color:#34d399;letter-spacing:.06em;font-family:var(--ff);text-transform:uppercase}
 .ld{width:5px;height:5px;background:var(--g);border-radius:50%;animation:lp 1.4s ease infinite}
 @keyframes lp{0%,100%{opacity:1}50%{opacity:.2}}
@@ -601,7 +601,7 @@ html,body{background:var(--bg);color:var(--t0);font-family:var(--ff);min-height:
 .hiw-next{flex:1;padding:10px;border-radius:11px;border:none;background:#2d60f0;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--ff);transition:all .2s;box-shadow:0 3px 12px rgba(45,96,240,.25)}
 .hiw-next:hover{background:#1d4ed8;box-shadow:0 5px 18px rgba(45,96,240,.35)}
 /* ── SEARCH BAR ── */
-.search-wrap{flex:0 0 220px;position:relative}
+.search-wrap{flex:0 0 180px;position:relative}
 .search-inp{width:100%;background:var(--c2);border:1.5px solid var(--b1);border-radius:10px;padding:7px 12px 7px 36px;font-size:13px;font-family:var(--ff);color:var(--t0);outline:none;transition:border .18s}
 .search-inp:focus{border-color:var(--cl);background:#fff;box-shadow:0 0 0 3px rgba(45,96,240,.08)}
 .search-inp::placeholder{color:var(--t3)}
@@ -1280,8 +1280,8 @@ window.addEventListener('load', function() {
       </div>
     </div>
     <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">🌙</button>
-    <button class="hiw-btn" onclick="openHIW()" style="background:#ffffff;color:#1a1a2e;border:none;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
-      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" style="flex-shrink:0"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <button class="hiw-btn" onclick="openHIW()" style="background:#ffffff;color:#1a1a2e;border:none;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.15);padding:6px 10px;font-size:11px;flex-shrink:0">
+      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" style="flex-shrink:0"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <span>How it works</span>
     </button>
     <button class="w-btn" id="wbtn" onclick="openAuth()"><div class="wdot" id="wdot"></div><span id="wbtxt">Sign In</span></button>
@@ -2319,7 +2319,9 @@ function qbet(sym,name,yp,np,d){
   const pos={sym,name,dir:d,a,odds,payout,ts:Date.now(),expiry:AT};
   positions.push(pos);updateStats();renderPos();
   toast((d==='buy'?'▲ BUY ':'▼ SELL ')+sym+' $'+a,d==='buy'?'var(--g)':'var(--r)');
-  setTimeout(()=>resolve(pos),AT*6000+2000);
+  // Resolve at actual round end (timestamp based)
+  const msLeft = getRoundSecondsLeft(AT) * 1000;
+  setTimeout(()=>resolve(pos), msLeft + 500);
   pick(sym,name,yp,np,d);
 }
 

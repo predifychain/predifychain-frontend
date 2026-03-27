@@ -2220,9 +2220,15 @@ function render(){
       if(e.target.closest('.mc-trade'))return;
       openDetail(a.s,a.n,a.yp,np,a.p,chg,a.yes,a.no,a.sp);
     });
-    let s=AT*60+Math.floor(R(2,58));
+    // Timestamp-based timer - synced to real clock
+    function getRoundSecsLeft(mins){
+      const now=Math.floor(Date.now()/1000);
+      const dur=mins*60;
+      return dur-(now%dur);
+    }
+    let s=getRoundSecsLeft(AT);
     timers[a.s]=setInterval(()=>{
-      s--;if(s<0)s=AT*60;
+      s=getRoundSecsLeft(AT);
       const e=document.getElementById(tid);
       if(e){const m=Math.floor(s/60),sc=s%60;e.textContent=String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');e.className='mc-timer'+(s<30?' red':'');if(s>=30)e.style.color=a.c;}
     },1000);

@@ -1480,7 +1480,7 @@ body.dark .levelup-box{background:#0c0c14}
           <div>
             <div class="chart-sym" id="chart-sym-lbl">BTC/USD</div>
             <div style="display:flex;align-items:center;gap:8px;margin-top:3px">
-              <span class="chart-price" id="chart-price-lbl">$95,480</span>
+              <span class="chart-price" id="chart-price-lbl">$--</span>
               <span class="chart-chg cup" id="chart-chg-lbl">+1.2%</span>
             </div>
           </div>
@@ -1718,16 +1718,16 @@ const ICONS={
 };
 const DATA={
   crypto:[
-    {s:'BTC',n:'Bitcoin',p:95480,c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830},
-    {s:'ETH',n:'Ethereum',p:3291,c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640},
-    {s:'SOL',n:'Solana',p:198.6,c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:70,sp:[],yes:8820,no:3780},
-    {s:'BNB',n:'BNB',p:616.4,c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:45,sp:[],yes:4200,no:5140},
-    {s:'AVAX',n:'Avalanche',p:38.9,c:'#e84142',stripe:'linear-gradient(90deg,#e84142,#ff6b9d)',yp:58,sp:[],yes:6710,no:4860},
-    {s:'DOGE',n:'Dogecoin',p:.1851,c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:66,sp:[],yes:9100,no:4690},
-    {s:'LINK',n:'Chainlink',p:14.82,c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400,no:3500},
-    {s:'ARB',n:'Arbitrum',p:0.62,c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100,no:3500},
+    {s:'BTC',n:'Bitcoin',p:65800,c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830},
+    {s:'ETH',n:'Ethereum',p:1983,c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640},
+    {s:'SOL',n:'Solana',p:82,c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:70,sp:[],yes:8820,no:3780},
+    {s:'BNB',n:'BNB',p:609,c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:45,sp:[],yes:4200,no:5140},
+    {s:'AVAX',n:'Avalanche',p:8.7,c:'#e84142',stripe:'linear-gradient(90deg,#e84142,#ff6b9d)',yp:58,sp:[],yes:6710,no:4860},
+    {s:'DOGE',n:'Dogecoin',p:0.089,c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:66,sp:[],yes:9100,no:4690},
+    {s:'LINK',n:'Chainlink',p:8.5,c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400,no:3500},
+    {s:'ARB',n:'Arbitrum',p:0.089,c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100,no:3500},
     {s:'MATIC',n:'Polygon',p:0.48,c:'#8247e5',stripe:'linear-gradient(90deg,#8247e5,#a855f7)',yp:61,sp:[],yes:5200,no:3330},
-    {s:'XRP',n:'Ripple',p:2.14,c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:59,sp:[],yes:9800,no:6820},
+    {s:'XRP',n:'Ripple',p:1.32,c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:59,sp:[],yes:9800,no:6820},
   ],
   stocks:[
     {s:'AAPL',n:'Apple Inc.',p:221,c:'#555555',stripe:'linear-gradient(90deg,#555,#888)',yp:57,sp:[],yes:7200,no:5440},
@@ -2623,37 +2623,56 @@ function signOut(){
 
 buildTicker();
 
-// Fetch real Binance prices BEFORE first render to avoid price jump
+// Show loading state while fetching real prices
+document.getElementById('mgrid').innerHTML = '<div style="padding:40px;text-align:center;color:#6366f1;font-size:14px;font-weight:600">⏳ Loading live prices...</div>';
+
+// Fetch ALL crypto prices from Binance before rendering
 (function(){
-  const cryptoSyms = {'BTC':'BTCUSDT','ETH':'ETHUSDT','BNB':'BNBUSDT','SOL':'SOLUSDT',
-    'XRP':'XRPUSDT','AVAX':'AVAXUSDT','DOT':'DOTUSDT','LINK':'LINKUSDT','LTC':'LTCUSDT',
-    'UNI':'UNIUSDT','AAVE':'AAVEUSDT','ATOM':'ATOMUSDT','FIL':'FILUSDT','NEAR':'NEARUSDT',
-    'ARB':'ARBUSDT','SUI':'SUIUSDT','APT':'APTUSDT','INJ':'INJUSDT','DOGE':'DOGEUSDT','ADA':'ADAUSDT'};
-  const symArr = Object.values(cryptoSyms).map(function(v){return '"'+v+'"';}).join(',');
+  let rendered = false;
+  function doRender(){
+    if(rendered) return;
+    rendered = true;
+    render();
+    renderLeaderboard();
+    renderNotifs();
+  }
+
+  const syms = {
+    'BTC':'BTCUSDT','ETH':'ETHUSDT','BNB':'BNBUSDT','SOL':'SOLUSDT',
+    'XRP':'XRPUSDT','AVAX':'AVAXUSDT','DOT':'DOTUSDT','LINK':'LINKUSDT',
+    'LTC':'LTCUSDT','UNI':'UNIUSDT','AAVE':'AAVEUSDT','ATOM':'ATOMUSDT',
+    'FIL':'FILUSDT','NEAR':'NEARUSDT','ARB':'ARBUSDT','SUI':'SUIUSDT',
+    'APT':'APTUSDT','INJ':'INJUSDT','DOGE':'DOGEUSDT','ADA':'ADAUSDT',
+    'TAO':'TAOUSDT','ZEC':'ZECUSDT','LPT':'LPTUSDT','TIA':'TIAUSDT',
+    'RENDER':'RENDERUSDT','WLD':'WLDUSDT','PENDLE':'PENDLEUSDT',
+    'PYTH':'PYTHUSDT','JTO':'JTOUSDT','HYPE':'HYPEUSDT'
+  };
+
+  const symArr = Object.values(syms).map(function(v){return '"'+v+'"';}).join(',');
+
   fetch('https://api.binance.com/api/v3/ticker/price?symbols=['+symArr+']')
     .then(function(r){return r.json();})
     .then(function(data){
       if(!Array.isArray(data)) return;
       data.forEach(function(item){
-        const k = Object.keys(cryptoSyms).find(function(key){return cryptoSyms[key]===item.symbol;});
-        if(!k) return;
-        const a = allAssets().find(function(x){return x.s===k;});
-        if(a && parseFloat(item.price)>0){
-          a.p = parseFloat(item.price);
-          a.sp = Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});
+        const keys = Object.keys(syms);
+        for(let i=0;i<keys.length;i++){
+          if(syms[keys[i]]===item.symbol){
+            const a = allAssets().find(function(x){return x.s===keys[i];});
+            if(a && parseFloat(item.price)>0){
+              a.p = parseFloat(item.price);
+              a.sp = Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});
+            }
+            break;
+          }
         }
       });
     })
-    .catch(function(){})
-    .finally(function(){
-      render();renderLeaderboard();renderNotifs();
-    });
-  // Timeout fallback - render anyway after 2s if fetch fails
-  setTimeout(function(){
-    if(!document.getElementById('mgrid').innerHTML) {
-      render();renderLeaderboard();renderNotifs();
-    }
-  }, 2000);
+    .catch(function(e){console.warn('Binance fetch failed',e);})
+    .finally(function(){ doRender(); });
+
+  // Fallback: render after 3s no matter what
+  setTimeout(doRender, 3000);
 })();
 
 /* ── AI ANALYSIS ENGINE ── */
@@ -2771,33 +2790,7 @@ const BSYMS = {
   'APT':'aptusdt','INJ':'injusdt','DOGE':'dogeusdt','ADA':'adausdt',
 };
 
-// Fetch real prices from Binance REST on load
-(function fetchBinancePrices(){
-  const symList = Object.values(BSYMS).map(function(v){return '"'+v.toUpperCase()+'"';});
-  fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+symList.join(',')+']')
-    .then(function(r){return r.json();})
-    .then(function(data){
-      if(!Array.isArray(data)) return;
-      data.forEach(function(item){
-        const keys = Object.keys(BSYMS);
-        for(let i=0;i<keys.length;i++){
-          if(BSYMS[keys[i]].toUpperCase()===item.symbol){
-            const asset = allAssets().find(function(a){return a.s===keys[i];});
-            if(asset){
-              asset.p = parseFloat(item.lastPrice);
-              asset._chg = parseFloat(item.priceChangePercent);
-              asset.sp.push(asset.p);
-              if(asset.sp.length>26) asset.sp.shift();
-            }
-            break;
-          }
-        }
-      });
-      const isM=['crypto','stocks','commodities','forex','defi','indices'].includes(view);
-      if(isM) render();
-      updateTicker();
-    }).catch(function(){});
-})();
+// Binance REST fetch handled at startup above
 
 // Binance WebSocket for live updates
 (function startBinanceWS(){
@@ -3664,7 +3657,7 @@ setTimeout(renderActivityFeed, 500);
 
 /* ── WHALE ALERT ── */
 let whaleT;
-function showWhaleAlert(name,amt,sym){
+function showWhaleAlert(name,amt,sym){ return; // disabled
   const el=document.getElementById('whale-alert');
   document.getElementById('whale-text').textContent=`${name} placed`;
   document.getElementById('whale-amt').textContent=`$${amt.toLocaleString()} on ${sym}`;

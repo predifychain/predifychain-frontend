@@ -1271,8 +1271,8 @@ window.addEventListener('load', function() {
       <div class="search-results" id="search-results"></div>
     </div>
     <div class="live-pill"><span class="ld"></span>LIVE</div>
-    <div style="position:relative">
-      <button class="notif-btn" onclick="toggleNotif()" id="notif-btn">🔔<span class="notif-dot" id="notif-dot"></span></button>
+    <div style="position:relative;display:flex;align-items:center;gap:4px;flex-shrink:0">
+      <button class="notif-btn" onclick="toggleNotif()" id="notif-btn" title="Notifications">🔔<span class="notif-dot" id="notif-dot"></span></button>
       <button class="notif-btn" onclick="openAlerts()" title="Price Alerts" style="font-size:14px">⚡</button>
       <div class="notif-panel" id="notif-panel">
         <div class="notif-head"><span class="notif-title">Notifications</span><button class="notif-clear" onclick="clearNotifs()">Mark all read</button></div>
@@ -2962,25 +2962,20 @@ function updateLiveChart() {
 
 // WS status indicator in nav
 function showWSStatus(connected) {
-  let el = document.getElementById('ws-status');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'ws-status';
-    el.style.cssText = `
-      display:flex;align-items:center;gap:5px;
-      font-size:10px;font-weight:700;letter-spacing:.06em;
-      font-family:var(--ff);text-transform:uppercase;
-      padding:3px 9px;border-radius:20px;transition:all .3s;
-    `;
-    const livePill = document.querySelector('.live-pill');
-    if (livePill) livePill.after(el);
-  }
-  if (connected) {
-    el.innerHTML = `<span style="width:5px;height:5px;border-radius:50%;background:#00e676;box-shadow:0 0 6px #00e676;display:inline-block"></span> Live`;
-    el.style.cssText += 'background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);color:#059669;';
-  } else {
-    el.innerHTML = `<span style="width:5px;height:5px;border-radius:50%;background:#f59e0b;display:inline-block"></span> Connecting...`;
-    el.style.cssText += 'background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:#d97706;';
+  // Update existing live-pill instead of creating duplicate
+  const livePill = document.querySelector('.live-pill');
+  if (livePill) {
+    if (connected) {
+      livePill.innerHTML = `<span class="ld"></span>LIVE`;
+      livePill.style.background = 'rgba(5,150,105,.12)';
+      livePill.style.borderColor = 'rgba(5,150,105,.3)';
+      livePill.style.color = '#34d399';
+    } else {
+      livePill.innerHTML = `<span class="ld" style="background:#f59e0b"></span>CONNECTING`;
+      livePill.style.background = 'rgba(245,158,11,.08)';
+      livePill.style.borderColor = 'rgba(245,158,11,.2)';
+      livePill.style.color = '#d97706';
+    }
   }
 }
 

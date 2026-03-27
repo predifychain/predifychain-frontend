@@ -2626,7 +2626,7 @@ buildTicker();
 // Show loading state while fetching real prices
 document.getElementById('mgrid').innerHTML = '<div style="padding:40px;text-align:center;color:#6366f1;font-size:14px;font-weight:600">⏳ Loading live prices...</div>';
 
-// Fetch ALL crypto prices from Binance before rendering
+// ═══ FETCH ALL PRICES BEFORE FIRST RENDER ═══
 (function(){
   let rendered = false;
   function doRender(){
@@ -2637,7 +2637,8 @@ document.getElementById('mgrid').innerHTML = '<div style="padding:40px;text-alig
     renderNotifs();
   }
 
-  const syms = {
+  // 1. CRYPTO — Binance
+  const cryptoSyms = {
     'BTC':'BTCUSDT','ETH':'ETHUSDT','BNB':'BNBUSDT','SOL':'SOLUSDT',
     'XRP':'XRPUSDT','AVAX':'AVAXUSDT','DOT':'DOTUSDT','LINK':'LINKUSDT',
     'LTC':'LTCUSDT','UNI':'UNIUSDT','AAVE':'AAVEUSDT','ATOM':'ATOMUSDT',
@@ -2647,17 +2648,16 @@ document.getElementById('mgrid').innerHTML = '<div style="padding:40px;text-alig
     'RENDER':'RENDERUSDT','WLD':'WLDUSDT','PENDLE':'PENDLEUSDT',
     'PYTH':'PYTHUSDT','JTO':'JTOUSDT','HYPE':'HYPEUSDT'
   };
-
-  const symArr = Object.values(syms).map(function(v){return '"'+v+'"';}).join(',');
-
-  fetch('https://api.binance.com/api/v3/ticker/price?symbols=['+symArr+']')
+  const symArr = Object.values(cryptoSyms).map(function(v){return '"'+v+'"';}).join(',');
+  
+  const cryptoFetch = fetch('https://api.binance.com/api/v3/ticker/price?symbols=['+symArr+']')
     .then(function(r){return r.json();})
     .then(function(data){
       if(!Array.isArray(data)) return;
       data.forEach(function(item){
-        const keys = Object.keys(syms);
+        const keys = Object.keys(cryptoSyms);
         for(let i=0;i<keys.length;i++){
-          if(syms[keys[i]]===item.symbol){
+          if(cryptoSyms[keys[i]]===item.symbol){
             const a = allAssets().find(function(x){return x.s===keys[i];});
             if(a && parseFloat(item.price)>0){
               a.p = parseFloat(item.price);
@@ -2667,12 +2667,105 @@ document.getElementById('mgrid').innerHTML = '<div style="padding:40px;text-alig
           }
         }
       });
-    })
-    .catch(function(e){console.warn('Binance fetch failed',e);})
-    .finally(function(){ doRender(); });
+    }).catch(function(){});
 
-  // Fallback: render after 3s no matter what
-  setTimeout(doRender, 3000);
+  // 2. STOCKS — Yahoo Finance via proxy
+  // Yahoo Finance: AAPL, TSLA, NVDA, MSFT, AMZN, GOOGL, META, NFLX, AMD, COIN
+  const stockSyms = ['AAPL','TSLA','NVDA','MSFT','AMZN','GOOGL','META','NFLX','AMD','COIN'];
+  const stockFetch = fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+stockSyms.join(',')+'&fields=regularMarketPrice')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      const quotes = data?.quoteResponse?.result || [];
+      quotes.forEach(function(q){
+        const a = DATA.stocks.find(function(x){return x.s===q.symbol;});
+        if(a && q.regularMarketPrice>0){
+          a.p = q.regularMarketPrice;
+          a.sp = Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});
+        }
+      });
+    }).catch(function(){});
+
+  // 3. COMMODITIES + FOREX — via exchangerate + metals API
+  // Gold (XAU), Silver (XAG), Oil (WTI) — use Yahoo Finance too
+  const commSyms = ['GC=F','SI=F','CL=F','NG=F','PL=F']; // Gold, Silver, Oil, NatGas, Platinum futures
+  const commMap = {'GC=F':'XAU','SI=F':'XAG','CL=F':'WTI','NG=F':'NG','PL=F':'PLAT'};
+  const commFetch = fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+commSyms.join(',')+'&fields=regularMarketPrice')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      const quotes = data?.quoteResponse?.result || [];
+      quotes.forEach(function(q){
+        const sym = commMap[q.symbol];
+        if(!sym) return;
+        const a = DATA.commodities.find(function(x){return x.s===sym;});
+        if(a && q.regularMarketPrice>0){
+          a.p = q.regularMarketPrice;
+          a.sp = Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});
+        }
+      });
+    }).catch(function(){});
+
+  // 4. FOREX — Yahoo Finance
+  const forexSyms = ['EURUSD=X','GBPUSD=X','USDJPY=X','AUDUSD=X','USDCAD=X','USDCHF=X','NZDUSD=X','USDSGD=X'];
+  const forexMap = {'EURUSD=X':'EURUSD','GBPUSD=X':'GBPUSD','USDJPY=X':'USDJPY','AUDUSD=X':'AUDUSD','USDCAD=X':'USDCAD','USDCHF=X':'USDCHF','NZDUSD=X':'NZDUSD','USDSGD=X':'USDSGD'};
+  const forexFetch = fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+forexSyms.join(',')+'&fields=regularMarketPrice')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      const quotes = data?.quoteResponse?.result || [];
+      quotes.forEach(function(q){
+        const sym = forexMap[q.symbol];
+        if(!sym) return;
+        const a = DATA.forex.find(function(x){return x.s===sym;});
+        if(a && q.regularMarketPrice>0){
+          a.p = q.regularMarketPrice;
+          a.sp = Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});
+        }
+      });
+    }).catch(function(){});
+
+  // Wait for ALL fetches then render
+  Promise.allSettled([cryptoFetch, stockFetch, commFetch, forexFetch])
+    .then(function(){ doRender(); });
+
+  // Fallback: render after 4s no matter what
+  setTimeout(doRender, 4000);
+
+  // ═══ PERIODIC REFRESH every 30s for stocks/commodities/forex ═══
+  setInterval(function(){
+    // Refresh stocks
+    fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+stockSyms.join(',')+'&fields=regularMarketPrice')
+      .then(function(r){return r.json();})
+      .then(function(data){
+        const quotes = data?.quoteResponse?.result || [];
+        quotes.forEach(function(q){
+          const a = DATA.stocks.find(function(x){return x.s===q.symbol;});
+          if(a && q.regularMarketPrice>0) a.p = q.regularMarketPrice;
+        });
+      }).catch(function(){});
+    // Refresh commodities
+    fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+commSyms.join(',')+'&fields=regularMarketPrice')
+      .then(function(r){return r.json();})
+      .then(function(data){
+        const quotes = data?.quoteResponse?.result || [];
+        quotes.forEach(function(q){
+          const sym = commMap[q.symbol];
+          if(!sym) return;
+          const a = DATA.commodities.find(function(x){return x.s===sym;});
+          if(a && q.regularMarketPrice>0) a.p = q.regularMarketPrice;
+        });
+      }).catch(function(){});
+    // Refresh forex
+    fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+forexSyms.join(',')+'&fields=regularMarketPrice')
+      .then(function(r){return r.json();})
+      .then(function(data){
+        const quotes = data?.quoteResponse?.result || [];
+        quotes.forEach(function(q){
+          const sym = forexMap[q.symbol];
+          if(!sym) return;
+          const a = DATA.forex.find(function(x){return x.s===sym;});
+          if(a && q.regularMarketPrice>0) a.p = q.regularMarketPrice;
+        });
+      }).catch(function(){});
+  }, 30000);
 })();
 
 /* ── AI ANALYSIS ENGINE ── */

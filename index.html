@@ -848,8 +848,8 @@ body.dark .alert-price-wrap{background:var(--c3)}
 
 /* ── MARKET RESOLUTION ── */
 .mc-resolved{position:relative}
-.mc-resolved-overlay{position:absolute;inset:0;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;border-radius:16px}
-body.dark .mc-resolved-overlay{background:rgba(12,12,20,.92)}
+.mc-resolved-overlay{display:none!important}
+body.dark .mc-resolved-overlay{display:none!important}
 .mc-res-ico{font-size:36px;margin-bottom:8px;animation:popIn .4s cubic-bezier(.34,1.6,.64,1)}
 .mc-res-title{font-size:16px;font-weight:700;font-family:var(--ff);margin-bottom:4px}
 .mc-res-sub{font-size:12px;color:var(--t3);font-family:var(--ff);margin-bottom:12px}
@@ -1032,12 +1032,7 @@ body.light body::before{background-image:linear-gradient(rgba(30,40,100,.025) 1p
    ══════════════════════════════════════════════ */
 
 /* ── ENTRY CUTOFF OVERLAY ── */
-.mc-cutoff-overlay{
-  position:absolute;inset:0;background:rgba(229,41,74,.96);
-  backdrop-filter:blur(4px);z-index:20;border-radius:16px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .3s
-}
+.mc-cutoff-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);z-index:20;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 .mc-cutoff-overlay.show{opacity:1;pointer-events:all}
 .mc-cutoff-ico{font-size:32px;margin-bottom:8px;animation:shake .5s ease infinite}
 @keyframes shake{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
@@ -1274,15 +1269,11 @@ body.dark .levelup-box{background:#0c0c14}
       <button class="ntab" onclick="setV('indices',this)">Indices</button>
       <button class="ntab" onclick="setV('deposit',this)">Deposit</button>
       <button class="ntab" onclick="setV('portfolio',this)">Portfolio</button>
+      <button onclick="openHIW()" style="background:#fff;color:#0d1333;border:none;font-weight:700;padding:5px 12px;border-radius:7px;font-size:12px;cursor:pointer;margin-left:6px;box-shadow:0 2px 6px rgba(0,0,0,.25);white-space:nowrap;flex-shrink:0">How it works</button>
     </div>
-    <div class="nav-gap"></div>
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input class="search-inp" id="search-inp" type="text" placeholder="Search markets..." oninput="handleSearch(this.value)" onfocus="showSearch()" onblur="setTimeout(hideSearch,220)">
-      <div class="search-results" id="search-results"></div>
-    </div>
+    <div style="flex:1"></div>
     <div class="live-pill"><span class="ld"></span>LIVE</div>
-    <div style="position:relative">
+    <div style="position:relative;display:flex;align-items:center;gap:4px">
       <button class="notif-btn" onclick="toggleNotif()" id="notif-btn">🔔<span class="notif-dot" id="notif-dot"></span></button>
       <button class="notif-btn" onclick="openAlerts()" title="Price Alerts" style="font-size:14px">⚡</button>
       <div class="notif-panel" id="notif-panel">
@@ -1290,11 +1281,7 @@ body.dark .levelup-box{background:#0c0c14}
         <div id="notif-list"></div>
       </div>
     </div>
-    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">☀️</button>
-    <button class="hiw-btn" onclick="openHIW()">
-      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" style="flex-shrink:0"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      <span>How it works</span>
-    </button>
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">🌙</button>
     <button class="w-btn" id="wbtn" onclick="openAuth()"><div class="wdot" id="wdot"></div><span id="wbtxt">Sign In</span></button>
     <button class="nav-avatar" id="nav-av" style="display:none" onclick="setV('profile',null)">?</button>
   </div>
@@ -1665,7 +1652,7 @@ body.dark .levelup-box{background:#0c0c14}
 </div>
 
 <!-- WHALE ALERT -->
-<div class="whale-alert" id="whale-alert">
+<div class="whale-alert" style="display:none!important">
   <span class="whale-alert-ico">🐳</span>
   <span class="whale-alert-text" id="whale-text">Whale placed</span>
   <span class="whale-alert-amt" id="whale-amt">$2,000</span>
@@ -1743,16 +1730,16 @@ const DATA={
     {s:'XRP',n:'Ripple',p:2.14,c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:59,sp:[],yes:9800,no:6820},
   ],
   stocks:[
-    {s:'AAPL',n:'Apple Inc.',p:193.8,c:'#555555',stripe:'linear-gradient(90deg,#555,#888)',yp:57,sp:[],yes:7200,no:5440},
-    {s:'TSLA',n:'Tesla',p:248.5,c:'#e82127',stripe:'linear-gradient(90deg,#e82127,#ff6b9d)',yp:49,sp:[],yes:5100,no:5310},
-    {s:'NVDA',n:'NVIDIA',p:875.2,c:'#76b900',stripe:'linear-gradient(90deg,#76b900,#c8ff00)',yp:74,sp:[],yes:14300,no:5020},
-    {s:'MSFT',n:'Microsoft',p:415.7,c:'#00bcf2',stripe:'linear-gradient(90deg,#00bcf2,#00e5ff)',yp:63,sp:[],yes:8800,no:5170},
-    {s:'AMZN',n:'Amazon',p:192.4,c:'#ff9900',stripe:'linear-gradient(90deg,#ff9900,#ffcc00)',yp:52,sp:[],yes:6200,no:5720},
-    {s:'GOOGL',n:'Alphabet',p:178.9,c:'#4285f4',stripe:'linear-gradient(90deg,#4285f4,#00e5ff)',yp:60,sp:[],yes:7900,no:5280},
-    {s:'META',n:'Meta',p:512.3,c:'#0866ff',stripe:'linear-gradient(90deg,#0866ff,#00e5ff)',yp:65,sp:[],yes:9100,no:4900},
-    {s:'NFLX',n:'Netflix',p:634.7,c:'#e50914',stripe:'linear-gradient(90deg,#e50914,#ff6b9d)',yp:55,sp:[],yes:5600,no:4580},
-    {s:'AMD',n:'AMD',p:168.4,c:'#ed1c24',stripe:'linear-gradient(90deg,#ed1c24,#ff6b00)',yp:58,sp:[],yes:6300,no:4570},
-    {s:'COIN',n:'Coinbase',p:224.6,c:'#1652f0',stripe:'linear-gradient(90deg,#1652f0,#6b8fff)',yp:62,sp:[],yes:5800,no:3560},
+    {s:'AAPL',n:'Apple Inc.',p:221,c:'#555555',stripe:'linear-gradient(90deg,#555,#888)',yp:57,sp:[],yes:7200,no:5440},
+    {s:'TSLA',n:'Tesla',p:263,c:'#e82127',stripe:'linear-gradient(90deg,#e82127,#ff6b9d)',yp:49,sp:[],yes:5100,no:5310},
+    {s:'NVDA',n:'NVIDIA',p:876,c:'#76b900',stripe:'linear-gradient(90deg,#76b900,#c8ff00)',yp:74,sp:[],yes:14300,no:5020},
+    {s:'MSFT',n:'Microsoft',p:388,c:'#00bcf2',stripe:'linear-gradient(90deg,#00bcf2,#00e5ff)',yp:63,sp:[],yes:8800,no:5170},
+    {s:'AMZN',n:'Amazon',p:197,c:'#ff9900',stripe:'linear-gradient(90deg,#ff9900,#ffcc00)',yp:52,sp:[],yes:6200,no:5720},
+    {s:'GOOGL',n:'Alphabet',p:165,c:'#4285f4',stripe:'linear-gradient(90deg,#4285f4,#00e5ff)',yp:60,sp:[],yes:7900,no:5280},
+    {s:'META',n:'Meta',p:551,c:'#0866ff',stripe:'linear-gradient(90deg,#0866ff,#00e5ff)',yp:65,sp:[],yes:9100,no:4900},
+    {s:'NFLX',n:'Netflix',p:962,c:'#e50914',stripe:'linear-gradient(90deg,#e50914,#ff6b9d)',yp:55,sp:[],yes:5600,no:4580},
+    {s:'AMD',n:'AMD',p:101,c:'#ed1c24',stripe:'linear-gradient(90deg,#ed1c24,#ff6b00)',yp:58,sp:[],yes:6300,no:4570},
+    {s:'COIN',n:'Coinbase',p:192,c:'#1652f0',stripe:'linear-gradient(90deg,#1652f0,#6b8fff)',yp:62,sp:[],yes:5800,no:3560},
   ],
   commodities:[
     {s:'XAU',n:'Gold',p:3020.5,c:'#d4a017',stripe:'linear-gradient(90deg,#d4a017,#f5c842)',yp:61,sp:[],yes:12400,no:7900,unit:'oz',feed:'XAU/USD'},
@@ -1763,10 +1750,10 @@ const DATA={
     {s:'COPPER',n:'Copper',p:4.52,c:'#b87333',stripe:'linear-gradient(90deg,#b87333,#d4a017)',yp:53,sp:[],yes:3800,no:3370,unit:'lb',feed:'COPPER/USD'},
   ],
   forex:[
-    {s:'EURUSD',n:'EUR / USD',p:1.0842,c:'#003399',stripe:'linear-gradient(90deg,#003399,#0066cc)',yp:52,sp:[],yes:9200,no:8480,unit:'pair',feed:'EUR/USD'},
-    {s:'GBPUSD',n:'GBP / USD',p:1.2634,c:'#012169',stripe:'linear-gradient(90deg,#012169,#4a6ef5)',yp:54,sp:[],yes:7100,no:6050,unit:'pair',feed:'GBP/USD'},
+    {s:'EURUSD',n:'EUR / USD',p:1.082,c:'#003399',stripe:'linear-gradient(90deg,#003399,#0066cc)',yp:52,sp:[],yes:9200,no:8480,unit:'pair',feed:'EUR/USD'},
+    {s:'GBPUSD',n:'GBP / USD',p:1.294,c:'#012169',stripe:'linear-gradient(90deg,#012169,#4a6ef5)',yp:54,sp:[],yes:7100,no:6050,unit:'pair',feed:'GBP/USD'},
     {s:'USDJPY',n:'USD / JPY',p:149.82,c:'#bc002d',stripe:'linear-gradient(90deg,#bc002d,#ff6b9d)',yp:59,sp:[],yes:8300,no:5770,unit:'pair',feed:'USD/JPY'},
-    {s:'USDCAD',n:'USD / CAD',p:1.3621,c:'#d80621',stripe:'linear-gradient(90deg,#d80621,#ff6b9d)',yp:51,sp:[],yes:4200,no:4040,unit:'pair',feed:'USD/CAD'},
+    {s:'USDCAD',n:'USD / CAD',p:1.438,c:'#d80621',stripe:'linear-gradient(90deg,#d80621,#ff6b9d)',yp:51,sp:[],yes:4200,no:4040,unit:'pair',feed:'USD/CAD'},
     {s:'AUDUSD',n:'AUD / USD',p:0.6318,c:'#00843d',stripe:'linear-gradient(90deg,#00843d,#22c55e)',yp:49,sp:[],yes:3900,no:4020,unit:'pair',feed:'AUD/USD'},
     {s:'USDCHF',n:'USD / CHF',p:0.9024,c:'#d52b1e',stripe:'linear-gradient(90deg,#d52b1e,#ff6b9d)',yp:53,sp:[],yes:3600,no:3190,unit:'pair',feed:'USD/CHF'},
   ],
@@ -2681,40 +2668,22 @@ function renderAI(sym,d){
   const badge=document.getElementById('aibadge_'+sym);
   const out=document.getElementById('aiout_'+sym);
   if(!badge||!out)return;
-
   const isBuy=d.direction==='BUY';
-  const dirClass=isBuy?'ai-dir-buy':'ai-dir-sell';
-  const barColor=isBuy?'var(--g)':'var(--r)';
-  const dirLabel=isBuy?'▲ BUY':'▼ SELL';
+  const clr=isBuy?'#16a34a':'#e11d48';
+  const bg=isBuy?'rgba(22,163,74,.07)':'rgba(225,29,72,.07)';
+  const brd=isBuy?'rgba(22,163,74,.18)':'rgba(225,29,72,.18)';
   const conf=Math.min(91,Math.max(52,d.confidence||65));
-  const sugPct=Math.min(40,Math.max(5,d.suggest_pct||15));
-
-  const sigs=(d.signals||[]).map((s,i)=>{
-    const t=(d.signal_types||[])[i]||'neutral';
-    const cls=t==='up'?'sig-up':t==='down'?'sig-dn':'sig-neu';
-    const icon=t==='up'?'↑':t==='down'?'↓':'→';
-    return`<span class="ai-sig ${cls}">${icon} ${s}</span>`;
-  }).join('');
-
-  badge.textContent='AI Live';
-  badge.className='ai-badge';
-
-  out.innerHTML=`
-    <div class="ai-direction">
-      <span class="ai-dir-pill ${dirClass}">${dirLabel}</span>
-      <div class="ai-conf-wrap"><div class="ai-conf-bar" style="width:${conf}%;background:${barColor}"></div></div>
-      <span class="ai-conf-pct" style="color:${barColor}">${conf}%</span>
-    </div>
-    <div class="ai-suggest" style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <span style="font-size:10px;font-weight:600;color:var(--t3);font-family:var(--ff);text-transform:uppercase;letter-spacing:.06em">Suggested bet</span>
-      <span style="font-size:14px;font-weight:700;color:${barColor};font-family:var(--fm)">${sugPct}%</span>
-      <span style="font-size:10px;color:var(--t3);font-family:var(--ff)">of your balance</span>
-      <span style="font-size:10px;font-weight:600;color:${barColor};font-family:var(--fm);margin-left:auto;background:${isBuy?'rgba(200,255,0,.08)':'rgba(255,51,85,.08)'};border:1px solid ${isBuy?'rgba(200,255,0,.18)':'rgba(255,51,85,.18)'};padding:2px 8px;border-radius:6px">${isBuy?'BUY YES':'SELL NO'} ${sugPct}%</span>
-    </div>
-    <div class="ai-reason">${d.reason||'Analyzing market conditions.'}</div>
-    ${sigs?`<div class="ai-signals">${sigs}</div>`:''}
-    <div class="ai-disclaimer"><b>AI suggestion only.</b> Not financial advice — final decision is yours.</div>`;
+  const sug=Math.min(40,Math.max(5,d.suggest_pct||15));
+  badge.textContent='AI';badge.className='ai-badge';
+  out.innerHTML=`<div style="display:flex;align-items:center;gap:6px;padding:8px 10px;background:${bg};border:1px solid ${brd};border-radius:10px">
+    <div style="text-align:center;flex:1"><div style="font-size:14px;font-weight:900;color:${clr}">${isBuy?'▲ BUY':'▼ SELL'}</div><div style="font-size:9px;color:#888;margin-top:1px">AI Signal</div></div>
+    <div style="width:1px;height:30px;background:${brd}"></div>
+    <div style="text-align:center;flex:1"><div style="font-size:14px;font-weight:900;color:${clr}">${conf}%</div><div style="font-size:9px;color:#888;margin-top:1px">Win chance</div></div>
+    <div style="width:1px;height:30px;background:${brd}"></div>
+    <div style="text-align:center;flex:1"><div style="font-size:14px;font-weight:900;color:${clr}">${sug}%</div><div style="font-size:9px;color:#888;margin-top:1px">Use balance</div></div>
+  </div>`;
 }
+
 
 function renderAIFallback(sym,yp,np,chg){
   const badge=document.getElementById('aibadge_'+sym);

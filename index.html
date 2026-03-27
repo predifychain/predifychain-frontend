@@ -1263,6 +1263,10 @@ window.addEventListener('load', function() {
       <button class="ntab" onclick="setV('indices',this)">Indices</button>
       <button class="ntab" onclick="setV('deposit',this)">Deposit</button>
       <button class="ntab" onclick="setV('portfolio',this)">Portfolio</button>
+      <button onclick="openHIW()" style="background:#fff;color:#0d1333;border:none;font-weight:700;padding:5px 12px;border-radius:7px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.2);margin-left:4px">
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#0d1333" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="#0d1333" stroke-width="1.8" stroke-linecap="round"/></svg>
+        How it works
+      </button>
     </div>
     <div style="flex:1"></div>
     <div class="live-pill"><span class="ld"></span>LIVE</div>
@@ -1275,11 +1279,6 @@ window.addEventListener('load', function() {
       </div>
     </div>
     <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">🌙</button>
-
-    <button onclick="openHIW()" style="background:#fff;color:#0d1333;border:none;font-weight:700;padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15)">
-      <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#0d1333" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="#0d1333" stroke-width="1.8" stroke-linecap="round"/></svg>
-      How it works
-    </button>
     <button class="w-btn" id="wbtn" onclick="openAuth()"><div class="wdot" id="wdot"></div><span id="wbtxt">Sign In</span></button>
     <button class="nav-avatar" id="nav-av" style="display:none" onclick="setV('profile',null)">?</button>
   </div>
@@ -2680,7 +2679,12 @@ buildTicker();render();renderLeaderboard();renderNotifs();
 const aiCache={};
 
 async function fetchAI(sym,name,price,yp,np,chg,yesAmt,noAmt){
-  // Skip if price is 0 or invalid — use smart fallback
+  // Always use live price from DATA object (Binance WebSocket)
+  const asset = allAssets().find(a=>a.s===sym);
+  const livePrice = (asset && asset.p > 0) ? asset.p.toFixed(4) : price;
+  price = livePrice;
+  
+  // Skip if still $0
   if(!price || parseFloat(price) <= 0) {
     renderAIFallback(sym,yp,np,chg);
     return;

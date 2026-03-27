@@ -1263,6 +1263,7 @@ window.addEventListener('load', function() {
       <button class="ntab" onclick="setV('indices',this)">Indices</button>
       <button class="ntab" onclick="setV('deposit',this)">Deposit</button>
       <button class="ntab" onclick="setV('portfolio',this)">Portfolio</button>
+      <button class="ntab" onclick="openHIW()" style="opacity:0.7;font-size:11px">❓ How it works</button>
     </div>
     <div style="flex:1"></div>
     <div class="live-pill"><span class="ld"></span>LIVE</div>
@@ -1275,10 +1276,7 @@ window.addEventListener('load', function() {
       </div>
     </div>
     <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">🌙</button>
-    <button class="hiw-btn" onclick="openHIW()" style="background:#ffffff;color:#1a1a2e;border:none;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.15);padding:6px 12px;font-size:12px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;gap:5px">
-      <svg width="13" height="13" viewBox="0 0 20 20" fill="none" style="flex-shrink:0"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 9v6M10 6.5v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      <span>How it works</span>
-    </button>
+
     <button class="w-btn" id="wbtn" onclick="openAuth()"><div class="wdot" id="wdot"></div><span id="wbtxt">Sign In</span></button>
     <button class="nav-avatar" id="nav-av" style="display:none" onclick="setV('profile',null)">?</button>
   </div>
@@ -2744,37 +2742,40 @@ function renderAI(sym,d){
   if(!badge||!out)return;
 
   const isBuy=d.direction==='BUY';
-  const dirClass=isBuy?'ai-dir-buy':'ai-dir-sell';
-  const barColor=isBuy?'var(--g)':'var(--r)';
-  const dirLabel=isBuy?'▲ BUY':'▼ SELL';
+  const barColor=isBuy?'#16a34a':'#e11d48';
+  const bgColor=isBuy?'rgba(22,163,74,.08)':'rgba(225,29,72,.08)';
+  const borderColor=isBuy?'rgba(22,163,74,.2)':'rgba(225,29,72,.2)';
+  const dirLabel=isBuy?'▲ BUY YES':'▼ SELL NO';
   const conf=Math.min(91,Math.max(52,d.confidence||65));
   const sugPct=Math.min(40,Math.max(5,d.suggest_pct||15));
+  const arrow=isBuy?'↑':'↓';
 
-  const sigs=(d.signals||[]).map((s,i)=>{
+  const sigs=(d.signals||[]).slice(0,3).map((s,i)=>{
     const t=(d.signal_types||[])[i]||'neutral';
-    const cls=t==='up'?'sig-up':t==='down'?'sig-dn':'sig-neu';
-    const icon=t==='up'?'↑':t==='down'?'↓':'→';
-    return`<span class="ai-sig ${cls}">${icon} ${s}</span>`;
+    const c=t==='up'?'#16a34a':t==='down'?'#e11d48':'#6366f1';
+    const ic=t==='up'?'↑':t==='down'?'↓':'→';
+    return`<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t2);font-family:var(--ff)"><span style="color:${c};font-weight:700">${ic}</span>${s}</div>`;
   }).join('');
 
   badge.textContent='AI Live';
   badge.className='ai-badge';
 
   out.innerHTML=`
-    <div class="ai-direction">
-      <span class="ai-dir-pill ${dirClass}">${dirLabel}</span>
-      <div class="ai-conf-wrap"><div class="ai-conf-bar" style="width:${conf}%;background:${barColor}"></div></div>
-      <span class="ai-conf-pct" style="color:${barColor}">${conf}%</span>
+    <div style="background:${bgColor};border:1px solid ${borderColor};border-radius:10px;padding:8px 10px;margin-bottom:7px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:800;color:${barColor};font-family:var(--ff);letter-spacing:-.2px">${arrow} ${dirLabel}</span>
+        <span style="font-size:11px;font-weight:700;color:${barColor};font-family:var(--fm);background:${bgColor};border:1px solid ${borderColor};padding:2px 8px;border-radius:6px">${conf}% confidence</span>
+      </div>
+      <div style="height:4px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden;margin-bottom:6px">
+        <div style="height:100%;width:${conf}%;background:${barColor};border-radius:2px;transition:width .5s ease"></div>
+      </div>
+      <div style="font-size:10px;color:var(--t2);font-family:var(--ff);line-height:1.4">${d.reason||'Analyzing market conditions.'}</div>
     </div>
-    <div class="ai-suggest" style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <span style="font-size:10px;font-weight:600;color:var(--t3);font-family:var(--ff);text-transform:uppercase;letter-spacing:.06em">Suggested bet</span>
-      <span style="font-size:14px;font-weight:700;color:${barColor};font-family:var(--fm)">${sugPct}%</span>
-      <span style="font-size:10px;color:var(--t3);font-family:var(--ff)">of your balance</span>
-      <span style="font-size:10px;font-weight:600;color:${barColor};font-family:var(--fm);margin-left:auto;background:${isBuy?'rgba(200,255,0,.08)':'rgba(255,51,85,.08)'};border:1px solid ${isBuy?'rgba(200,255,0,.18)':'rgba(255,51,85,.18)'};padding:2px 8px;border-radius:6px">${isBuy?'BUY YES':'SELL NO'} ${sugPct}%</span>
-    </div>
-    <div class="ai-reason">${d.reason||'Analyzing market conditions.'}</div>
-    ${sigs?`<div class="ai-signals">${sigs}</div>`:''}
-    <div class="ai-disclaimer"><b>AI suggestion only.</b> Not financial advice — final decision is yours.</div>`;
+    ${sigs?`<div style="display:flex;flex-direction:column;gap:3px;margin-bottom:6px">${sigs}</div>`:''}
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:9px;color:var(--t3);font-family:var(--ff)">Suggested: <b style="color:${barColor}">${sugPct}% of balance</b></span>
+      <span style="font-size:9px;color:var(--t3);font-family:var(--ff);opacity:.6">Not financial advice</span>
+    </div>`;
 }
 
 function renderAIFallback(sym,yp,np,chg){

@@ -1784,6 +1784,19 @@ let view='crypto',AT=3,dir='buy',wOn=false;
 let bal=1500,pnl=0,wins=0,total=0,wagered=0,bestWin=0;
 let positions=[],history=[],cm=null,timers={};
 
+// ── PERSISTENT ROUND STATE (survives re-renders) ──
+const roundState = {}; // { [symbol]: { s: secondsLeft, startPrice, interval } }
+
+function getOrCreateRound(sym, durationMins) {
+  if (!roundState[sym]) {
+    roundState[sym] = {
+      s: durationMins * 60 + Math.floor(Math.random() * 58),
+      startPrice: null,
+    };
+  }
+  return roundState[sym];
+}
+
 [...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices].forEach(a=>{a.sp=Array.from({length:26},()=>a.p*(1+R(-.02,.02)));});
 
 function spPath(d,W,H){
@@ -2162,6 +2175,7 @@ const allAssets=()=>[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.f
 function render(){
   const assets=getAssets();
   const g=document.getElementById('mgrid');
+  // Stop old intervals but KEEP roundState (timer continues from where it left off)
   Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
   assets.forEach(a=>{
     a.yp=Math.max(22,Math.min(78,a.yp));
@@ -2263,14 +2277,16 @@ function render(){
       if(e.target.closest('.mc-trade'))return;
       openDetail(a.s,a.n,a.yp,np,a.p,chg,a.yes,a.no,a.sp);
     });
-    let s=AT*60+Math.floor(R(2,58));
-    // Lock start price when round begins
-    a._startPrice = a.p;
+    // Use persistent round state so timer survives re-renders
+    const rs = getOrCreateRound(a.s, AT);
+    if (!rs.startPrice) rs.startPrice = a.p;
+    let s = rs.s;
+    a._startPrice = rs.startPrice;
     a._roundLocked = false;
     timers[a.s]=setInterval(()=>{
-      s--;if(s<0){
+      s--;rs.s=s;if(s<0){
         // ── ROUND END — lock final price, resolve
-        s=AT*60;
+        s=AT*60;rs.s=s;rs.startPrice=a.p;
         a._endPrice = wsPriceBuffer[a.s] || a.p; // use real WS price
         const priceWentUp = a._endPrice > a._startPrice;
         const priceSame   = Math.abs(a._endPrice - a._startPrice) < 0.01;
@@ -2288,13 +2304,7 @@ function render(){
               ov.querySelector('.mro-sub').textContent=`${fmt(a._startPrice)} → ${fmt(a._endPrice)}`;
               ov.style.background = priceWentUp ? 'rgba(5,150,105,.95)' : 'rgba(225,29,72,.95)';
             }
-            ov.classList.add('show');
-            setTimeout(()=>{
-              ov.classList.remove('show');
-              ov.style.background='';
-              ov.style.opacity='0';
-              ov.style.pointerEvents='none';
-            }, 2000);
+            // Silent resolve - no overlay flash
           }
         }
         // New round — lock new start price

@@ -1831,14 +1831,6 @@ function setT(t,el){
   AT=t;
   document.querySelectorAll('.tp').forEach(x=>x.classList.remove('on'));
   el.classList.add('on');
-  // Reset ALL round states with SAME start time (no random offset)
-  allAssets().forEach(a => {
-    roundState[a.s] = {
-      s: AT * 60,
-      duration: AT,
-      startPrice: a.p
-    };
-  });
   render();
 }
 function setCat(el){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('on'));el.classList.add('on');}
@@ -2970,52 +2962,42 @@ function showWSStatus(connected) {
 }
 
 
-// ── MASTER TIMER LOOP — runs once on page load, NEVER stops ──
-// Timer state is stored in roundState{} which survives re-renders
-// render() just rebuilds HTML — this loop updates timer text independently
+// ── TIMESTAMP-BASED TIMER — like Polymarket ──
+// Rounds are based on real clock time, not page load time
+// 3min rounds: 00:00-03:00, 03:00-06:00, 06:00-09:00 etc.
+// 5min rounds: 00:00-05:00, 05:00-10:00 etc.
+
+function getRoundSecondsLeft(durationMins) {
+  const now = Math.floor(Date.now() / 1000);
+  const dur = durationMins * 60;
+  return dur - (now % dur);
+}
 
 function startMasterTimerLoop() {
   setInterval(() => {
-    allAssets().forEach(a => {
-      // Initialize if first time
-      if (!roundState[a.s]) {
-        roundState[a.s] = {
-          s: AT * 60,
-          startPrice: a.p,
-          duration: AT
-        };
-      }
+    const timerEls = document.querySelectorAll('[id^="tmr_"]');
+    timerEls.forEach(timerEl => {
+      const s = getRoundSecondsLeft(AT);
+      const m = Math.floor(s / 60);
+      const sc = s % 60;
+      timerEl.textContent = String(m).padStart(2, '0') + ':' + String(sc).padStart(2, '0');
+      timerEl.className = 'mc-timer' + (s < 30 ? ' red' : '');
+      // Get asset color
+      const sym = timerEl.id.replace('tmr_', '');
+      const asset = allAssets().find(a => a.s === sym);
+      if (asset && s >= 30) timerEl.style.color = asset.c || '#4f46e5';
 
-      const rs = roundState[a.s];
-      if (rs.s > 0) rs.s--;
-
-      // Only update DOM if element exists (it might not if view changed)
-      const timerEl = document.getElementById('tmr_' + a.s);
-      if (timerEl) {
-        const m = Math.floor(rs.s / 60);
-        const sc = rs.s % 60;
-        timerEl.textContent = String(m).padStart(2, '0') + ':' + String(sc).padStart(2, '0');
-        timerEl.className = 'mc-timer' + (rs.s < 30 ? ' red' : '');
-        if (rs.s >= 30) timerEl.style.color = a.c || '#4f46e5';
-      }
-
-      // Entry cutoff
-      const card = document.getElementById('mc_' + a.s);
+      // Entry cutoff overlay
+      const card = document.getElementById('mc_' + sym);
       if (card) {
         const co = card.querySelector('.mc-cutoff-overlay');
-        if (co) co.classList.toggle('show', rs.s > 0 && rs.s < 20);
-      }
-
-      // Round end — start new round
-      if (rs.s <= 0) {
-        rs.s = rs.duration * 60;
-        rs.startPrice = a.p;
+        if (co) co.classList.toggle('show', s > 0 && s < 20);
       }
     });
   }, 1000);
 }
 
-// Start once on page load — NEVER call again
+// Start once on page load
 startMasterTimerLoop();
 
 // ── REAL PRICE SYSTEM ──

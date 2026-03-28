@@ -3447,7 +3447,9 @@ function toggleTheme(){
   localStorage.setItem('px-theme',isDark?'dark':'light');
 }
 (function initTheme(){
-  if(localStorage.getItem('px-theme')==='light'){isDark=false;document.body.classList.add('light');document.getElementById('theme-btn').textContent='🌙';}
+  const saved=localStorage.getItem('px-theme');
+  if(saved==='light'){isDark=false;document.body.classList.add('light');document.getElementById('theme-btn').textContent='🌙';}
+  else{isDark=true;document.body.classList.remove('light');document.getElementById('theme-btn').textContent='☀️';localStorage.setItem('px-theme','dark');}
 })();
 
 /* ── ORDER CONFIRMATION POPUP ── */

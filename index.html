@@ -1288,12 +1288,7 @@ body.dark .levelup-box{background:#0c0c14}
   <div class="nav-in">
     <div class="logo"><div class="logo-box">PC</div><div class="logo-name">PredifyChain</div></div>
     <div class="nav-tabs">
-      <button class="ntab on" onclick="setV('crypto',this)">Crypto</button>
-      <button class="ntab" onclick="setV('stocks',this)">Stocks</button>
-      <button class="ntab" onclick="setV('commodities',this)">Commodities</button>
-      <button class="ntab" onclick="setV('forex',this)">Forex</button>
-      <button class="ntab" onclick="setV('defi',this)">DeFi</button>
-      <button class="ntab" onclick="setV('indices',this)">Indices</button>
+      <button class="ntab on" onclick="setV('markets',this)">Markets</button>
       <button class="ntab" onclick="setV('deposit',this)">Deposit</button>
       <button class="ntab" onclick="setV('portfolio',this)">Portfolio</button>
       <button onclick="openHIW()" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.15);font-weight:600;padding:5px 14px;border-radius:6px;font-size:13px;cursor:pointer;margin-left:6px;white-space:nowrap;font-family:var(--ff);transition:all .15s">How it works</button>
@@ -1710,7 +1705,7 @@ body.dark .levelup-box{background:#0c0c14}
 
 <!-- MOBILE BOTTOM NAV -->
 <nav class="mob-nav">
-  <button class="mn-item on" id="mn-markets" onclick="setV('crypto',null);setMobNav('mn-markets')">
+  <button class="mn-item on" id="mn-markets" onclick="setV('markets',null);setMobNav('mn-markets')">
     <span class="mn-ico">₿</span><span class="mn-lbl">Crypto</span>
   </button>
   <button class="mn-item" id="mn-commodities" onclick="setV('commodities',null);setMobNav('mn-commodities')">
@@ -1745,89 +1740,62 @@ const ICONS={
   GOOGL:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#fff"/><path d="M23.5 16.2c0-.6-.1-1.2-.2-1.7H16v3.3h4.2c-.2 1-.7 1.9-1.5 2.4v2h2.4c1.5-1.3 2.4-3.3 2.4-6z" fill="#4285f4"/><path d="M16 24c2.1 0 3.9-.7 5.2-1.9l-2.4-2c-.7.5-1.7.8-2.7.8-2.1 0-3.9-1.4-4.5-3.3H9v2.1C10.3 22.4 13 24 16 24z" fill="#34a853"/><path d="M11.5 17.6c-.2-.5-.3-1-.3-1.6s.1-1.1.3-1.6V12.3H9c-.6 1.2-1 2.5-1 3.9s.4 2.7 1 3.9l2.5-2.5z" fill="#fbbc05"/><path d="M16 10.8c1.2 0 2.2.4 3 1.2l2.2-2.2C19.9 8.5 18.1 8 16 8c-3 0-5.7 1.6-7 4l2.5 2c.6-1.9 2.4-3.2 4.5-3.2z" fill="#ea4335"/></svg>`,
 };
 const DATA={
-  crypto:[
-    {s:'BTC',n:'Bitcoin',p:66000,c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830},
-    {s:'ETH',n:'Ethereum',p:1800,c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640},
-    {s:'SOL',n:'Solana',p:130,c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:70,sp:[],yes:8820,no:3780},
-    {s:'XRP',n:'Ripple',p:2.1,c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:59,sp:[],yes:9800,no:6820},
-    {s:'BNB',n:'BNB',p:580,c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:45,sp:[],yes:4200,no:5140},
-    {s:'DOT',n:'Polkadot',p:4.2,c:'#e6007a',stripe:'linear-gradient(90deg,#e6007a,#ff6b9d)',yp:52,sp:[],yes:3600,no:3100},
-    {s:'AAVE',n:'Aave',p:150,c:'#b6509e',stripe:'linear-gradient(90deg,#b6509e,#ff6b9d)',yp:58,sp:[],yes:3100,no:2250},
-    {s:'AVAX',n:'Avalanche',p:18,c:'#e84142',stripe:'linear-gradient(90deg,#e84142,#ff6b9d)',yp:55,sp:[],yes:6710,no:4860},
-    {s:'ADA',n:'Cardano',p:0.65,c:'#0033ad',stripe:'linear-gradient(90deg,#0033ad,#4a6ef5)',yp:51,sp:[],yes:4200,no:4040},
-    {s:'APE',n:'ApeCoin',p:0.55,c:'#1a6cff',stripe:'linear-gradient(90deg,#1a6cff,#00e5ff)',yp:48,sp:[],yes:2800,no:3000},
-    {s:'ARB',n:'Arbitrum',p:0.38,c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100,no:3500},
-    {s:'ATOM',n:'Cosmos',p:4.5,c:'#6f7390',stripe:'linear-gradient(90deg,#6f7390,#9d6fff)',yp:53,sp:[],yes:3200,no:2840},
-    {s:'BCH',n:'Bitcoin Cash',p:290,c:'#8dc351',stripe:'linear-gradient(90deg,#8dc351,#c8ff00)',yp:55,sp:[],yes:3500,no:2860},
-    {s:'DASH',n:'Dash',p:22,c:'#008de4',stripe:'linear-gradient(90deg,#008de4,#00e5ff)',yp:49,sp:[],yes:1800,no:1870},
-    {s:'DOGE',n:'Dogecoin',p:0.155,c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:66,sp:[],yes:9100,no:4690},
-    {s:'ENA',n:'Ethena',p:0.28,c:'#9d4edd',stripe:'linear-gradient(90deg,#9d4edd,#a855f7)',yp:55,sp:[],yes:2900,no:2380},
-    {s:'ENS',n:'Ethereum Name',p:14,c:'#5298ff',stripe:'linear-gradient(90deg,#5298ff,#00e5ff)',yp:52,sp:[],yes:2400,no:2210},
-    {s:'ETC',n:'Ethereum Classic',p:16,c:'#328332',stripe:'linear-gradient(90deg,#328332,#22c55e)',yp:50,sp:[],yes:2600,no:2590},
-    {s:'FET',n:'Fetch.ai',p:0.55,c:'#1b2a4a',stripe:'linear-gradient(90deg,#1b2a4a,#4a6ef5)',yp:56,sp:[],yes:2700,no:2110},
-    {s:'FIL',n:'Filecoin',p:2.8,c:'#0090ff',stripe:'linear-gradient(90deg,#0090ff,#00e5ff)',yp:55,sp:[],yes:2800,no:2290},
-    {s:'ICP',n:'Internet Computer',p:5.5,c:'#3b00b9',stripe:'linear-gradient(90deg,#3b00b9,#a855f7)',yp:53,sp:[],yes:2900,no:2570},
-    {s:'INJ',n:'Injective',p:10,c:'#00a3ff',stripe:'linear-gradient(90deg,#00a3ff,#627eea)',yp:55,sp:[],yes:2800,no:2290},
-    {s:'JTO',n:'Jito',p:1.8,c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:57,sp:[],yes:2200,no:1660},
-    {s:'LINK',n:'Chainlink',p:11,c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400,no:3500},
-    {s:'LPT',n:'Livepeer',p:5.5,c:'#00b234',stripe:'linear-gradient(90deg,#00b234,#22c55e)',yp:54,sp:[],yes:1900,no:1630},
-    {s:'LTC',n:'Litecoin',p:78,c:'#bfbbbb',stripe:'linear-gradient(90deg,#bfbbbb,#ddd)',yp:53,sp:[],yes:3600,no:3190},
-    {s:'NEAR',n:'NEAR Protocol',p:2.2,c:'#00c1de',stripe:'linear-gradient(90deg,#00c1de,#00e5ff)',yp:52,sp:[],yes:2500,no:2300},
-    {s:'ONDO',n:'Ondo Finance',p:0.75,c:'#2563eb',stripe:'linear-gradient(90deg,#2563eb,#6b8fff)',yp:56,sp:[],yes:2600,no:2030},
-    {s:'PENDLE',n:'Pendle',p:2.8,c:'#00c2a8',stripe:'linear-gradient(90deg,#00c2a8,#00e5ff)',yp:58,sp:[],yes:2400,no:1740},
-    {s:'RENDER',n:'Render',p:3.5,c:'#e62020',stripe:'linear-gradient(90deg,#e62020,#ff6b9d)',yp:58,sp:[],yes:2800,no:2030},
-    {s:'SUI',n:'Sui',p:2.2,c:'#4da2ff',stripe:'linear-gradient(90deg,#4da2ff,#00e5ff)',yp:60,sp:[],yes:3200,no:2140},
-    {s:'TAO',n:'Bittensor',p:280,c:'#7c3aed',stripe:'linear-gradient(90deg,#7c3aed,#a855f7)',yp:61,sp:[],yes:3100,no:1990},
-    {s:'TIA',n:'Celestia',p:2.8,c:'#7b2d8b',stripe:'linear-gradient(90deg,#7b2d8b,#a855f7)',yp:55,sp:[],yes:2600,no:2130},
-    {s:'TRB',n:'Tellor',p:38,c:'#20232a',stripe:'linear-gradient(90deg,#333,#666)',yp:52,sp:[],yes:1800,no:1660},
-    {s:'UNI',n:'Uniswap',p:5.5,c:'#ff007a',stripe:'linear-gradient(90deg,#ff007a,#ff6b9d)',yp:54,sp:[],yes:2900,no:2480},
-    {s:'WLD',n:'Worldcoin',p:0.9,c:'#111111',stripe:'linear-gradient(90deg,#333,#555)',yp:53,sp:[],yes:2800,no:2480},
-    {s:'YFI',n:'Yearn Finance',p:5500,c:'#006ae3',stripe:'linear-gradient(90deg,#006ae3,#00e5ff)',yp:51,sp:[],yes:1600,no:1540},
-    {s:'ZEC',n:'Zcash',p:26,c:'#ecb244',stripe:'linear-gradient(90deg,#ecb244,#ffcc44)',yp:52,sp:[],yes:1900,no:1750},
+  markets:[
+    {s:'BTC',  n:'Bitcoin',           p:66000, c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830},
+    {s:'ETH',  n:'Ethereum',          p:1800,  c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640},
+    {s:'SOL',  n:'Solana',            p:130,   c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:70,sp:[],yes:8820, no:3780},
+    {s:'XRP',  n:'Ripple',            p:2.1,   c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:59,sp:[],yes:9800, no:6820},
+    {s:'BNB',  n:'BNB',               p:580,   c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:45,sp:[],yes:4200, no:5140},
+    {s:'DOGE', n:'Dogecoin',          p:0.155, c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:66,sp:[],yes:9100, no:4690},
+    {s:'AVAX', n:'Avalanche',         p:18,    c:'#e84142',stripe:'linear-gradient(90deg,#e84142,#ff6b9d)',yp:55,sp:[],yes:6710, no:4860},
+    {s:'LINK', n:'Chainlink',         p:11,    c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400, no:3500},
+    {s:'DOT',  n:'Polkadot',          p:4.2,   c:'#e6007a',stripe:'linear-gradient(90deg,#e6007a,#ff6b9d)',yp:52,sp:[],yes:3600, no:3100},
+    {s:'ADA',  n:'Cardano',           p:0.65,  c:'#0033ad',stripe:'linear-gradient(90deg,#0033ad,#4a6ef5)',yp:51,sp:[],yes:4200, no:4040},
+    {s:'ARB',  n:'Arbitrum',          p:0.38,  c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100, no:3500},
+    {s:'ATOM', n:'Cosmos',            p:4.5,   c:'#6f7390',stripe:'linear-gradient(90deg,#6f7390,#9d6fff)',yp:53,sp:[],yes:3200, no:2840},
+    {s:'BCH',  n:'Bitcoin Cash',      p:290,   c:'#8dc351',stripe:'linear-gradient(90deg,#8dc351,#c8ff00)',yp:55,sp:[],yes:3500, no:2860},
+    {s:'APE',  n:'ApeCoin',           p:0.55,  c:'#1a6cff',stripe:'linear-gradient(90deg,#1a6cff,#00e5ff)',yp:48,sp:[],yes:2800, no:3000},
+    {s:'DASH', n:'Dash',              p:22,    c:'#008de4',stripe:'linear-gradient(90deg,#008de4,#00e5ff)',yp:49,sp:[],yes:1800, no:1870},
+    {s:'ENA',  n:'Ethena',            p:0.28,  c:'#9d4edd',stripe:'linear-gradient(90deg,#9d4edd,#a855f7)',yp:55,sp:[],yes:2900, no:2380},
+    {s:'ENS',  n:'Ethereum Name Svc', p:14,    c:'#5298ff',stripe:'linear-gradient(90deg,#5298ff,#00e5ff)',yp:52,sp:[],yes:2400, no:2210},
+    {s:'ETC',  n:'Ethereum Classic',  p:16,    c:'#328332',stripe:'linear-gradient(90deg,#328332,#22c55e)',yp:50,sp:[],yes:2600, no:2590},
+    {s:'FET',  n:'Fetch.ai',          p:0.55,  c:'#1b2a4a',stripe:'linear-gradient(90deg,#1b2a4a,#4a6ef5)',yp:56,sp:[],yes:2700, no:2110},
+    {s:'FIL',  n:'Filecoin',          p:2.8,   c:'#0090ff',stripe:'linear-gradient(90deg,#0090ff,#00e5ff)',yp:55,sp:[],yes:2800, no:2290},
+    {s:'ICP',  n:'Internet Computer', p:5.5,   c:'#3b00b9',stripe:'linear-gradient(90deg,#3b00b9,#a855f7)',yp:53,sp:[],yes:2900, no:2570},
+    {s:'INJ',  n:'Injective',         p:10,    c:'#00a3ff',stripe:'linear-gradient(90deg,#00a3ff,#627eea)',yp:55,sp:[],yes:2800, no:2290},
+    {s:'JTO',  n:'Jito',              p:1.8,   c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:57,sp:[],yes:2200, no:1660},
+    {s:'LPT',  n:'Livepeer',          p:5.5,   c:'#00b234',stripe:'linear-gradient(90deg,#00b234,#22c55e)',yp:54,sp:[],yes:1900, no:1630},
+    {s:'LTC',  n:'Litecoin',          p:78,    c:'#bfbbbb',stripe:'linear-gradient(90deg,#bfbbbb,#ddd)',   yp:53,sp:[],yes:3600, no:3190},
+    {s:'NEAR', n:'NEAR Protocol',     p:2.2,   c:'#00c1de',stripe:'linear-gradient(90deg,#00c1de,#00e5ff)',yp:52,sp:[],yes:2500, no:2300},
+    {s:'ONDO', n:'Ondo Finance',      p:0.75,  c:'#2563eb',stripe:'linear-gradient(90deg,#2563eb,#6b8fff)',yp:56,sp:[],yes:2600, no:2030},
+    {s:'PENDLE',n:'Pendle',           p:2.8,   c:'#00c2a8',stripe:'linear-gradient(90deg,#00c2a8,#00e5ff)',yp:58,sp:[],yes:2400, no:1740},
+    {s:'RENDER',n:'Render',           p:3.5,   c:'#e62020',stripe:'linear-gradient(90deg,#e62020,#ff6b9d)',yp:58,sp:[],yes:2800, no:2030},
+    {s:'SUI',  n:'Sui',               p:2.2,   c:'#4da2ff',stripe:'linear-gradient(90deg,#4da2ff,#00e5ff)',yp:60,sp:[],yes:3200, no:2140},
+    {s:'TAO',  n:'Bittensor',         p:280,   c:'#7c3aed',stripe:'linear-gradient(90deg,#7c3aed,#a855f7)',yp:61,sp:[],yes:3100, no:1990},
+    {s:'TIA',  n:'Celestia',          p:2.8,   c:'#7b2d8b',stripe:'linear-gradient(90deg,#7b2d8b,#a855f7)',yp:55,sp:[],yes:2600, no:2130},
+    {s:'TRB',  n:'Tellor',            p:38,    c:'#20232a',stripe:'linear-gradient(90deg,#333,#666)',      yp:52,sp:[],yes:1800, no:1660},
+    {s:'UNI',  n:'Uniswap',           p:5.5,   c:'#ff007a',stripe:'linear-gradient(90deg,#ff007a,#ff6b9d)',yp:54,sp:[],yes:2900, no:2480},
+    {s:'AAVE', n:'Aave',              p:150,   c:'#b6509e',stripe:'linear-gradient(90deg,#b6509e,#ff6b9d)',yp:58,sp:[],yes:3100, no:2250},
+    {s:'WLD',  n:'Worldcoin',         p:0.9,   c:'#111111',stripe:'linear-gradient(90deg,#333,#555)',      yp:53,sp:[],yes:2800, no:2480},
+    {s:'YFI',  n:'Yearn Finance',     p:5500,  c:'#006ae3',stripe:'linear-gradient(90deg,#006ae3,#00e5ff)',yp:51,sp:[],yes:1600, no:1540},
+    {s:'ZEC',  n:'Zcash',             p:26,    c:'#ecb244',stripe:'linear-gradient(90deg,#ecb244,#ffcc44)',yp:52,sp:[],yes:1900, no:1750},
+    {s:'TSLA', n:'Tesla',             p:250,   c:'#e82127',stripe:'linear-gradient(90deg,#e82127,#ff6b9d)',yp:49,sp:[],yes:5100, no:5310},
+    {s:'NVDA', n:'NVIDIA',            p:860,   c:'#76b900',stripe:'linear-gradient(90deg,#76b900,#c8ff00)',yp:74,sp:[],yes:14300,no:5020},
+    {s:'META', n:'Meta',              p:520,   c:'#0866ff',stripe:'linear-gradient(90deg,#0866ff,#00e5ff)',yp:65,sp:[],yes:9100, no:4900},
+    {s:'GOOGL',n:'Alphabet',          p:160,   c:'#4285f4',stripe:'linear-gradient(90deg,#4285f4,#00e5ff)',yp:60,sp:[],yes:7900, no:5280},
+    {s:'AMZN', n:'Amazon',            p:180,   c:'#ff9900',stripe:'linear-gradient(90deg,#ff9900,#ffcc00)',yp:52,sp:[],yes:6200, no:5720},
+    {s:'MSTR', n:'MicroStrategy',     p:280,   c:'#e05c00',stripe:'linear-gradient(90deg,#e05c00,#ff9900)',yp:60,sp:[],yes:4200, no:2800},
+    {s:'COIN', n:'Coinbase',          p:180,   c:'#1652f0',stripe:'linear-gradient(90deg,#1652f0,#6b8fff)',yp:62,sp:[],yes:5800, no:3560},
+    {s:'XAU',  n:'Gold',              p:3000,  c:'#d4a017',stripe:'linear-gradient(90deg,#d4a017,#f5c842)',yp:61,sp:[],yes:12400,no:7900},
+    {s:'XAG',  n:'Silver',            p:32,    c:'#aaaaaa',stripe:'linear-gradient(90deg,#999,#ccc)',      yp:55,sp:[],yes:5200, no:4260},
   ],
-  stocks:[
-    {s:'TSLA',n:'Tesla',p:250,c:'#e82127',stripe:'linear-gradient(90deg,#e82127,#ff6b9d)',yp:49,sp:[],yes:5100,no:5310},
-    {s:'NVDA',n:'NVIDIA',p:860,c:'#76b900',stripe:'linear-gradient(90deg,#76b900,#c8ff00)',yp:74,sp:[],yes:14300,no:5020},
-    {s:'META',n:'Meta',p:520,c:'#0866ff',stripe:'linear-gradient(90deg,#0866ff,#00e5ff)',yp:65,sp:[],yes:9100,no:4900},
-    {s:'GOOGL',n:'Alphabet',p:160,c:'#4285f4',stripe:'linear-gradient(90deg,#4285f4,#00e5ff)',yp:60,sp:[],yes:7900,no:5280},
-    {s:'AMZN',n:'Amazon',p:180,c:'#ff9900',stripe:'linear-gradient(90deg,#ff9900,#ffcc00)',yp:52,sp:[],yes:6200,no:5720},
-    {s:'MSTR',n:'MicroStrategy',p:280,c:'#e05c00',stripe:'linear-gradient(90deg,#e05c00,#ff9900)',yp:60,sp:[],yes:4200,no:2800},
-    {s:'COIN',n:'Coinbase',p:180,c:'#1652f0',stripe:'linear-gradient(90deg,#1652f0,#6b8fff)',yp:62,sp:[],yes:5800,no:3560},
-  ],
-  commodities:[
-    {s:'XAU',n:'Gold',p:3000,c:'#d4a017',stripe:'linear-gradient(90deg,#d4a017,#f5c842)',yp:61,sp:[],yes:12400,no:7900},
-    {s:'XAG',n:'Silver',p:32,c:'#aaaaaa',stripe:'linear-gradient(90deg,#999,#ccc)',yp:55,sp:[],yes:5200,no:4260},
-  ],
-  forex:[
-    {s:'BTC',n:'BTC Momentum',p:66000,c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:60,sp:[],yes:8200,no:5470},
-    {s:'ETH',n:'ETH Momentum',p:1800,c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:55,sp:[],yes:6100,no:4990},
-    {s:'SOL',n:'SOL Momentum',p:130,c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:62,sp:[],yes:5400,no:3310},
-    {s:'BNB',n:'BNB Momentum',p:580,c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:50,sp:[],yes:3800,no:3800},
-    {s:'XRP',n:'XRP Momentum',p:2.1,c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:57,sp:[],yes:5600,no:4220},
-    {s:'DOGE',n:'DOGE Momentum',p:0.155,c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:64,sp:[],yes:4900,no:2750},
-  ],
-  defi:[
-    {s:'AAVE',n:'Aave',p:150,c:'#b6509e',stripe:'linear-gradient(90deg,#b6509e,#ff6b9d)',yp:58,sp:[],yes:3100,no:2250},
-    {s:'UNI',n:'Uniswap',p:5.5,c:'#ff007a',stripe:'linear-gradient(90deg,#ff007a,#ff6b9d)',yp:54,sp:[],yes:2900,no:2480},
-    {s:'LINK',n:'Chainlink',p:11,c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400,no:3500},
-    {s:'PENDLE',n:'Pendle',p:2.8,c:'#00c2a8',stripe:'linear-gradient(90deg,#00c2a8,#00e5ff)',yp:58,sp:[],yes:2400,no:1740},
-    {s:'ONDO',n:'Ondo Finance',p:0.75,c:'#2563eb',stripe:'linear-gradient(90deg,#2563eb,#6b8fff)',yp:56,sp:[],yes:2600,no:2030},
-    {s:'ENA',n:'Ethena',p:0.28,c:'#9d4edd',stripe:'linear-gradient(90deg,#9d4edd,#a855f7)',yp:55,sp:[],yes:2900,no:2380},
-  ],
-  indices:[
-    {s:'TAO',n:'Bittensor',p:280,c:'#7c3aed',stripe:'linear-gradient(90deg,#7c3aed,#a855f7)',yp:61,sp:[],yes:3100,no:1990},
-    {s:'FET',n:'Fetch.ai',p:0.55,c:'#1b2a4a',stripe:'linear-gradient(90deg,#1b2a4a,#4a6ef5)',yp:56,sp:[],yes:2700,no:2110},
-    {s:'RENDER',n:'Render',p:3.5,c:'#e62020',stripe:'linear-gradient(90deg,#e62020,#ff6b9d)',yp:58,sp:[],yes:2800,no:2030},
-    {s:'INJ',n:'Injective',p:10,c:'#00a3ff',stripe:'linear-gradient(90deg,#00a3ff,#627eea)',yp:55,sp:[],yes:2800,no:2290},
-    {s:'SUI',n:'Sui',p:2.2,c:'#4da2ff',stripe:'linear-gradient(90deg,#4da2ff,#00e5ff)',yp:60,sp:[],yes:3200,no:2140},
-    {s:'ARB',n:'Arbitrum',p:0.38,c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100,no:3500},
-  ]
+  crypto:[],stocks:[],commodities:[],forex:[],defi:[],indices:[]
 }
 const R=(a,b)=>Math.random()*(b-a)+a;
 const fmt=p=>p>=1000?'$'+p.toLocaleString('en',{maximumFractionDigits:0}):'$'+p.toFixed(p>=1?2:4);
 const fmtK=v=>v>=1000?'$'+(v/1000).toFixed(1)+'K':'$'+v;
 
-let view='crypto',AT=3,dir='buy',wOn=false;
+let view='markets',AT=3,dir='buy',wOn=false;
 let bal=1500,pnl=0,wins=0,total=0,wagered=0,bestWin=0;
 let positions=[],history=[],cm=null,timers={};
 
@@ -2174,8 +2142,8 @@ function closeWmod(){closeAuth();}
 
 function connect(name,addr){connectWallet(name,addr);}
 
-function getAssets(){return DATA[view]||DATA.crypto;}
-const allAssets=()=>[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices];
+function getAssets(){return DATA.markets;}
+const allAssets=()=>DATA.markets;
 
 function render(){
   const assets=getAssets();
@@ -2471,7 +2439,7 @@ function setV(v,el){
   view=v;
   document.querySelectorAll('.ntab').forEach(x=>x.classList.remove('on'));
   if(el)el.classList.add('on');
-  const isMarket=['crypto','stocks','commodities','forex','defi','indices'].includes(v);
+  const isMarket=['markets','crypto','stocks','commodities','forex','defi','indices'].includes(v);
   document.getElementById('view-markets').style.display=isMarket?'block':'none';
   document.getElementById('view-portfolio').style.display=v==='portfolio'?'block':'none';
   document.getElementById('view-leaderboard').style.display=v==='leaderboard'?'block':'none';
@@ -2691,6 +2659,10 @@ document.getElementById('mgrid').innerHTML='<div style="padding:60px;text-align:
 
 
 
+
+
+
+
   Promise.allSettled([p1]).then(go);
   setTimeout(go, 4000); // fallback
 })();
@@ -2802,13 +2774,13 @@ function renderAIFallback(sym,yp,np,chg){
 // ═══ BINANCE WEBSOCKET (Crypto real-time) ═══
 const BSYMS={
   'BTC':'btcusdt','ETH':'ethusdt','SOL':'solusdt','XRP':'xrpusdt','BNB':'bnbusdt',
-  'DOT':'dotusdt','AAVE':'aaveusdt','AVAX':'avaxusdt','ADA':'adausdt','APE':'apeusdt',
-  'ARB':'arbusdt','ATOM':'atomusdt','BCH':'bchusdt','DASH':'dashusdt','DOGE':'dogeusdt',
+  'DOGE':'dogeusdt','AVAX':'avaxusdt','LINK':'linkusdt','DOT':'dotusdt','ADA':'adausdt',
+  'ARB':'arbusdt','ATOM':'atomusdt','BCH':'bchusdt','APE':'apeusdt','DASH':'dashusdt',
   'ENA':'enausdt','ENS':'ensusdt','ETC':'etcusdt','FET':'fetusdt','FIL':'filusdt',
-  'ICP':'icpusdt','INJ':'injusdt','JTO':'jtousdt','LINK':'linkusdt','LPT':'lptusdt',
-  'LTC':'ltcusdt','NEAR':'nearusdt','ONDO':'ondousdt','PENDLE':'pendleusdt',
-  'RENDER':'renderusdt','SUI':'suiusdt','TAO':'taousdt','TIA':'tiausdt','TRB':'trbusdt',
-  'UNI':'uniusdt','WLD':'wldusdt','YFI':'yfiusdt','ZEC':'zecusdt',
+  'ICP':'icpusdt','INJ':'injusdt','JTO':'jtousdt','LPT':'lptusdt','LTC':'ltcusdt',
+  'NEAR':'nearusdt','ONDO':'ondousdt','PENDLE':'pendleusdt','RENDER':'renderusdt',
+  'SUI':'suiusdt','TAO':'taousdt','TIA':'tiausdt','TRB':'trbusdt','UNI':'uniusdt',
+  'AAVE':'aaveusdt','WLD':'wldusdt','YFI':'yfiusdt','ZEC':'zecusdt',
   'TSLA':'tslausdt','NVDA':'nvdausdt','META':'metausdt','GOOGL':'googlusdt',
   'AMZN':'amznusdt','MSTR':'mstrusdt','COIN':'coinusdt',
   'XAU':'xauusdt','XAG':'xagusdt'
@@ -2847,7 +2819,6 @@ const BSYMS={
 })();
 
 // ═══ YAHOO FINANCE (Stocks, Commodities, Forex every 30s) ═══
-function fetchYahoo(){}// yahoo removed
 
 // Keep odds moving
 setInterval(function(){

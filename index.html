@@ -1716,6 +1716,966 @@ const ICONS={
 };
 const DATA={
   crypto:[
+    {s:'BTC',  n:'Bitcoin',        p:66000, c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830},
+    {s:'ETH',  n:'Ethereum',       p:1800,  c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640},
+    {s:'SOL',  n:'Solana',         p:130,   c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:70,sp:[],yes:8820, no:3780},
+    {s:'XRP',  n:'Ripple',         p:2.1,   c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:59,sp:[],yes:9800, no:6820},
+    {s:'BNB',  n:'BNB',            p:580,   c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:45,sp:[],yes:4200, no:5140},
+    {s:'DOT',  n:'Polkadot',       p:4.2,   c:'#e6007a',stripe:'linear-gradient(90deg,#e6007a,#ff6b9d)',yp:52,sp:[],yes:3600, no:3100},
+    {s:'AAVE', n:'Aave',           p:150,   c:'#b6509e',stripe:'linear-gradient(90deg,#b6509e,#ff6b9d)',yp:58,sp:[],yes:3100, no:2250},
+    {s:'AVAX', n:'Avalanche',      p:18,    c:'#e84142',stripe:'linear-gradient(90deg,#e84142,#ff6b9d)',yp:55,sp:[],yes:6710, no:4860},
+    {s:'ADA',  n:'Cardano',        p:0.65,  c:'#0033ad',stripe:'linear-gradient(90deg,#0033ad,#4a6ef5)',yp:51,sp:[],yes:4200, no:4040},
+    {s:'APE',  n:'ApeCoin',        p:0.55,  c:'#1a6cff',stripe:'linear-gradient(90deg,#1a6cff,#00e5ff)',yp:48,sp:[],yes:2800, no:3000},
+    {s:'ARB',  n:'Arbitrum',       p:0.38,  c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100, no:3500},
+    {s:'ATOM', n:'Cosmos',         p:4.5,   c:'#2e3148',stripe:'linear-gradient(90deg,#2e3148,#6b8fff)',yp:53,sp:[],yes:3200, no:2840},
+    {s:'BCH',  n:'Bitcoin Cash',   p:290,   c:'#8dc351',stripe:'linear-gradient(90deg,#8dc351,#c8ff00)',yp:55,sp:[],yes:3500, no:2860},
+    {s:'DASH', n:'Dash',           p:22,    c:'#008de4',stripe:'linear-gradient(90deg,#008de4,#00e5ff)',yp:49,sp:[],yes:1800, no:1870},
+    {s:'DOGE', n:'Dogecoin',       p:0.155, c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:66,sp:[],yes:9100, no:4690},
+    {s:'ENA',  n:'Ethena',         p:0.28,  c:'#9d4edd',stripe:'linear-gradient(90deg,#9d4edd,#a855f7)',yp:55,sp:[],yes:2900, no:2380},
+    {s:'ENS',  n:'Ethereum Name',  p:14,    c:'#5298ff',stripe:'linear-gradient(90deg,#5298ff,#00e5ff)',yp:52,sp:[],yes:2400, no:2210},
+    {s:'ETC',  n:'Ethereum Classic',p:16,   c:'#328332',stripe:'linear-gradient(90deg,#328332,#22c55e)',yp:50,sp:[],yes:2600, no:2590},
+    {s:'FET',  n:'Fetch.ai',       p:0.55,  c:'#1b2a4a',stripe:'linear-gradient(90deg,#1b2a4a,#4a6ef5)',yp:56,sp:[],yes:2700, no:2110},
+    {s:'FIL',  n:'Filecoin',       p:2.8,   c:'#0090ff',stripe:'linear-gradient(90deg,#0090ff,#00e5ff)',yp:55,sp:[],yes:2800, no:2290},
+    {s:'ICP',  n:'Internet Computer',p:5.5, c:'#3b00b9',stripe:'linear-gradient(90deg,#3b00b9,#a855f7)',yp:53,sp:[],yes:2900, no:2570},
+    {s:'INJ',  n:'Injective',      p:10,    c:'#00a3ff',stripe:'linear-gradient(90deg,#00a3ff,#627eea)',yp:55,sp:[],yes:2800, no:2290},
+    {s:'JTO',  n:'Jito',           p:1.8,   c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:57,sp:[],yes:2200, no:1660},
+    {s:'LINK', n:'Chainlink',      p:11,    c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400, no:3500},
+    {s:'LPT',  n:'Livepeer',       p:5.5,   c:'#00b234',stripe:'linear-gradient(90deg,#00b234,#22c55e)',yp:54,sp:[],yes:1900, no:1630},
+    {s:'LTC',  n:'Litecoin',       p:78,    c:'#bfbbbb',stripe:'linear-gradient(90deg,#bfbbbb,#ddd)',   yp:53,sp:[],yes:3600, no:3190},
+    {s:'NEAR', n:'NEAR Protocol',  p:2.2,   c:'#000000',stripe:'linear-gradient(90deg,#333,#666)',      yp:52,sp:[],yes:2500, no:2300},
+    {s:'ONDO', n:'Ondo Finance',   p:0.75,  c:'#2563eb',stripe:'linear-gradient(90deg,#2563eb,#6b8fff)',yp:56,sp:[],yes:2600, no:2030},
+    {s:'PENDLE',n:'Pendle',        p:2.8,   c:'#00c2a8',stripe:'linear-gradient(90deg,#00c2a8,#00e5ff)',yp:58,sp:[],yes:2400, no:1740},
+    {s:'RENDER',n:'Render',        p:3.5,   c:'#e62020',stripe:'linear-gradient(90deg,#e62020,#ff6b9d)',yp:58,sp:[],yes:2800, no:2030},
+    {s:'SUI',  n:'Sui',            p:2.2,   c:'#4da2ff',stripe:'linear-gradient(90deg,#4da2ff,#00e5ff)',yp:60,sp:[],yes:3200, no:2140},
+    {s:'TAO',  n:'Bittensor',      p:280,   c:'#7c3aed',stripe:'linear-gradient(90deg,#7c3aed,#a855f7)',yp:61,sp:[],yes:3100, no:1990},
+    {s:'TIA',  n:'Celestia',       p:2.8,   c:'#7b2d8b',stripe:'linear-gradient(90deg,#7b2d8b,#a855f7)',yp:55,sp:[],yes:2600, no:2130},
+    {s:'TRB',  n:'Tellor',         p:38,    c:'#20232a',stripe:'linear-gradient(90deg,#333,#666)',      yp:52,sp:[],yes:1800, no:1660},
+    {s:'UNI',  n:'Uniswap',        p:5.5,   c:'#ff007a',stripe:'linear-gradient(90deg,#ff007a,#ff6b9d)',yp:54,sp:[],yes:2900, no:2480},
+    {s:'WLD',  n:'Worldcoin',      p:0.9,   c:'#111111',stripe:'linear-gradient(90deg,#333,#666)',      yp:53,sp:[],yes:2800, no:2480},
+    {s:'YFI',  n:'Yearn Finance',  p:5500,  c:'#006ae3',stripe:'linear-gradient(90deg,#006ae3,#00e5ff)',yp:51,sp:[],yes:1600, no:1540},
+    {s:'ZEC',  n:'Zcash',          p:26,    c:'#ecb244',stripe:'linear-gradient(90deg,#ecb244,#ffcc44)',yp:52,sp:[],yes:1900, no:1750},
+    {s:'COIN', n:'Coinbase Stock', p:180,   c:'#1652f0',stripe:'linear-gradient(90deg,#1652f0,#6b8fff)',yp:62,sp:[],yes:5800, no:3560},
+  ],
+  stocks:[
+    {s:'TSLA', n:'Tesla',          p:250,   c:'#e82127',stripe:'linear-gradient(90deg,#e82127,#ff6b9d)',yp:49,sp:[],yes:5100, no:5310},
+    {s:'NVDA', n:'NVIDIA',         p:860,   c:'#76b900',stripe:'linear-gradient(90deg,#76b900,#c8ff00)',yp:74,sp:[],yes:14300,no:5020},
+    {s:'META', n:'Meta',           p:520,   c:'#0866ff',stripe:'linear-gradient(90deg,#0866ff,#00e5ff)',yp:65,sp:[],yes:9100, no:4900},
+    {s:'GOOGL',n:'Alphabet',       p:160,   c:'#4285f4',stripe:'linear-gradient(90deg,#4285f4,#00e5ff)',yp:60,sp:[],yes:7900, no:5280},
+    {s:'AMZN', n:'Amazon',         p:180,   c:'#ff9900',stripe:'linear-gradient(90deg,#ff9900,#ffcc00)',yp:52,sp:[],yes:6200, no:5720},
+    {s:'MSTR', n:'MicroStrategy',  p:280,   c:'#e05c00',stripe:'linear-gradient(90deg,#e05c00,#ff9900)',yp:60,sp:[],yes:4200, no:2800},
+  ],
+  commodities:[
+    {s:'XAU',  n:'Gold',           p:3000,  c:'#d4a017',stripe:'linear-gradient(90deg,#d4a017,#f5c842)',yp:61,sp:[],yes:12400,no:7900},
+    {s:'XAG',  n:'Silver',         p:32,    c:'#aaaaaa',stripe:'linear-gradient(90deg,#999,#ccc)',      yp:55,sp:[],yes:5200, no:4260},
+  ],
+  forex:[
+    {s:'BTC',  n:'BTC Momentum',   p:66000, c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:60,sp:[],yes:8200, no:5470},
+    {s:'ETH',  n:'ETH Momentum',   p:1800,  c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:55,sp:[],yes:6100, no:4990},
+    {s:'SOL',  n:'SOL Momentum',   p:130,   c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:62,sp:[],yes:5400, no:3310},
+    {s:'BNB',  n:'BNB Momentum',   p:580,   c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:50,sp:[],yes:3800, no:3800},
+    {s:'XRP',  n:'XRP Momentum',   p:2.1,   c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:57,sp:[],yes:5600, no:4220},
+    {s:'DOGE', n:'DOGE Momentum',  p:0.155, c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:64,sp:[],yes:4900, no:2750},
+  ],
+  defi:[
+    {s:'AAVE', n:'Aave',           p:150,   c:'#b6509e',stripe:'linear-gradient(90deg,#b6509e,#ff6b9d)',yp:58,sp:[],yes:3100, no:2250},
+    {s:'UNI',  n:'Uniswap',        p:5.5,   c:'#ff007a',stripe:'linear-gradient(90deg,#ff007a,#ff6b9d)',yp:54,sp:[],yes:2900, no:2480},
+    {s:'LINK', n:'Chainlink',      p:11,    c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400, no:3500},
+    {s:'PENDLE',n:'Pendle',        p:2.8,   c:'#00c2a8',stripe:'linear-gradient(90deg,#00c2a8,#00e5ff)',yp:58,sp:[],yes:2400, no:1740},
+    {s:'ONDO', n:'Ondo Finance',   p:0.75,  c:'#2563eb',stripe:'linear-gradient(90deg,#2563eb,#6b8fff)',yp:56,sp:[],yes:2600, no:2030},
+    {s:'ENA',  n:'Ethena',         p:0.28,  c:'#9d4edd',stripe:'linear-gradient(90deg,#9d4edd,#a855f7)',yp:55,sp:[],yes:2900, no:2380},
+  ],
+  indices:[
+    {s:'TAO',  n:'Bittensor',      p:280,   c:'#7c3aed',stripe:'linear-gradient(90deg,#7c3aed,#a855f7)',yp:61,sp:[],yes:3100, no:1990},
+    {s:'FET',  n:'Fetch.ai',       p:0.55,  c:'#1b2a4a',stripe:'linear-gradient(90deg,#1b2a4a,#4a6ef5)',yp:56,sp:[],yes:2700, no:2110},
+    {s:'RENDER',n:'Render',        p:3.5,   c:'#e62020',stripe:'linear-gradient(90deg,#e62020,#ff6b9d)',yp:58,sp:[],yes:2800, no:2030},
+    {s:'INJ',  n:'Injective',      p:10,    c:'#00a3ff',stripe:'linear-gradient(90deg,#00a3ff,#627eea)',yp:55,sp:[],yes:2800, no:2290},
+    {s:'SUI',  n:'Sui',            p:2.2,   c:'#4da2ff',stripe:'linear-gradient(90deg,#4da2ff,#00e5ff)',yp:60,sp:[],yes:3200, no:2140},
+    {s:'ARB',  n:'Arbitrum',       p:0.38,  c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100, no:3500},
+  ]
+}
+const R=(a,b)=>Math.random()*(b-a)+a;
+const fmt=p=>p>=1000?'$'+p.toLocaleString('en',{maximumFractionDigits:0}):'$'+p.toFixed(p>=1?2:4);
+const fmtK=v=>v>=1000?'$'+(v/1000).toFixed(1)+'K':'$'+v;
+
+let view='crypto',AT=3,dir='buy',wOn=false;
+let bal=1500,pnl=0,wins=0,total=0,wagered=0,bestWin=0;
+let positions=[],history=[],cm=null,timers={};
+
+[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices].forEach(a=>{a.sp=Array.from({length:26},()=>a.p*(1+R(-.02,.02)));});
+
+function spPath(d,W,H){
+  const mn=Math.min(...d),mx=Math.max(...d),rng=mx-mn||1;
+  return d.map((v,i)=>(i?'L':'M')+(i*(W/(d.length-1))).toFixed(1)+' '+(H*.9-((v-mn)/rng)*(H*.78)).toFixed(1)).join('');
+}
+
+function buildTicker(){
+  const all=[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex].slice(0,18);
+  let html='';
+  for(let p=0;p<2;p++) all.forEach(a=>{
+    const chg=(R(-.9,.9)).toFixed(2),up=parseFloat(chg)>=0;
+    const ico=ICONS[a.s]||`<div style="width:15px;height:15px;border-radius:4px;background:${a.c};display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;color:#fff">${a.s.slice(0,3)}</div>`;,
+  HYPE:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#00c2ff"/><path d="M8 10h4v12H8zm6 0h4l4 6-4 6h-4l4-6z" fill="white"/></svg>`,
+  ASTR:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#00b0eb"/><path d="M16 7l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z" fill="white"/></svg>`,
+  APE:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#1a6cff"/><text x="8" y="21" font-size="14" font-weight="800" fill="white">A</text></svg>`,
+  BCH:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#8dc351"/><path d="M20 13c0-2-1.5-3-4-3H10v12h6.5c2.5 0 4-1.2 4-3.2 0-1.2-.6-2.1-1.5-2.5.9-.5 1-1.5 1-3.3zM13 12h2.5c1 0 1.5.4 1.5 1.2S16.5 14.5 15.5 14.5H13zm3 8h-3v-2.5h3c1.1 0 1.8.5 1.8 1.2S17.1 20 16 20z" fill="white"/></svg>`,
+  DASH:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#008de4"/><path d="M9 13h9.5c2 0 3.5 1 3.5 3s-1.5 3-3.5 3H9m4 0l-2 4" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`,
+  ENA:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#9d4edd"/><text x="7" y="22" font-size="13" font-weight="800" fill="white">ENA</text></svg>`,
+  ENS:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#5298ff"/><text x="6" y="22" font-size="13" font-weight="800" fill="white">ENS</text></svg>`,
+  ETC:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#328332"/><path d="M16 5l-6 11 6 3 6-3zm0 14l-6 4 6 4 6-4z" fill="white"/></svg>`,
+  FET:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#1b2a4a"/><text x="6" y="22" font-size="13" font-weight="800" fill="white">FET</text></svg>`,
+  ICP:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#3b00b9"/><path d="M8 16c0-4 3.5-7 8-7s8 3 8 7-3.5 7-8 7-8-3-8-7z" stroke="white" stroke-width="2" fill="none"/><path d="M11 16h10" stroke="white" stroke-width="2"/></svg>`,
+  JTO:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#9945ff"/><text x="7" y="22" font-size="14" font-weight="800" fill="white">JTO</text></svg>`,
+  LPT:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#00b234"/><text x="7" y="22" font-size="13" font-weight="800" fill="white">LPT</text></svg>`,
+  ONDO:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#2563eb"/><text x="4" y="22" font-size="12" font-weight="800" fill="white">ONDO</text></svg>`,
+  PENDLE:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#00c2a8"/><text x="4" y="22" font-size="10" font-weight="800" fill="white">PNDL</text></svg>`,
+  TAO:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#7c3aed"/><text x="5" y="22" font-size="13" font-weight="800" fill="white">TAO</text></svg>`,
+  TIA:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#7b2d8b"/><text x="8" y="22" font-size="14" font-weight="800" fill="white">TIA</text></svg>`,
+  TRB:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#20232a"/><text x="6" y="22" font-size="13" font-weight="800" fill="white">TRB</text></svg>`,
+  WLD:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#111"/><circle cx="16" cy="16" r="8" stroke="white" stroke-width="2" fill="none"/><path d="M16 8v16M8 16h16" stroke="white" stroke-width="1.5"/></svg>`,
+  WLFI:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#c8102e"/><text x="3" y="22" font-size="11" font-weight="800" fill="white">WLFI</text></svg>`,
+  YFI:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#006ae3"/><text x="7" y="22" font-size="14" font-weight="800" fill="white">YFI</text></svg>`,
+  ZEC:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#ecb244"/><text x="5" y="22" font-size="13" font-weight="800" fill="white">ZEC</text></svg>`,
+  ZEN:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#041742"/><text x="5" y="22" font-size="13" font-weight="800" fill="white">ZEN</text></svg>`,
+  MSTR:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#e05c00"/><text x="3" y="22" font-size="10" font-weight="800" fill="white">MSTR</text></svg>`,
+  XPT:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#a8a9ad"/><text x="7" y="22" font-size="13" font-weight="800" fill="#333">XPT</text></svg>`,
+  XPD:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#6e7783"/><text x="6" y="22" font-size="12" font-weight="800" fill="white">XPD</text></svg>`,
+  HBAR:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#222"/><text x="3" y="22" font-size="11" font-weight="800" fill="white">HBAR</text></svg>`,
+    // Only first copy gets IDs (second copy is for infinite scroll illusion)
+    const id=p===0?`id="tk_${a.s}"`:'';
+    html+=`<div class="tk" ${id}><div class="tk-ico">${ico}</div><span class="tk-sym">${a.s}</span><span class="tk-price">${fmt(a.p)}</span><span class="${up?'tk-up':'tk-dn'}">${up?'+':''}${chg}%</span></div>`;
+  });
+  document.getElementById('ticker-track').innerHTML=html;
+}
+function refreshTicker(){
+  const all=[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex].slice(0,18);
+  all.forEach(function(a){
+    const tkEl=document.getElementById('tk_'+a.s);
+    if(!tkEl)return;
+    const pe=tkEl.querySelector('.tk-price');
+    if(pe)pe.textContent=fmt(a.p);
+  });
+}
+
+function setT(t,el){AT=t;document.querySelectorAll('.tp').forEach(x=>x.classList.remove('on'));el.classList.add('on');render();}
+function setCat(el){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('on'));el.classList.add('on');}
+/* ── HOW IT WORKS ── */
+let hiwStep=0;
+const hiwSteps=[
+  {
+    num:1,
+    emoji:'🎯',
+    color:'step-pick',
+    title:'Pick a market',
+    desc:'Browse crypto and stock prediction markets. Each market asks a simple question — will <b>BTC go up or down</b> in the next 3, 5, 10, or 15 minutes?',
+    extra:'mini-card'
+  },
+  {
+    num:2,
+    emoji:'💸',
+    color:'step-trade',
+    title:'Place a trade',
+    desc:'Choose <b>BUY YES</b> if you think the price will go up, or <b>SELL NO</b> if you think it\'ll go down. Enter your amount — as little as <b>$1 USDC</b>.',
+    extra:'payout'
+  },
+  {
+    num:3,
+    emoji:'🏆',
+    color:'step-win',
+    title:'Win and cash out',
+    desc:'If your prediction is correct, you win! Payouts happen automatically on-chain via <b>Chainlink Automation</b>. Cash out anytime to your wallet.',
+    extra:'winbox'
+  }
+];
+
+function openHIW(){
+  hiwStep=0;
+  renderHIW();
+  document.getElementById('hiw-overlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeHIW(){
+  document.getElementById('hiw-overlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function handleHIWOverlay(e){
+  if(e.target===document.getElementById('hiw-overlay'))closeHIW();
+}
+
+function renderHIW(){
+  const s=hiwSteps[hiwStep];
+  const isLast=hiwStep===hiwSteps.length-1;
+  const isFirst=hiwStep===0;
+
+  const extraHTML=
+    s.extra==='mini-card'?`
+    <div class="hiw-mini-card">
+      <div class="hiw-mini-q">Will BTC/USD be higher in 5 minutes?</div>
+      <div class="hiw-mini-btns">
+        <div class="hiw-mini-yes"><div class="hiw-mini-dir">▲ BUY</div><div class="hiw-mini-pct">63% odds</div></div>
+        <div class="hiw-mini-no"><div class="hiw-mini-dir">▼ SELL</div><div class="hiw-mini-pct">37% odds</div></div>
+      </div>
+    </div>`:
+    s.extra==='payout'?`
+    <div class="hiw-payout-demo">
+      <div class="hiw-pd-row"><span class="hiw-pd-lbl">You bet</span><span class="hiw-pd-val">$100</span></div>
+      <div class="hiw-pd-row"><span class="hiw-pd-lbl">Odds</span><span class="hiw-pd-val">63%</span></div>
+      <div class="hiw-pd-row"><span class="hiw-pd-lbl">If correct — you win</span><span class="hiw-pd-win">$158.73</span></div>
+    </div>`:
+    s.extra==='winbox'?`
+    <div class="hiw-win-demo">
+      <div style="font-size:11px;color:var(--t3);margin-bottom:6px;font-family:var(--ff)">Your prediction was correct!</div>
+      <div class="hiw-win-amount">+$58.73</div>
+      <div class="hiw-win-label">Profit deposited to your wallet</div>
+      <button class="hiw-win-cashout">Cash Out</button>
+    </div>`:'';
+
+  document.getElementById('hiw-body').innerHTML=`
+    <div class="hiw-main-title">How PredifyChain works</div>
+    <div class="hiw-main-sub">Trade prediction markets in 3 simple steps. Powered by Chainlink for tamper-proof results.</div>
+
+    <div class="hiw-dots">
+      ${hiwSteps.map((_,i)=>`<div class="hiw-dot ${i===hiwStep?'on':''}"></div>`).join('')}
+    </div>
+
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="hiw-step-visual ${s.color}">
+          <span style="font-size:26px">${s.emoji}</span>
+          <div class="hiw-step-num">${s.num}</div>
+        </div>
+        <div class="hiw-step-content">
+          <div class="hiw-step-title">${s.title}</div>
+          <div class="hiw-step-desc">${s.desc}</div>
+          ${extraHTML}
+        </div>
+      </div>
+    </div>
+
+    <div class="hiw-nav">
+      ${!isFirst?`<button class="hiw-prev" onclick="hiwPrev()">← Back</button>`:''}
+      ${!isLast
+        ?`<button class="hiw-next" onclick="hiwNext()">Next →</button>`
+        :`<div style="display:flex;flex-direction:column;gap:8px;flex:1">
+            <button class="hiw-next" onclick="closeHIW();openAuth()" style="background:#16a34a;box-shadow:0 3px 12px rgba(22,163,74,.28)">🚀 Create Real Account</button>
+            <button onclick="closeHIW();startDemo()" style="width:100%;padding:10px;border-radius:11px;border:1.5px solid rgba(124,58,237,.25);background:rgba(124,58,237,.06);color:#7c3aed;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--ff);transition:all .2s">🎮 Try Demo First — $50K Free</button>
+          </div>`
+      }
+    </div>
+
+    <div class="hiw-note">
+      No hidden fees · Instant payouts · <a href="#">Terms of Use</a>
+    </div>`;
+}
+
+function hiwNext(){if(hiwStep<hiwSteps.length-1){hiwStep++;renderHIW();}}
+function hiwPrev(){if(hiwStep>0){hiwStep--;renderHIW();}}
+
+/* ── AUTH SYSTEM ── */
+let authStep='main';
+let authEmail='';
+
+function openAuth(){
+  authStep='main';
+  renderAuthStep();
+  document.getElementById('auth-overlay').classList.add('show');
+}
+function closeAuth(){
+  document.getElementById('auth-overlay').classList.remove('show');
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('auth-overlay'))closeAuth();
+}
+
+function renderAuthStep(){
+  const body=document.getElementById('auth-body');
+  if(authStep==='main') body.innerHTML=`
+    <div class="mode-toggle">
+      <button class="mode-btn on" id="real-mode-btn" onclick="switchAuthMode('real')">🔐 Real Account</button>
+      <button class="mode-btn demo-mode-btn" id="demo-mode-btn" onclick="switchAuthMode('demo')">🎮 Demo Mode</button>
+    </div>
+    <div id="auth-mode-content">
+      <div class="auth-title">Sign in to PredifyChain</div>
+      <div class="auth-sub">Trade prediction markets powered by Chainlink oracles.</div>
+    <div class="social-btns">
+      <button class="social-btn" onclick="authSocial('Google')">
+        <div class="social-ico" style="background:#fff;border:1px solid #e0e0e0">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <div class="social-info"><div class="social-name">Continue with Google</div><div class="social-tag">Sign in with your Google account</div></div>
+        <span class="social-arr">›</span>
+      </button>
+      <button class="social-btn" onclick="authSocial('Facebook')">
+        <div class="social-ico" style="background:#1877f2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </div>
+        <div class="social-info"><div class="social-name">Continue with Facebook</div><div class="social-tag">Sign in with your Facebook account</div></div>
+        <span class="social-arr">›</span>
+      </button>
+      <button class="social-btn" onclick="authSocial('Apple')">
+        <div class="social-ico" style="background:#000">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        </div>
+        <div class="social-info"><div class="social-name">Continue with Apple</div><div class="social-tag">Sign in with your Apple ID</div></div>
+        <span class="social-arr">›</span>
+      </button>
+    </div>
+    <div class="auth-divider"><span>or use email</span></div>
+    <div class="email-label">Email address</div>
+    <div class="email-wrap">
+      <span class="email-ico">✉</span>
+      <input class="email-inp" id="auth-email-inp" type="email" placeholder="you@example.com" oninput="validateEmail()">
+    </div>
+    <button class="auth-btn" id="email-btn" onclick="sendOTP()" disabled>Continue with Email</button>
+    <div class="auth-divider"><span>or connect wallet</span></div>
+    <div class="wallet-section">
+      <button class="wallet-opt" onclick="connectWallet('MetaMask','0x3f4A...c2B8')">
+        <div class="wallet-ico" style="background:rgba(255,107,0,.1)">🦊</div>
+        <div class="wallet-info"><div class="wallet-name">MetaMask</div><div class="wallet-tag">Browser extension</div></div>
+        <span class="wallet-pop">Popular</span>
+      </button>
+      <button class="wallet-opt" onclick="connectWallet('Phantom','7xKB...9mVs')">
+        <div class="wallet-ico" style="background:rgba(171,159,242,.1)">👻</div>
+        <div class="wallet-info"><div class="wallet-name">Phantom</div><div class="wallet-tag">Solana native</div></div>
+      </button>
+      <button class="wallet-opt" onclick="connectWallet('WalletConnect','0x2a8C...bD91')">
+        <div class="wallet-ico" style="background:rgba(59,153,252,.1)">🔗</div>
+        <div class="wallet-info"><div class="wallet-name">WalletConnect</div><div class="wallet-tag">Any mobile wallet</div></div>
+      </button>
+      <button class="wallet-opt" onclick="connectWallet('Coinbase','0x5f6E...4aC1')">
+        <div class="wallet-ico" style="background:rgba(0,82,255,.1)">◎</div>
+        <div class="wallet-info"><div class="wallet-name">Coinbase Wallet</div><div class="wallet-tag">Beginner friendly</div></div>
+      </button>
+    </div>
+    <div class="auth-terms">By continuing, you agree to PredifyChain <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Trading involves risk.</div>
+    </div>
+    <div class="demo-signin-box" id="demo-signin-section" style="display:none">
+      <div class="demo-signin-ico">🎮</div>
+      <div class="demo-signin-title">Demo Account — $50,000 Free USDC</div>
+      <div class="demo-signin-sub">Bina kisi real money ke trade karo! Practice karo, strategies try karo, AI signals samjho. Kabhi bhi real account pe switch kar sakte ho.</div>
+      <button class="demo-start-btn" onclick="startDemo()">Start Demo Trading →</button>
+      <div style="font-size:10px;color:var(--t3);margin-top:10px;font-family:var(--ff)">No sign up required · No real money · Reset anytime</div>
+    </div>`;
+
+  else if(authStep==='otp') body.innerHTML=`
+    <div style="text-align:center;margin-bottom:6px;font-size:28px">📧</div>
+    <div class="auth-title" style="text-align:center">Check your email</div>
+    <div class="otp-label">We sent a 6-digit code to<br><b>${authEmail}</b></div>
+    <div class="otp-wrap">
+      ${[0,1,2,3,4,5].map(i=>`<input class="otp-inp" id="otp${i}" type="text" maxlength="1" inputmode="numeric" oninput="otpInput(${i})" onkeydown="otpKey(event,${i})">`).join('')}
+    </div>
+    <button class="auth-btn" id="otp-btn" onclick="verifyOTP()" disabled>Verify Code</button>
+    <div style="text-align:center;font-size:12px;color:var(--t3);margin-bottom:8px">Didn't receive it? <span style="color:var(--cl);cursor:pointer;font-weight:600" onclick="sendOTP()">Resend</span></div>
+    <button class="auth-back" onclick="goBack()">‹ Back</button>`;
+
+  else if(authStep==='loading') body.innerHTML=`
+    <div class="auth-loading"><div class="spinner"></div> Signing you in...</div>`;
+
+  else if(authStep==='success') body.innerHTML=`
+    <div class="auth-success">
+      <div class="auth-success-ico">✓</div>
+      <div class="auth-success-title">You're signed in!</div>
+      <div class="auth-success-sub">Welcome to PredifyChain. Your wallet has been created and funded with demo USDC.</div>
+    </div>`;
+}
+
+function validateEmail(){
+  const v=document.getElementById('auth-email-inp')?.value||'';
+  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  const btn=document.getElementById('email-btn');
+  if(btn)btn.disabled=!ok;
+}
+
+function sendOTP(){
+  authEmail=document.getElementById('auth-email-inp')?.value||'user@demo.com';
+  authStep='otp';renderAuthStep();
+  setTimeout(()=>document.getElementById('otp0')?.focus(),100);
+}
+
+function otpInput(i){
+  const el=document.getElementById('otp'+i);
+  if(!el)return;
+  const v=el.value.replace(/\D/g,'');
+  el.value=v;
+  if(v)el.classList.add('filled');else el.classList.remove('filled');
+  if(v&&i<5)document.getElementById('otp'+(i+1))?.focus();
+  const all=[0,1,2,3,4,5].map(j=>document.getElementById('otp'+j)?.value||'').join('');
+  const btn=document.getElementById('otp-btn');
+  if(btn)btn.disabled=all.length<6;
+}
+function otpKey(e,i){
+  if(e.key==='Backspace'&&!document.getElementById('otp'+i).value&&i>0)
+    document.getElementById('otp'+(i-1))?.focus();
+}
+
+function verifyOTP(){
+  authStep='loading';renderAuthStep();
+  setTimeout(()=>{
+    authStep='success';renderAuthStep();
+    const name=authEmail.split('@')[0];
+    setTimeout(()=>{
+      closeAuth();
+      finalizeLogin(name,authEmail.substring(0,3).toUpperCase()+'***','via Email');
+    },1600);
+  },1400);
+}
+
+function authSocial(provider){
+  authStep='loading';renderAuthStep();
+  const demos={Google:'john@gmail.com',Facebook:'mark@fb.com',Apple:'user@icloud.com'};
+  const addrs={Google:'0x7a2F...4dE9',Facebook:'0x9c1B...3aF2',Apple:'0x4e8D...7bC5'};
+  setTimeout(()=>{
+    authStep='success';renderAuthStep();
+    setTimeout(()=>{
+      closeAuth();
+      finalizeLogin(provider+' User',demos[provider]?.split('@')[0]||'User','via '+provider);
+    },1400);
+  },1200);
+}
+
+function connectWallet(name,addr){
+  authStep='loading';renderAuthStep();
+  setTimeout(()=>{
+    authStep='success';renderAuthStep();
+    setTimeout(()=>{
+      closeAuth();
+      finalizeLogin(name,addr,'Wallet');
+    },1400);
+  },1000);
+}
+
+function goBack(){authStep='main';renderAuthStep();}
+
+function finalizeLogin(name,identifier,method){
+  wOn=true;
+  const initials=name.slice(0,2).toUpperCase();
+  document.getElementById('wbtn').style.display='none';
+  const av=document.getElementById('nav-av');
+  av.style.display='flex';av.textContent=initials;
+  document.getElementById('wdisc').style.display='none';
+  document.getElementById('wconn').style.display='block';
+  document.getElementById('waddr').textContent=identifier;
+  updateStats();
+  const btn=document.getElementById('of-sub-btn');
+  btn.disabled=false;updateBtn();
+  const dbtn=document.getElementById('dep-btn');
+  if(dbtn)dbtn.textContent='Deposit Now';
+  notifData.unshift({ico:'👋',bg:'rgba(45,96,240,.1)',text:`<b>Welcome to PredifyChain!</b> You signed in ${method}. Start trading now.`,time:'just now',read:false});
+  renderNotifs();
+  toast('Welcome, '+name+' ('+method+')','var(--g)');
+}
+
+function toggleWmod(){openAuth();}
+function closeWmod(){closeAuth();}
+
+function connect(name,addr){connectWallet(name,addr);}
+
+function getAssets(){return DATA[view]||DATA.crypto;}
+const allAssets=()=>[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices];
+
+function render(){
+  const assets=getAssets();
+  const g=document.getElementById('mgrid');
+  Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
+  assets.forEach(a=>{
+    a.yp=Math.max(22,Math.min(78,a.yp));
+    // Use real 24h change if available, else small random
+    const chgVal = a._chg24 != null ? a._chg24 : parseFloat((R(-1.5,1.5)).toFixed(2));
+    const chg = chgVal.toFixed(2);
+    const up = chgVal >= 0;
+    const np=100-a.yp;
+    const vol='$'+Math.round(R(50,900))+'K',traders=Math.round(R(25,520));
+    const tid='tmr_'+a.s,sp=spPath(a.sp,270,36);
+    const yesAmt=fmtK(a.yes),noAmt=fmtK(a.no);
+    const qMap={
+      forex:`Will <b>${a.s.slice(0,3)}/${a.s.slice(3)}</b> rate go UP in <b>${AT} min?</b>`,
+      commodities:`Will <b>${a.n}</b> price go UP in <b>${AT} min?</b>`,
+      defi:`Will <b>${a.n}</b> go UP in <b>${AT} min?</b>`,
+      indices:`Will <b>${a.n}</b> go UP in <b>${AT} min?</b>`,
+    };
+    const question=qMap[view]||`Will <b>${a.s}</b> be higher in <b>${AT} min?</b>`;
+    const el=document.createElement('div');
+    el.className='mcard'+(cm&&cm.s===a.s?' sel':'');el.id='mc_'+a.s;
+    el.innerHTML=`
+<div class="mc-stripe" style="background:${a.stripe}"></div>
+<div class="mc-body">
+  <div class="mc-r1">
+    <div class="mc-coin"><div class="mc-ico">${ICONS[a.s]||''}</div><div><div class="mc-sym">${a.s}</div><div class="mc-name">${a.n}</div></div></div>
+    <div class="mc-clock"><div class="mc-timer" id="${tid}" style="color:${a.c}">0${AT}:00</div><div class="mc-tlbl">${AT}m expiry</div></div>
+  </div>
+  <div class="mc-prow">
+    <span class="mc-price" id="price_${a.s}">${fmt(a.p)}</span>
+    <span class="mc-chg ${up?'cup':'cdn'}" id="chg_${a.s}">${up?'+':''}${chg}%</span>
+    <span class="mc-cl"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3L4 9.5v13L16 29l12-6.5v-13L16 3z" fill="#375bd2"/><path d="M16 7l-8 4.5v9L16 25l8-4.5v-9L16 7z" fill="#4a6ef5"/><path d="M16 11l-4 2.5v5L16 21l4-2.5v-5L16 11z" fill="#fff"/></svg>${a.feed||a.s+'/USD'}</span>
+  </div>
+  <div class="mc-q">${question}</div>
+  <div class="mc-spark" id="spark_${a.s}"><svg viewBox="0 0 270 36" preserveAspectRatio="none"><defs><linearGradient id="spg_${a.s}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${a.c}" stop-opacity=".18"/><stop offset="100%" stop-color="${a.c}" stop-opacity="0"/></linearGradient></defs><path d="${sp} L270 36 L0 36 Z" fill="url(#spg_${a.s})"/><path d="${sp}" fill="none" stroke="${a.c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="mc-depth">
+    <div class="mc-depth-label"><span class="mc-yp">YES ${a.yp}%</span><span class="mc-np">NO ${np}%</span></div>
+    <div class="mc-depth-track">
+      <div class="mc-depth-yes" style="width:${a.yp}%"></div>
+      <div class="mc-depth-no" style="width:${np}%"></div>
+    </div>
+    <div class="mc-depth-info">
+      <span class="mc-di">YES pool: <span>${yesAmt}</span></span>
+      <span class="mc-di">Traders: <span>${traders}</span></span>
+      <span class="mc-di">NO pool: <span>${noAmt}</span></span>
+    </div>
+  </div>
+  <div class="mc-meta">
+    <div class="mc-mi">Volume<span>${vol}</span></div>
+    <div class="mc-mi">Spread<span>${R(.3,3).toFixed(1)}%</span></div>
+    <div class="mc-mi">Liquidity<span>${fmtK(a.yes+a.no)}</span></div>
+  </div>
+</div>
+<div class="mc-trade">
+  <div class="mc-amt-row"><span class="mc-pfx">$</span><input class="mc-inp" id="mci_${a.s}" type="number" value="50" min="1" step="1" onclick="event.stopPropagation()" oninput="calcWin('${a.s}',${a.yp},${np})"><span class="mc-usdc">USDC</span></div>
+  <div class="mc-qamts">
+    <button class="mc-qa" onclick="event.stopPropagation();setCA('${a.s}',10,${a.yp},${np})">$10</button>
+    <button class="mc-qa" onclick="event.stopPropagation();setCA('${a.s}',25,${a.yp},${np})">$25</button>
+    <button class="mc-qa" onclick="event.stopPropagation();setCA('${a.s}',50,${a.yp},${np})">$50</button>
+    <button class="mc-qa" onclick="event.stopPropagation();setCA('${a.s}',100,${a.yp},${np})">$100</button>
+    <button class="mc-qa" onclick="event.stopPropagation();setCA('${a.s}',250,${a.yp},${np})">$250</button>
+  </div>
+  <div class="mc-win">
+    <div><div class="mc-win-lbl">If correct — you win</div><div class="mc-win-val" id="mcw_${a.s}">$${(50/a.yp*100).toFixed(2)}</div></div>
+    <div style="text-align:right"><div class="mc-win-lbl">Net profit</div><div class="mc-win-prof" id="mcp_${a.s}">+$${(50/a.yp*100-50).toFixed(2)}</div></div>
+  </div>
+  <div class="mc-btns">
+    <button class="mc-buy-btn" onclick="event.stopPropagation();qbet('${a.s}','${a.n}',${a.yp},${np},'buy')">▲ BUY ${a.yp}%</button>
+    <button class="mc-sell-btn" onclick="event.stopPropagation();qbet('${a.s}','${a.n}',${a.yp},${np},'sell')">▼ SELL ${np}%</button>
+  </div>
+  <div style="display:flex;gap:6px;margin-top:6px">
+    <button class="mc-repeat-btn" onclick="event.stopPropagation();repeatBet()" style="flex:1">↺ Repeat Bet</button>
+    <button class="mc-exit-btn" onclick="event.stopPropagation();earlyExit('${a.s}')" style="flex:1">⚡ Early Exit</button>
+  </div>
+</div>
+<div class="ai-panel">
+  <div class="ai-header">
+    <div class="ai-logo">AI</div>
+    <span class="ai-title">AI Analysis</span>
+    <span class="ai-badge loading" id="aibadge_${a.s}">Analyzing...</span>
+  </div>
+  <div id="aiout_${a.s}">
+    <div class="ai-skeleton">
+      <div class="sk-line w80"></div>
+      <div class="sk-line w60"></div>
+      <div class="sk-line w40"></div>
+    </div>
+  </div>
+</div>`;
+    g.appendChild(el);
+    el.addEventListener('click',function(e){
+      if(e.target.closest('.mc-trade'))return;
+      openDetail(a.s,a.n,a.yp,np,a.p,chg,a.yes,a.no,a.sp);
+    });
+    function getRSL(m){const n=Math.floor(Date.now()/1000);return(m*60)-(n%(m*60));}
+    let s=getRSL(AT);
+    timers[a.s]=setInterval(()=>{
+      s=getRSL(AT);
+      // Lock card in last 20 seconds
+      const card=document.getElementById('mc_'+a.s);
+      if(card){const co=card.querySelector('.mc-cutoff-overlay');if(co){if(s<=20&&s>0)co.classList.add('show');else co.classList.remove('show');}}
+      if(s<0)s=AT*60;
+      const e=document.getElementById(tid);
+      if(e){const m=Math.floor(s/60),sc=s%60;e.textContent=String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');e.className='mc-timer'+(s<30?' red':'');if(s>=30)e.style.color=a.c;}
+    },1000);
+  });
+}
+
+function calcWin(sym,yp,np){
+  const inp=document.getElementById('mci_'+sym);
+  const wEl=document.getElementById('mcw_'+sym),pEl=document.getElementById('mcp_'+sym);
+  if(!inp||!wEl||!pEl)return;
+  const a=parseFloat(inp.value)||0,win=a/(yp/100),prof=win-a;
+  wEl.textContent='$'+win.toFixed(2);pEl.textContent='+$'+prof.toFixed(2);
+}
+function setCA(sym,v,yp,np){const inp=document.getElementById('mci_'+sym);if(inp){inp.value=v;calcWin(sym,yp,np);}}
+
+function qbet(sym,name,yp,np,d){
+  if(!wOn){toggleWmod();toast('Connect wallet first','var(--amber)');return;}
+  const inp=document.getElementById('mci_'+sym);
+  const a=parseFloat(inp?.value)||0;
+  if(a<1){toast('Enter an amount','var(--amber)');return;}
+  if(a>bal){toast('Insufficient balance','var(--r)');return;}
+  bal-=a;total++;wagered+=a;
+  const odds=(d==='buy'?yp:np)/100,payout=a/odds;
+  const pos={sym,name,dir:d,a,odds,payout,ts:Date.now(),expiry:AT};
+  positions.push(pos);updateStats();renderPos();
+  toast((d==='buy'?'▲ BUY ':'▼ SELL ')+sym+' $'+a,d==='buy'?'var(--g)':'var(--r)');
+  setTimeout(()=>resolve(pos),AT*6000+2000);
+  pick(sym,name,yp,np,d);
+}
+
+function pick(sym,name,yp,np,d){
+  cm={s:sym,name,yp,np};dir=d;
+  document.getElementById('of-sym').textContent=sym+'/USD';
+  document.getElementById('of-sub').textContent=name+' · '+AT+' min market';
+  document.getElementById('dpct-b').textContent='YES '+yp+'%';
+  document.getElementById('dpct-s').textContent='NO '+np+'%';
+  setDir(d);
+  document.querySelectorAll('.mcard').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('mc_'+sym)?.classList.add('sel');
+}
+
+function setDir(d){
+  dir=d;
+  document.getElementById('d-buy').classList.toggle('on',d==='buy');
+  document.getElementById('d-sell').classList.toggle('on',d==='sell');
+  updateBtn();recalc();
+}
+function updateBtn(){
+  const btn=document.getElementById('of-sub-btn');
+  if(!wOn){btn.textContent='Connect Wallet First';btn.className='of-submit buy';return;}
+  btn.className='of-submit '+(dir==='buy'?'buy':'sell');
+  btn.textContent=dir==='buy'?'▲ Confirm BUY':'▼ Confirm SELL';
+}
+function recalc(){
+  if(!cm)return;
+  const a=parseFloat(document.getElementById('of-inp').value)||0;
+  const odds=(dir==='buy'?cm.yp:cm.np)/100,ret=a/odds,prof=ret-a;
+  document.getElementById('pr-dir').textContent=dir==='buy'?'BUY YES (UP)':'SELL NO (DOWN)';
+  document.getElementById('pr-dir').style.color=dir==='buy'?'var(--g)':'var(--r)';
+  document.getElementById('pr-odds').textContent=(dir==='buy'?cm.yp:cm.np)+'%';
+  document.getElementById('pr-pay').textContent='$'+a.toFixed(2);
+  document.getElementById('pr-ret').textContent='$'+ret.toFixed(2);
+  document.getElementById('pr-prof').textContent='+$'+prof.toFixed(2);
+}
+function sa(v){document.getElementById('of-inp').value=v;recalc();}
+function place(){
+  if(!wOn){toast('Connect wallet first','var(--amber)');return;}
+  if(!cm){toast('Pick a market first','var(--amber)');return;}
+  const a=parseFloat(document.getElementById('of-inp').value)||0;
+  if(a<1){toast('Enter an amount','var(--amber)');return;}
+  if(a>bal){toast('Insufficient balance','var(--r)');return;}
+  qbet(cm.s,cm.name,cm.yp,cm.np,dir);
+}
+
+function resolve(pos){
+  const won=Math.random()<(pos.dir==='buy'?.57:.43);
+  const profit=won?(pos.payout-pos.a):-pos.a;
+  if(won){bal+=pos.payout;wins++;if(profit>bestWin)bestWin=profit;}
+  pnl+=profit;
+  history.unshift({...pos,won,profit,resolvedAt:Date.now()});
+  positions=positions.filter(p=>p.ts!==pos.ts);
+  updateStats();renderPos();
+  toast(won?'WIN +$'+Math.abs(profit).toFixed(2)+' on '+pos.sym:'Loss — $'+pos.a+' on '+pos.sym,won?'var(--g)':'var(--r)');
+  if(view==='portfolio')renderPortfolio();
+}
+
+function updateStats(){
+  if(!wOn)return;
+  document.getElementById('sb-bal').textContent='$'+bal.toFixed(0);
+  document.getElementById('sb-pnl').textContent=(pnl>=0?'↑ +':'↓ ')+'$'+Math.abs(pnl).toFixed(2);
+  document.getElementById('sb-pnl').style.color=pnl>=0?'var(--g)':'var(--r)';
+  document.getElementById('sb-wr').textContent=total>0?Math.round(wins/total*100)+'%':'—';
+  document.getElementById('sb-tr').textContent=total+' trades';
+  document.getElementById('sb-pos').textContent=positions.length;
+  document.getElementById('wusdc').textContent='$'+bal.toFixed(0);
+  document.getElementById('wpnl').textContent=(pnl>=0?'+':'')+'$'+Math.abs(pnl).toFixed(2);
+  document.getElementById('wpnl').style.color=pnl>=0?'var(--g)':'var(--r)';
+}
+
+function renderPos(){
+  const el=document.getElementById('pos-list');
+  if(!positions.length){el.innerHTML='<div class="pos-empty">No open positions</div>';return;}
+  el.innerHTML=positions.map(p=>{
+    const rem=Math.max(0,p.expiry*60-(Date.now()-p.ts)/1000);
+    const m=Math.floor(rem/60),s=Math.floor(rem%60);
+    return`<div class="pos-row"><div class="pos-sym">${p.sym}</div><div class="${p.dir==='buy'?'pos-b':'pos-s'}">${p.dir==='buy'?'BUY':'SELL'}</div><div class="pos-amt">$${p.a.toFixed(0)}</div><div class="pos-timer">${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}</div></div>`;
+  }).join('');
+}
+
+/* ── PORTFOLIO ── */
+let histFilter='all';
+function filterHist(f,el){
+  histFilter=f;
+  document.querySelectorAll('.ph-f').forEach(x=>x.classList.remove('on'));el.classList.add('on');
+  renderHistList();
+}
+function renderPortfolio(){
+  document.getElementById('pt-pnl').textContent=(pnl>=0?'+':'')+'$'+Math.abs(pnl).toFixed(2);
+  document.getElementById('pt-pnl').style.color=pnl>=0?'var(--g)':'var(--r)';
+  document.getElementById('pt-wr').textContent=total>0?Math.round(wins/total*100)+'%':'—';
+  document.getElementById('pt-trades').textContent=total+' trades total';
+  document.getElementById('pt-best').textContent=bestWin>0?'+$'+bestWin.toFixed(2):'—';
+  document.getElementById('pt-wagered').textContent='$'+wagered.toFixed(0);
+  renderHistList();
+}
+function renderHistList(){
+  const el=document.getElementById('hist-list');
+  const sampleHistory=[
+    {sym:'BTC',name:'Bitcoin',dir:'buy',a:100,won:true,profit:58.7,resolvedAt:Date.now()-180000},
+    {sym:'ETH',name:'Ethereum',dir:'sell',a:50,won:false,profit:-50,resolvedAt:Date.now()-420000},
+    {sym:'NVDA',name:'NVIDIA',dir:'buy',a:200,won:true,profit:70.3,resolvedAt:Date.now()-660000},
+    {sym:'SOL',name:'Solana',dir:'buy',a:75,won:false,profit:-75,resolvedAt:Date.now()-900000},
+    {sym:'AAPL',name:'Apple',dir:'sell',a:150,won:true,profit:105.0,resolvedAt:Date.now()-1140000},
+  ];
+  const all=[...history,...(history.length<3?sampleHistory:[])];
+  const filtered=all.filter(h=>histFilter==='all'||(histFilter==='win'&&h.won)||(histFilter==='loss'&&!h.won));
+  if(!filtered.length){el.innerHTML='<div class="pos-empty">No trades match this filter</div>';return;}
+  const ago=ms=>{const s=Math.floor((Date.now()-ms)/1000);return s<60?s+'s ago':Math.floor(s/60)+'m ago';};
+  el.innerHTML=filtered.map(h=>`
+  <div class="ph-row">
+    <div class="ph-ico">${ICONS[h.sym]||''}</div>
+    <div class="ph-info">
+      <div class="ph-sym">${h.sym} <span style="font-size:10px;color:var(--t3);font-weight:400">${h.dir==='buy'?'BUY YES':'SELL NO'}</span></div>
+      <div class="ph-detail">${h.expiry||3} min · $${h.a.toFixed(0)} wagered · ${ago(h.resolvedAt)}</div>
+    </div>
+    <div class="ph-result">
+      <span class="ph-outcome ${h.won?'ph-win':'ph-loss'}">${h.won?'WIN':'LOSS'}</span>
+      <div class="ph-pnl" style="color:${h.won?'var(--g)':'var(--r)'}">${h.won?'+':''}$${h.profit.toFixed(2)}</div>
+    </div>
+  </div>`).join('');
+}
+
+/* ── LEADERBOARD ── */
+function renderLeaderboard(){
+  const traders=[
+    {n:'CryptoKing',e:'🔥',c:'#f7931a',bg:'rgba(247,147,26,.12)',pnl:12480,acc:74,trades:342},
+    {n:'AlgoGod',e:'⚡',c:'#00e5ff',bg:'rgba(0,229,255,.1)',pnl:9640,acc:71,trades:288},
+    {n:'BullRun99',e:'🚀',c:'#c8ff00',bg:'rgba(200,255,0,.1)',pnl:7820,acc:68,trades:219},
+    {n:'WhaleAlert',e:'💎',c:'#9d6fff',bg:'rgba(157,111,255,.1)',pnl:5930,acc:65,trades:176},
+    {n:'MoonShot',e:'🌙',c:'#ffaa00',bg:'rgba(255,170,0,.1)',pnl:4210,acc:62,trades:134},
+    {n:'SolanaMax',e:'◎',c:'#9945ff',bg:'rgba(153,69,255,.1)',pnl:3180,acc:60,trades:98},
+    {n:'DeFiQueen',e:'👑',c:'#ff6b9d',bg:'rgba(255,107,157,.1)',pnl:2240,acc:58,trades:76},
+    {n:'You',e:'○',c:'#3a3a58',bg:'rgba(58,58,88,.2)',pnl:wOn?pnl:0,acc:wOn&&total>0?Math.round(wins/total*100):0,trades:total},
+  ];
+  const medals=['gold','silver','bronze','','','','',''];
+  const ranks=['1','2','3','4','5','6','7','—'];
+  document.getElementById('lb-list').innerHTML=traders.map((t,i)=>`
+  <div class="lb-row">
+    <div class="lb-rank ${medals[i]}">${ranks[i]}</div>
+    <div class="lb-av" style="background:${t.bg};color:${t.c}">${t.e}</div>
+    <div class="lb-info">
+      <div class="lb-name">${t.n}</div>
+      <div class="lb-meta">${t.trades} trades</div>
+    </div>
+    <div>
+      <div class="lb-pnl ${t.pnl<0?'neg':''}">${t.pnl>=0?'+':''}$${Math.abs(t.pnl).toLocaleString('en',{maximumFractionDigits:0})}</div>
+      <div class="lb-acc">${t.acc}% win</div>
+    </div>
+  </div>`).join('');
+}
+
+let tT;
+function toast(msg,col){
+  const t=document.getElementById('toast');
+  document.getElementById('tmsg').textContent=msg;
+  document.getElementById('tdot').style.background=col||'var(--g)';
+  t.style.borderColor=col||'var(--g)';t.classList.add('show');
+  clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function setV(v,el){
+  view=v;
+  document.querySelectorAll('.ntab').forEach(x=>x.classList.remove('on'));
+  if(el)el.classList.add('on');
+  const isMarket=['crypto','stocks','commodities','forex','defi','indices'].includes(v);
+  document.getElementById('view-markets').style.display=isMarket?'block':'none';
+  document.getElementById('view-portfolio').style.display=v==='portfolio'?'block':'none';
+  document.getElementById('view-leaderboard').style.display=v==='leaderboard'?'block':'none';
+  document.getElementById('view-deposit').style.display=v==='deposit'?'block':'none';
+  document.getElementById('view-profile').style.display=v==='profile'?'block':'none';
+  document.getElementById('view-settings').style.display=v==='settings'?'block':'none';
+  document.getElementById('toolbar').style.display=isMarket?'flex':'none';
+  document.getElementById('rpanel').style.display=['deposit','profile','settings','leaderboard'].includes(v)?'none':'block';
+  if(isMarket){render();setTimeout(()=>triggerAllAI(),400);}
+  if(v==='portfolio')renderPortfolio();
+  if(v==='leaderboard')renderLeaderboard();
+  if(v==='profile')renderProfile();
+  if(v==='deposit')renderDepHistory();
+  const dbtn=document.getElementById('dep-btn');
+  if(dbtn)dbtn.textContent=wOn?'Deposit Now':'Sign In to Deposit';
+}
+
+function setMobNav(id){
+  document.querySelectorAll('.mn-item').forEach(x=>x.classList.remove('on'));
+  document.getElementById(id)?.classList.add('on');
+}
+
+/* ── SEARCH ── */
+function handleSearch(q){
+  const panel=document.getElementById('search-results');
+  if(!q.trim()){panel.classList.remove('show');return;}
+  const res=allAssets().filter(a=>a.s.toLowerCase().includes(q.toLowerCase())||a.n.toLowerCase().includes(q.toLowerCase())).slice(0,8);
+  if(!res.length){panel.classList.remove('show');return;}
+  panel.innerHTML=res.map(a=>`
+    <div class="sr-item" onmousedown="searchPick('${a.s}','${a.n}',${a.yp},${100-a.yp})">
+      <div class="sr-ico">${ICONS[a.s]||`<div style="width:28px;height:28px;border-radius:7px;background:${a.c};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff">${a.s.slice(0,3)}</div>`}</div>
+      <div>
+        <div class="sr-name">${a.n}</div>
+        <div class="sr-odds">${a.s} · YES ${a.yp}% / NO ${100-a.yp}%</div>
+      </div>
+      <span class="sr-badge">Live</span>
+    </div>`).join('');
+  panel.classList.add('show');
+}
+function showSearch(){if(document.getElementById('search-inp').value)document.getElementById('search-results').classList.add('show');}
+function hideSearch(){document.getElementById('search-results').classList.remove('show');}
+function searchPick(sym,name,yp,np){
+  document.getElementById('search-inp').value='';
+  hideSearch();
+  const a=allAssets().find(x=>x.s===sym);
+  if(a)openDetail(sym,name,yp,np,a.p,(R(-2,2)).toFixed(2),a.yes,a.no,a.sp);
+}
+
+function triggerAllAI(){
+  const assets=getAssets();
+  assets.forEach((a,i)=>{
+    const chg=(R(-2,2)).toFixed(2);
+    setTimeout(()=>{
+      fetchAI(a.s,a.n,a.p.toFixed(2),a.yp,100-a.yp,chg,a.yes,a.no);
+    },i*600);
+  });
+}
+
+/* ── NOTIFICATIONS ── */
+let notifData=[
+  {ico:'🏆',bg:'rgba(245,158,11,.1)',text:'<b>WIN!</b> Your BTC/USD YES bet resolved correctly. +$29.37 credited.',time:'2m ago',read:false},
+  {ico:'📊',bg:'rgba(45,96,240,.1)',text:'<b>Market alert:</b> ETH/USD odds shifted — YES now at 71%.',time:'8m ago',read:false},
+  {ico:'💸',bg:'rgba(22,163,74,.1)',text:'<b>Deposit confirmed.</b> $100 USDC added to your wallet.',time:'1h ago',read:true},
+  {ico:'🤖',bg:'rgba(124,58,237,.1)',text:'<b>AI update:</b> SOL/USD showing strong BUY signal at 84% confidence.',time:'2h ago',read:true},
+  {ico:'⏰',bg:'rgba(229,41,74,.1)',text:'<b>Market expired:</b> BNB/USD 5min market resolved NO.',time:'3h ago',read:true},
+];
+function renderNotifs(){
+  document.getElementById('notif-list').innerHTML=notifData.map((n,i)=>`
+    <div class="notif-item ${n.read?'':'unread'}" onclick="readNotif(${i})">
+      <div class="notif-ico" style="background:${n.bg}">${n.ico}</div>
+      <div class="notif-body">
+        <div class="notif-text">${n.text}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+      ${!n.read?'<div class="notif-unread-dot"></div>':''}
+    </div>`).join('');
+  const unread=notifData.filter(n=>!n.read).length;
+  const dot=document.getElementById('notif-dot');
+  if(dot)dot.style.display=unread?'block':'none';
+}
+function toggleNotif(){
+  const p=document.getElementById('notif-panel');
+  p.classList.toggle('show');
+  if(p.classList.contains('show'))renderNotifs();
+}
+function readNotif(i){notifData[i].read=true;renderNotifs();}
+function clearNotifs(){notifData.forEach(n=>n.read=true);renderNotifs();}
+document.addEventListener('click',e=>{
+  if(!document.getElementById('notif-btn')?.contains(e.target)&&
+     !document.getElementById('notif-panel')?.contains(e.target))
+    document.getElementById('notif-panel')?.classList.remove('show');
+});
+
+/* ── DEPOSIT ── */
+let depMode='deposit';
+function switchDepTab(mode){
+  depMode=mode;
+  document.getElementById('dep-tab-dep').classList.toggle('on',mode==='deposit');
+  document.getElementById('dep-tab-wit').classList.toggle('on',mode==='withdraw');
+  document.getElementById('dep-title').textContent=mode==='deposit'?'Deposit USDC':'Withdraw USDC';
+}
+function selDepMethod(el,ico){document.querySelectorAll('.dep-method').forEach(x=>x.classList.remove('on'));el.classList.add('on');}
+function selDepAmt(el,v){
+  document.querySelectorAll('.dep-amt-btn').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('dep-inp').value=v;
+}
+function submitDeposit(){
+  if(!wOn){openAuth();return;}
+  const amt=parseFloat(document.getElementById('dep-inp').value)||0;
+  if(amt<10){toast('Minimum deposit is $10','var(--amber)');return;}
+  bal+=amt;updateStats();
+  notifData.unshift({ico:'💸',bg:'rgba(22,163,74,.1)',text:`<b>Deposit confirmed.</b> $${amt} USDC added to your wallet.`,time:'just now',read:false});
+  renderDepHistory();
+  toast(`$${amt} USDC deposited successfully!`,'var(--g)');
+}
+function renderDepHistory(){
+  const hist=[
+    {ico:'💸',bg:'rgba(22,163,74,.1)',name:'Deposit via Card',time:'Today 2:30 PM',amt:'+$100',c:'#16a34a'},
+    {ico:'🏆',bg:'rgba(245,158,11,.1)',name:'Winning payout — BTC YES',time:'Today 1:15 PM',amt:'+$58.73',c:'#16a34a'},
+    {ico:'🎯',bg:'rgba(229,41,74,.1)',name:'Bet placed — ETH NO',time:'Today 12:40 PM',amt:'-$50',c:'#e5294a'},
+    {ico:'💸',bg:'rgba(22,163,74,.1)',name:'Deposit via Bank',time:'Yesterday',amt:'+$250',c:'#16a34a'},
+  ];
+  const el=document.getElementById('dep-history');
+  if(!el)return;
+  el.innerHTML=hist.map(h=>`
+    <div class="dep-hist-item">
+      <div class="dep-hist-ico" style="background:${h.bg}">${h.ico}</div>
+      <div class="dep-hist-info">
+        <div class="dep-hist-name">${h.name}</div>
+        <div class="dep-hist-time">${h.time}</div>
+      </div>
+      <div class="dep-hist-amt" style="color:${h.c}">${h.amt}</div>
+    </div>`).join('');
+}
+
+/* ── PROFILE ── */
+function renderProfile(){
+  const el=document.getElementById('profile-content');
+  if(!el)return;
+  const name=wOn?(document.getElementById('waddr')?.textContent||'Trader'):'Guest';
+  const initials=name.slice(0,2).toUpperCase();
+  el.innerHTML=`
+  <div class="profile-header">
+    <div class="profile-top">
+      <div class="profile-avatar">${initials}</div>
+      <div>
+        <div class="profile-name">${wOn?name:'Not signed in'}</div>
+        <div class="profile-joined">Joined March 2026</div>
+        ${wOn?`<div class="profile-addr">${document.getElementById('waddr')?.textContent||''}</div>`:''}
+      </div>
+      ${wOn?`<button class="profile-edit-btn" onclick="setV('settings',null)">⚙ Settings</button>`:`<button class="profile-edit-btn" onclick="openAuth()">Sign In</button>`}
+    </div>
+    <div class="profile-stats">
+      <div class="pstat"><div class="pstat-val" style="color:var(--cl)">${total}</div><div class="pstat-lbl">Total Trades</div></div>
+      <div class="pstat"><div class="pstat-val" style="color:#16a34a">${total>0?Math.round(wins/total*100):0}%</div><div class="pstat-lbl">Win Rate</div></div>
+      <div class="pstat"><div class="pstat-val" style="color:${pnl>=0?'#16a34a':'#e5294a'}">${pnl>=0?'+':''}$${Math.abs(pnl).toFixed(0)}</div><div class="pstat-lbl">Total P&L</div></div>
+      <div class="pstat"><div class="pstat-val" style="color:var(--amber)">$${bal.toFixed(0)}</div><div class="pstat-lbl">Balance</div></div>
+    </div>
+    <div class="profile-badges">
+      <span class="pbadge" style="background:rgba(45,96,240,.08);color:var(--cl);border:1px solid rgba(45,96,240,.15)">🔗 Chainlink Verified</span>
+      ${total>=5?`<span class="pbadge" style="background:rgba(245,158,11,.08);color:#d97706;border:1px solid rgba(245,158,11,.18)">🔥 Active Trader</span>`:''}
+      ${wins>=3?`<span class="pbadge" style="background:rgba(22,163,74,.08);color:#15803d;border:1px solid rgba(22,163,74,.18)">🏆 Winner</span>`:''}
+      <span class="pbadge" style="background:rgba(124,58,237,.08);color:#7c3aed;border:1px solid rgba(124,58,237,.18)">🤖 AI User</span>
+    </div>
+  </div>
+  <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:var(--ff)">Trade History</div>
+  <div class="port-history"><div id="hist-list-profile"></div></div>`;
+  renderHistList();
+  const hl=document.getElementById('hist-list');
+  const hp=document.getElementById('hist-list-profile');
+  if(hl&&hp)hp.innerHTML=hl.innerHTML||'<div class="pos-empty">No trades yet</div>';
+}
+
+function signOut(){
+  wOn=false;bal=1500;pnl=0;wins=0;total=0;positions=[];history=[];
+  document.getElementById('wbtn').style.display='flex';
+  document.getElementById('nav-av').style.display='none';
+  document.getElementById('wdisc').style.display='block';
+  document.getElementById('wconn').style.display='none';
+  document.getElementById('of-sub-btn').disabled=true;
+  document.getElementById('of-sub-btn').textContent='Connect Wallet First';
+  document.getElementById('of-sub-btn').className='of-submit buy';
+  updateStats();
+  toast('Signed out successfully','var(--t2)');
+  setV('crypto',document.querySelector('.ntab'));
+}
+
+// ═══ BINANCE WEBSOCKET — SARI PRICES YAHAN SE ═══
+const BSYMS={
+  'BTC':'btcusdt','ETH':'ethusdt','SOL':'solusdt','XRP':'xrpusdt','BNB':'bnbusdt',
+  'DOT':'dotusdt','AAVE':'aaveusdt','AVAX':'avaxusdt',
+  'ADA':'adausdt','APE':'apeusdt','ARB':'arbusdt','ATOM':'atomusdt','BCH':'bchusdt',
+  'COIN':'coinusdt','DASH':'dashusdt','DOGE':'dogeusdt','ENA':'enausdt','ENS':'ensusdt',
+  'ETC':'etcusdt','FET':'fetusdt','FIL':'filusdt','ICP':'icpusdt','INJ':'injusdt',
+  'JTO':'jtousdt','LINK':'linkusdt','LPT':'lptusdt','LTC':'ltcusdt','NEAR':'nearusdt',
+  'ONDO':'ondousdt','PENDLE':'pendleusdt','RENDER':'renderusdt','SUI':'suiusdt',
+  'TAO':'taousdt','TIA':'tiausdt','TRB':'trbusdt','UNI':'uniusdt','WLD':'wldusdt',
+  'YFI':'yfiusdt','ZEC':'zecusdt',
+  'TSLA':'tslausdt','NVDA':'nvdausdt','META':'metausdt','GOOGL':'googlusdt',
+  'AMZN':'amznusdt','MSTR':'mstrusdt',
+  'XAU':'xauusdt','XAG':'xagusdt',
+}
+const DATA={
+  crypto:[
     {s:'BTC',  n:'Bitcoin',       p:66000, c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830},
     {s:'ETH',  n:'Ethereum',      p:1800,  c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640},
     {s:'SOL',  n:'Solana',        p:130,   c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:70,sp:[],yes:8820, no:3780},

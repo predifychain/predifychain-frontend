@@ -2610,14 +2610,14 @@ function signOut(){
 
 buildTicker();
 
-// Show loading while fetching real prices
-document.getElementById('mgrid').innerHTML='<div style="padding:60px;text-align:center;color:#6366f1;font-size:14px;font-weight:600">⏳ Loading live prices...</div>';
+// PEHLE RENDER KARO — phir prices background mein update hongi
+render();
+renderLeaderboard();
+renderNotifs();
 
+// Ab background mein sab prices fetch karo
 (function(){
-  let done=false;
-  function go(){if(done)return;done=true;render();renderLeaderboard();renderNotifs();}
-
-  // Fetch crypto
+  // Crypto prices via Binance REST
   const cSyms={'BTC':'BTCUSDT','ETH':'ETHUSDT','BNB':'BNBUSDT','SOL':'SOLUSDT','XRP':'XRPUSDT',
     'AVAX':'AVAXUSDT','DOT':'DOTUSDT','LINK':'LINKUSDT','LTC':'LTCUSDT','UNI':'UNIUSDT',
     'AAVE':'AAVEUSDT','ATOM':'ATOMUSDT','FIL':'FILUSDT','NEAR':'NEARUSDT','ARB':'ARBUSDT',
@@ -2625,49 +2625,61 @@ document.getElementById('mgrid').innerHTML='<div style="padding:60px;text-align:
     'TAO':'TAOUSDT','ZEC':'ZECUSDT','LPT':'LPTUSDT','TIA':'TIAUSDT','RENDER':'RENDERUSDT',
     'WLD':'WLDUSDT','PENDLE':'PENDLEUSDT','PYTH':'PYTHUSDT','JTO':'JTOUSDT'};
 
-  const p1=fetch('https://api.binance.com/api/v3/ticker/price?symbols=['+Object.values(cSyms).map(function(v){return'"'+v+'"';}).join(',')+']')
-    .then(function(r){return r.json();})
-    .then(function(data){
+  fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+Object.values(cSyms).map(v=>'"'+v+'"').join(',')+']')
+    .then(r=>r.json())
+    .then(data=>{
       if(!Array.isArray(data))return;
-      data.forEach(function(item){
-        const k=Object.keys(cSyms).find(function(k){return cSyms[k]===item.symbol;});
+      data.forEach(item=>{
+        const k=Object.keys(cSyms).find(k=>cSyms[k]===item.symbol);
         if(!k)return;
-        const a=allAssets().find(function(x){return x.s===k;});
-        if(a&&parseFloat(item.price)>0){a.p=parseFloat(item.price);a.sp=Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});}
+        const a=allAssets().find(x=>x.s===k);
+        if(a&&parseFloat(item.lastPrice)>0){
+          a.p=parseFloat(item.lastPrice);
+          a.sp=Array.from({length:26},()=>a.p*(1+R(-.003,.003)));
+          updateAssetPrice(k, a.p, parseFloat(item.priceChangePercent));
+        }
       });
-    }).catch(function(){});
+      refreshTicker();
+    }).catch(()=>{});
 
-  const p2=fetch('https://finnhub.io/api/v1/quote?symbol=AAPL&token='+FINNHUB_KEY)
-    .then(r=>r.json()).then(d=>{if(d&&d.c>0){const a=DATA.stocks.find(x=>x.s==='AAPL');if(a){a.p=d.c;a.sp=Array.from({length:26},()=>a.p*(1+R(-.003,.003)));}}}).catch(()=>{});
-
-  // Forex via ExchangeRate API (CORS-friendly)
-  const p3=fetch('https://open.er-api.com/v6/latest/USD')
+  // Forex via ExchangeRate API
+  fetch('https://open.er-api.com/v6/latest/USD')
     .then(r=>r.json())
     .then(d=>{
       if(d&&d.rates){
         const r=d.rates;
-        const fmap={'EURUSD':r.EUR?1/r.EUR:0,'GBPUSD':r.GBP?1/r.GBP:0,'USDJPY':r.JPY||0,'USDCAD':r.CAD||0,'AUDUSD':r.AUD?1/r.AUD:0,'USDCHF':r.CHF||0};
+        const fmap={
+          'EURUSD': r.EUR?parseFloat((1/r.EUR).toFixed(5)):0,
+          'GBPUSD': r.GBP?parseFloat((1/r.GBP).toFixed(5)):0,
+          'USDJPY': r.JPY?parseFloat(r.JPY.toFixed(3)):0,
+          'USDCAD': r.CAD?parseFloat(r.CAD.toFixed(5)):0,
+          'AUDUSD': r.AUD?parseFloat((1/r.AUD).toFixed(5)):0,
+          'USDCHF': r.CHF?parseFloat(r.CHF.toFixed(5)):0
+        };
         Object.entries(fmap).forEach(([sym,price])=>{
-          if(price>0){const a=DATA.forex.find(x=>x.s===sym);if(a){a.p=parseFloat(price.toFixed(5));a.sp=Array.from({length:26},()=>a.p*(1+R(-.001,.001)));}}
+          if(price>0){
+            const a=DATA.forex.find(x=>x.s===sym);
+            if(a){a.p=price;a.sp=Array.from({length:26},()=>a.p*(1+R(-.001,.001)));updateAssetPrice(sym,price,null);}
+          }
         });
       }
     }).catch(()=>{});
 
-  // Gold & Silver via metals.live (CORS-friendly)
-  const p4=fetch('https://api.metals.live/v1/spot')
+  // Gold & Silver via metals.live
+  fetch('https://api.metals.live/v1/spot')
     .then(r=>r.json())
     .then(d=>{
       if(Array.isArray(d)&&d.length>0){
         const m=d[0];
-        if(m.gold>0){const a=DATA.commodities.find(x=>x.s==='XAU');if(a){a.p=m.gold;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));}}
-        if(m.silver>0){const a=DATA.commodities.find(x=>x.s==='XAG');if(a){a.p=m.silver;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));}}
-        if(m.platinum>0){const a=DATA.commodities.find(x=>x.s==='PLAT');if(a){a.p=m.platinum;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));}}
+        if(m.gold>0){const a=DATA.commodities.find(x=>x.s==='XAU');if(a){a.p=m.gold;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));updateAssetPrice('XAU',m.gold,null);}}
+        if(m.silver>0){const a=DATA.commodities.find(x=>x.s==='XAG');if(a){a.p=m.silver;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));updateAssetPrice('XAG',m.silver,null);}}
+        if(m.platinum>0){const a=DATA.commodities.find(x=>x.s==='PLAT');if(a){a.p=m.platinum;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));updateAssetPrice('PLAT',m.platinum,null);}}
       }
     }).catch(()=>{});
 
-  Promise.allSettled([p1,p2,p3,p4]).then(go);
-  setTimeout(go, 4000); // fallback
 })();
+
+setTimeout(()=>triggerAllAI(), 800);
 
 /* ── AI ANALYSIS ENGINE ── */
 const aiCache={};
@@ -2896,115 +2908,54 @@ function updateTicker(sym, price, dir){
   }
 }
 
-// ── STOCKS via Finnhub (free, CORS-ok) ──
-const FINNHUB_KEY = 'd0lhgjpr01qgs0hd7i4gd0lhgjpr01qgs0hd7i50'; // free public key
-const STOCK_SYMS = {
-  'AAPL':1,'TSLA':1,'NVDA':1,'MSFT':1,'AMZN':1,
-  'GOOGL':1,'META':1,'NFLX':1,'AMD':1,'COIN':1
-};
-
-async function fetchStocksFinnhub(){
-  const syms = Object.keys(STOCK_SYMS);
-  for(const sym of syms){
-    try{
-      const r = await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${FINNHUB_KEY}`);
-      const d = await r.json();
-      if(d && d.c > 0){
-        // d.c = current price, d.dp = % change
-        updateAssetPrice(sym, d.c, d.dp);
-      }
-    }catch(e){}
-    await new Promise(r=>setTimeout(r,120)); // avoid rate limit
-  }
-}
-
-// ── COMMODITIES + FOREX + INDICES via ExchangeRate/Metals API ──
-// Gold, Silver via metals-api free tier
-// Forex via exchangerate-api free
-// Oil via alternative
-
-async function fetchMetalsForex(){
-  // Forex via free ExchangeRate API
-  try{
-    const r = await fetch('https://open.er-api.com/v6/latest/USD');
-    const d = await r.json();
-    if(d && d.rates){
-      const rates = d.rates;
-      // Forex pairs (USD base)
-      if(rates.EUR) updateAssetPrice('EURUSD', parseFloat((1/rates.EUR).toFixed(5)), null);
-      if(rates.GBP) updateAssetPrice('GBPUSD', parseFloat((1/rates.GBP).toFixed(5)), null);
-      if(rates.JPY) updateAssetPrice('USDJPY', parseFloat(rates.JPY.toFixed(3)), null);
-      if(rates.CAD) updateAssetPrice('USDCAD', parseFloat(rates.CAD.toFixed(5)), null);
-      if(rates.AUD) updateAssetPrice('AUDUSD', parseFloat((1/rates.AUD).toFixed(5)), null);
-      if(rates.CHF) updateAssetPrice('USDCHF', parseFloat(rates.CHF.toFixed(5)), null);
-    }
-  }catch(e){}
-
-  // Commodities via Metals-API (free public endpoint)
-  // Gold & Silver via frankfurter / backup hardcoded realistic prices with small movement
-  try{
-    const r = await fetch('https://api.metals.live/v1/spot');
-    const d = await r.json();
-    if(Array.isArray(d)){
-      d.forEach(item => {
-        if(item.gold)    updateAssetPrice('XAU', parseFloat(item.gold), null);
-        if(item.silver)  updateAssetPrice('XAG', parseFloat(item.silver), null);
-        if(item.platinum)updateAssetPrice('PLAT', parseFloat(item.platinum), null);
-      });
-    }
-  }catch(e){
-    // Fallback: small realistic ticks on current price
-    const metalTick = (sym, base) => {
-      const a = DATA.commodities.find(x=>x.s===sym);
-      if(a){ const t=a.p*(1+(Math.random()-0.48)*0.001); updateAssetPrice(sym,parseFloat(t.toFixed(2)),null); }
-    };
-    metalTick('XAU'); metalTick('XAG');
-  }
-
-  // Oil via free commodity API
-  try{
-    const r = await fetch('https://api.api-ninjas.com/v1/commodityprice?name=crude_oil', {
-      headers:{'X-Api-Key':'free'}
-    });
-    // If fails, fallback tick
-    throw new Error('use fallback');
-  }catch(e){
-    const a = DATA.commodities.find(x=>x.s==='WTI');
-    if(a){ const t=a.p*(1+(Math.random()-0.48)*0.0008); updateAssetPrice('WTI',parseFloat(t.toFixed(2)),null); }
-  }
-}
-
-// ── INDICES via stooq.com (free, no key needed) ──
-async function fetchIndices(){
-  const map = {
-    '%5EGSPC': 'SPX',  // S&P 500
-    '%5EDJI':  'DJI',  // Dow Jones
-    '%5EIXIC': 'NDX',  // Nasdaq
-  };
-  for(const [ySymbol, ourSym] of Object.entries(map)){
-    try{
-      const r = await fetch(`https://stooq.com/q/l/?s=${ySymbol}&f=sd2t2ohlcv&h&e=json`);
-      const d = await r.json();
-      const close = d?.symbols?.[0]?.close;
-      if(close > 0) updateAssetPrice(ourSym, close, null);
-    }catch(e){
-      // Small tick fallback
-      const a = DATA.indices && DATA.indices.find(x=>x.s===ourSym);
-      if(a){ const t=a.p*(1+(Math.random()-0.48)*0.0003); updateAssetPrice(ourSym,parseFloat(t.toFixed(1)),null); }
-    }
-    await new Promise(r=>setTimeout(r,200));
-  }
-}
-
 function fetchAllNonCryptoPrices(){
-  fetchStocksFinnhub();
-  fetchMetalsForex();
-  fetchIndices();
+  // Forex
+  fetch('https://open.er-api.com/v6/latest/USD')
+    .then(r=>r.json())
+    .then(d=>{
+      if(!d||!d.rates)return;
+      const r=d.rates;
+      const fmap={
+        'EURUSD': r.EUR?parseFloat((1/r.EUR).toFixed(5)):0,
+        'GBPUSD': r.GBP?parseFloat((1/r.GBP).toFixed(5)):0,
+        'USDJPY': r.JPY?parseFloat(r.JPY.toFixed(3)):0,
+        'USDCAD': r.CAD?parseFloat(r.CAD.toFixed(5)):0,
+        'AUDUSD': r.AUD?parseFloat((1/r.AUD).toFixed(5)):0,
+        'USDCHF': r.CHF?parseFloat(r.CHF.toFixed(5)):0
+      };
+      Object.entries(fmap).forEach(([sym,price])=>{
+        if(price>0) updateAssetPrice(sym, price, null);
+      });
+    }).catch(()=>{});
+
+  // Metals
+  fetch('https://api.metals.live/v1/spot')
+    .then(r=>r.json())
+    .then(d=>{
+      if(!Array.isArray(d)||!d.length)return;
+      const m=d[0];
+      if(m.gold>0)    updateAssetPrice('XAU', m.gold, null);
+      if(m.silver>0)  updateAssetPrice('XAG', m.silver, null);
+      if(m.platinum>0)updateAssetPrice('PLAT', m.platinum, null);
+    }).catch(()=>{});
+
+  // Stocks via Binance (USDT pairs that exist) + keep rest as simulation
+  // NVDA, AAPL etc don't trade on Binance — use small ticks
+  DATA.stocks.forEach(a=>{
+    const t=a.p*(1+(Math.random()-0.48)*0.0005);
+    updateAssetPrice(a.s, parseFloat(t.toFixed(2)), null);
+  });
+
+  // Indices simulation
+  (DATA.indices||[]).forEach(a=>{
+    const t=a.p*(1+(Math.random()-0.48)*0.0003);
+    updateAssetPrice(a.s, parseFloat(t.toFixed(1)), null);
+  });
 }
 
-// Run immediately + every 60 seconds
+// Run every 30s
 fetchAllNonCryptoPrices();
-setInterval(fetchAllNonCryptoPrices, 60000);
+setInterval(fetchAllNonCryptoPrices, 30000);
 
 // ── SMOOTH PRICE SIMULATION (visual ticks between API refreshes) ──
 setInterval(function(){

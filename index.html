@@ -3635,7 +3635,7 @@ for(let i=0;i<5;i++) activityItems.push(generateActivityItem());
 setTimeout(renderActivityFeed, 500);
 
 /* ── WHALE ALERT ── */
-let whaleT;
+var whaleT;
 function showWhaleAlert(name,amt,sym){
   const el=document.getElementById('whale-alert');
   document.getElementById('whale-text').textContent=`${name} placed`;

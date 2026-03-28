@@ -2129,8 +2129,8 @@ function render(){
     <div class="mc-clock"><div class="mc-timer" id="${tid}" style="color:${a.c}">0${AT}:00</div><div class="mc-tlbl">${AT}m expiry</div></div>
   </div>
   <div class="mc-prow">
-    <span class="mc-price">${fmt(a.p)}</span>
-    <span class="mc-chg ${up?'cup':'cdn'}">${up?'+':''}${chg}%</span>
+    <span class="mc-price" id="price_${a.s}">${fmt(a.p)}</span>
+    <span id="chg_${a.s}" class="mc-chg ${up?'cup':'cdn'}">${up?'+':''}${chg}%</span>
     <span class="mc-cl"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3L4 9.5v13L16 29l12-6.5v-13L16 3z" fill="#375bd2"/><path d="M16 7l-8 4.5v9L16 25l8-4.5v-9L16 7z" fill="#4a6ef5"/><path d="M16 11l-4 2.5v5L16 21l4-2.5v-5L16 11z" fill="#fff"/></svg>${a.feed||a.s+'/USD'}</span>
   </div>
   <div class="mc-q">${question}</div>
@@ -2691,7 +2691,7 @@ function renderDetailHead(){
     </div>
     <div class="dm-price-badge">
       <span class="dm-price">${fmt(m.price)}</span>
-      <span class="mc-chg ${up?'cup':'cdn'}" style="font-size:11px">${up?'+':''}${m.chg}%</span>
+      <span id="chg_${a.s}" class="mc-chg ${up?'cup':'cdn'}" style="font-size:11px">${up?'+':''}${m.chg}%</span>
     </div>
     <button class="dm-close" onclick="closeDetail()">&#x2715;</button>`;
 }

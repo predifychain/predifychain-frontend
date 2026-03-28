@@ -2689,36 +2689,9 @@ document.getElementById('mgrid').innerHTML='<div style="padding:60px;text-align:
       });
     }).catch(function(){});
 
-  const p2=fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=AAPL,TSLA,NVDA,MSFT,AMZN,GOOGL,META,NFLX,AMD,COIN&fields=regularMarketPrice')
-    .then(function(r){return r.json();})
-    .then(function(data){
-      (data?.quoteResponse?.result||[]).forEach(function(q){
-        const a=DATA.stocks.find(function(x){return x.s===q.symbol;});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp=Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});}
-      });
-    }).catch(function(){});
 
-  const p3=fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=GC=F,SI=F,CL=F,NG=F,PL=F&fields=regularMarketPrice')
-    .then(function(r){return r.json();})
-    .then(function(data){
-      const m={'GC=F':'XAU','SI=F':'XAG','CL=F':'WTI','NG=F':'NG','PL=F':'PLAT'};
-      (data?.quoteResponse?.result||[]).forEach(function(q){
-        const a=DATA.commodities.find(function(x){return x.s===m[q.symbol];});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp=Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});}
-      });
-    }).catch(function(){});
 
-  const p4=fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=EURUSD=X,GBPUSD=X,USDJPY=X,AUDUSD=X,USDCAD=X,USDCHF=X&fields=regularMarketPrice')
-    .then(function(r){return r.json();})
-    .then(function(data){
-      const m={'EURUSD=X':'EURUSD','GBPUSD=X':'GBPUSD','USDJPY=X':'USDJPY','AUDUSD=X':'AUDUSD','USDCAD=X':'USDCAD','USDCHF=X':'USDCHF'};
-      (data?.quoteResponse?.result||[]).forEach(function(q){
-        const a=DATA.forex.find(function(x){return x.s===m[q.symbol];});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp=Array.from({length:26},function(){return a.p*(1+R(-.003,.003));});}
-      });
-    }).catch(function(){});
-
-  Promise.allSettled([p1,p2,p3,p4]).then(go);
+  Promise.allSettled([p1]).then(go);
   setTimeout(go, 4000); // fallback
 })();
 
@@ -2874,46 +2847,7 @@ const BSYMS={
 })();
 
 // ═══ YAHOO FINANCE (Stocks, Commodities, Forex every 30s) ═══
-function fetchYahoo(){
-  // Stocks
-  const stocks=['AAPL','TSLA','NVDA','MSFT','AMZN','GOOGL','META','NFLX','AMD','COIN'];
-  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+stocks.join(',')+'&fields=regularMarketPrice')
-    .then(function(r){return r.json();})
-    .then(function(data){
-      (data?.quoteResponse?.result||[]).forEach(function(q){
-        const a=DATA.stocks.find(function(x){return x.s===q.symbol;});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();}
-      });
-    }).catch(function(){});
-
-  // Commodities (Yahoo futures)
-  const commMap={'GC=F':'XAU','SI=F':'XAG','CL=F':'WTI','NG=F':'NG','PL=F':'PLAT'};
-  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=GC=F,SI=F,CL=F,NG=F,PL=F&fields=regularMarketPrice')
-    .then(function(r){return r.json();})
-    .then(function(data){
-      (data?.quoteResponse?.result||[]).forEach(function(q){
-        const sym=commMap[q.symbol];if(!sym)return;
-        const a=DATA.commodities.find(function(x){return x.s===sym;});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();}
-      });
-    }).catch(function(){});
-
-  // Forex
-  const forexMap={'EURUSD=X':'EURUSD','GBPUSD=X':'GBPUSD','USDJPY=X':'USDJPY','AUDUSD=X':'AUDUSD','USDCAD=X':'USDCAD','USDCHF=X':'USDCHF','NZDUSD=X':'NZDUSD','USDSGD=X':'USDSGD'};
-  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=EURUSD=X,GBPUSD=X,USDJPY=X,AUDUSD=X,USDCAD=X,USDCHF=X,NZDUSD=X,USDSGD=X&fields=regularMarketPrice')
-    .then(function(r){return r.json();})
-    .then(function(data){
-      (data?.quoteResponse?.result||[]).forEach(function(q){
-        const sym=forexMap[q.symbol];if(!sym)return;
-        const a=DATA.forex.find(function(x){return x.s===sym;});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();}
-      });
-    }).catch(function(){});
-}
-
-// Fetch Yahoo every 30 seconds
-fetchYahoo();
-setInterval(fetchYahoo, 30000);
+function fetchYahoo(){}// yahoo removed
 
 // Keep odds moving
 setInterval(function(){
@@ -3731,7 +3665,7 @@ setTimeout(renderActivityFeed, 500);
 
 /* ── WHALE ALERT ── */
 let whaleT;
-function showWhaleAlert_DISABLED(name,amt,sym){
+function showWhaleAlert(name,amt,sym){
   const el=document.getElementById('whale-alert');
   document.getElementById('whale-text').textContent=`${name} placed`;
   document.getElementById('whale-amt').textContent=`$${amt.toLocaleString()} on ${sym}`;

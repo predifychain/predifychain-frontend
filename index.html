@@ -1716,60 +1716,60 @@ const ICONS={
 };
 const DATA={
   crypto:[
-    {s:'BTC',n:'Bitcoin',p:95480,c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830},
-    {s:'ETH',n:'Ethereum',p:3291,c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640},
-    {s:'SOL',n:'Solana',p:198.6,c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:70,sp:[],yes:8820,no:3780},
-    {s:'BNB',n:'BNB',p:616.4,c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:45,sp:[],yes:4200,no:5140},
-    {s:'AVAX',n:'Avalanche',p:38.9,c:'#e84142',stripe:'linear-gradient(90deg,#e84142,#ff6b9d)',yp:58,sp:[],yes:6710,no:4860},
-    {s:'DOGE',n:'Dogecoin',p:.1851,c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:66,sp:[],yes:9100,no:4690},
-    {s:'LINK',n:'Chainlink',p:14.82,c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400,no:3500},
-    {s:'ARB',n:'Arbitrum',p:0.62,c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100,no:3500},
-    {s:'MATIC',n:'Polygon',p:0.48,c:'#8247e5',stripe:'linear-gradient(90deg,#8247e5,#a855f7)',yp:61,sp:[],yes:5200,no:3330},
-    {s:'XRP',n:'Ripple',p:2.14,c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:59,sp:[],yes:9800,no:6820},
+    {s:'BTC',  n:'Bitcoin',       p:95480,  c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830,feed:'BTC/USDT'},
+    {s:'ETH',  n:'Ethereum',      p:3291,   c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640, feed:'ETH/USDT'},
+    {s:'SOL',  n:'Solana',        p:198.6,  c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:70,sp:[],yes:8820, no:3780, feed:'SOL/USDT'},
+    {s:'BNB',  n:'BNB',           p:616.4,  c:'#f3ba2f',stripe:'linear-gradient(90deg,#f3ba2f,#ff8800)',yp:45,sp:[],yes:4200, no:5140, feed:'BNB/USDT'},
+    {s:'XRP',  n:'Ripple',        p:2.14,   c:'#346aa9',stripe:'linear-gradient(90deg,#346aa9,#00e5ff)',yp:59,sp:[],yes:9800, no:6820, feed:'XRP/USDT'},
+    {s:'DOGE', n:'Dogecoin',      p:0.1851, c:'#c2a633',stripe:'linear-gradient(90deg,#c2a633,#ffcc44)',yp:66,sp:[],yes:9100, no:4690, feed:'DOGE/USDT'},
+    {s:'AVAX', n:'Avalanche',     p:38.9,   c:'#e84142',stripe:'linear-gradient(90deg,#e84142,#ff6b9d)',yp:58,sp:[],yes:6710, no:4860, feed:'AVAX/USDT'},
+    {s:'LINK', n:'Chainlink',     p:14.82,  c:'#375bd2',stripe:'linear-gradient(90deg,#375bd2,#6b8fff)',yp:68,sp:[],yes:7400, no:3500, feed:'LINK/USDT'},
+    {s:'ARB',  n:'Arbitrum',      p:0.62,   c:'#28a0f0',stripe:'linear-gradient(90deg,#28a0f0,#00e5ff)',yp:54,sp:[],yes:4100, no:3500, feed:'ARB/USDT'},
+    {s:'MATIC',n:'Polygon',       p:0.48,   c:'#8247e5',stripe:'linear-gradient(90deg,#8247e5,#a855f7)',yp:61,sp:[],yes:5200, no:3330, feed:'MATIC/USDT'},
   ],
   stocks:[
-    {s:'AAPL',n:'Apple Inc.',p:193.8,c:'#555555',stripe:'linear-gradient(90deg,#555,#888)',yp:57,sp:[],yes:7200,no:5440},
-    {s:'TSLA',n:'Tesla',p:248.5,c:'#e82127',stripe:'linear-gradient(90deg,#e82127,#ff6b9d)',yp:49,sp:[],yes:5100,no:5310},
-    {s:'NVDA',n:'NVIDIA',p:875.2,c:'#76b900',stripe:'linear-gradient(90deg,#76b900,#c8ff00)',yp:74,sp:[],yes:14300,no:5020},
-    {s:'MSFT',n:'Microsoft',p:415.7,c:'#00bcf2',stripe:'linear-gradient(90deg,#00bcf2,#00e5ff)',yp:63,sp:[],yes:8800,no:5170},
-    {s:'AMZN',n:'Amazon',p:192.4,c:'#ff9900',stripe:'linear-gradient(90deg,#ff9900,#ffcc00)',yp:52,sp:[],yes:6200,no:5720},
-    {s:'GOOGL',n:'Alphabet',p:178.9,c:'#4285f4',stripe:'linear-gradient(90deg,#4285f4,#00e5ff)',yp:60,sp:[],yes:7900,no:5280},
-    {s:'META',n:'Meta',p:512.3,c:'#0866ff',stripe:'linear-gradient(90deg,#0866ff,#00e5ff)',yp:65,sp:[],yes:9100,no:4900},
-    {s:'NFLX',n:'Netflix',p:634.7,c:'#e50914',stripe:'linear-gradient(90deg,#e50914,#ff6b9d)',yp:55,sp:[],yes:5600,no:4580},
-    {s:'AMD',n:'AMD',p:168.4,c:'#ed1c24',stripe:'linear-gradient(90deg,#ed1c24,#ff6b00)',yp:58,sp:[],yes:6300,no:4570},
-    {s:'COIN',n:'Coinbase',p:224.6,c:'#1652f0',stripe:'linear-gradient(90deg,#1652f0,#6b8fff)',yp:62,sp:[],yes:5800,no:3560},
+    {s:'TSLA', n:'Tesla',         p:248.5,  c:'#e82127',stripe:'linear-gradient(90deg,#e82127,#ff6b9d)',yp:49,sp:[],yes:5100, no:5310, feed:'TSLA/USDT'},
+    {s:'NVDA', n:'NVIDIA',        p:875.2,  c:'#76b900',stripe:'linear-gradient(90deg,#76b900,#c8ff00)',yp:74,sp:[],yes:14300,no:5020, feed:'NVDA/USDT'},
+    {s:'MSFT', n:'Microsoft',     p:415.7,  c:'#00bcf2',stripe:'linear-gradient(90deg,#00bcf2,#00e5ff)',yp:63,sp:[],yes:8800, no:5170, feed:'MSFT/USDT'},
+    {s:'AAPL', n:'Apple',         p:193.8,  c:'#555555',stripe:'linear-gradient(90deg,#555,#888)',      yp:57,sp:[],yes:7200, no:5440, feed:'AAPL/USDT'},
+    {s:'AMZN', n:'Amazon',        p:192.4,  c:'#ff9900',stripe:'linear-gradient(90deg,#ff9900,#ffcc00)',yp:52,sp:[],yes:6200, no:5720, feed:'AMZN/USDT'},
+    {s:'GOOGL',n:'Alphabet',      p:178.9,  c:'#4285f4',stripe:'linear-gradient(90deg,#4285f4,#00e5ff)',yp:60,sp:[],yes:7900, no:5280, feed:'GOOGL/USDT'},
+    {s:'META', n:'Meta',          p:512.3,  c:'#0866ff',stripe:'linear-gradient(90deg,#0866ff,#00e5ff)',yp:65,sp:[],yes:9100, no:4900, feed:'META/USDT'},
+    {s:'NFLX', n:'Netflix',       p:634.7,  c:'#e50914',stripe:'linear-gradient(90deg,#e50914,#ff6b9d)',yp:55,sp:[],yes:5600, no:4580, feed:'NFLX/USDT'},
+    {s:'AMD',  n:'AMD',           p:168.4,  c:'#ed1c24',stripe:'linear-gradient(90deg,#ed1c24,#ff6b00)',yp:58,sp:[],yes:6300, no:4570, feed:'AMD/USDT'},
+    {s:'COIN', n:'Coinbase',      p:224.6,  c:'#1652f0',stripe:'linear-gradient(90deg,#1652f0,#6b8fff)',yp:62,sp:[],yes:5800, no:3560, feed:'COIN/USDT'},
   ],
   commodities:[
-    {s:'XAU',n:'Gold',p:3020.5,c:'#d4a017',stripe:'linear-gradient(90deg,#d4a017,#f5c842)',yp:61,sp:[],yes:12400,no:7900,unit:'oz',feed:'XAU/USD'},
-    {s:'XAG',n:'Silver',p:33.48,c:'#aaaaaa',stripe:'linear-gradient(90deg,#999,#ccc)',yp:55,sp:[],yes:5200,no:4260,unit:'oz',feed:'XAG/USD'},
-    {s:'WTI',n:'Crude Oil WTI',p:68.42,c:'#1a1a1a',stripe:'linear-gradient(90deg,#333,#666)',yp:48,sp:[],yes:8100,no:8740,unit:'bbl',feed:'WTI/USD'},
-    {s:'BRENT',n:'Brent Crude',p:72.15,c:'#2c4a7c',stripe:'linear-gradient(90deg,#2c4a7c,#4a6ef5)',yp:52,sp:[],yes:7300,no:6730,unit:'bbl',feed:'BRENT/USD'},
-    {s:'NGAS',n:'Natural Gas',p:3.84,c:'#00b4d8',stripe:'linear-gradient(90deg,#00b4d8,#00e5ff)',yp:57,sp:[],yes:4100,no:3090,unit:'MMBtu',feed:'NGAS/USD'},
-    {s:'COPPER',n:'Copper',p:4.52,c:'#b87333',stripe:'linear-gradient(90deg,#b87333,#d4a017)',yp:53,sp:[],yes:3800,no:3370,unit:'lb',feed:'COPPER/USD'},
+    {s:'XAU',  n:'Gold',          p:3020.5, c:'#d4a017',stripe:'linear-gradient(90deg,#d4a017,#f5c842)',yp:61,sp:[],yes:12400,no:7900, feed:'XAU/USDT'},
+    {s:'XAG',  n:'Silver',        p:33.48,  c:'#aaaaaa',stripe:'linear-gradient(90deg,#999,#ccc)',      yp:55,sp:[],yes:5200, no:4260, feed:'XAG/USDT'},
+    {s:'WTI',  n:'Crude Oil',     p:68.42,  c:'#333333',stripe:'linear-gradient(90deg,#333,#666)',      yp:48,sp:[],yes:8100, no:8740, feed:'WTI/USDT'},
+    {s:'TRUMP',n:'TRUMP Token',   p:9.8,    c:'#c8102e',stripe:'linear-gradient(90deg,#c8102e,#ff6b9d)',yp:52,sp:[],yes:4200, no:3900, feed:'TRUMP/USDT'},
+    {s:'TON',  n:'Toncoin',       p:3.82,   c:'#0088cc',stripe:'linear-gradient(90deg,#0088cc,#00e5ff)',yp:57,sp:[],yes:4100, no:3090, feed:'TON/USDT'},
+    {s:'HBAR', n:'Hedera',        p:0.195,  c:'#222222',stripe:'linear-gradient(90deg,#222,#555)',      yp:53,sp:[],yes:3800, no:3370, feed:'HBAR/USDT'},
   ],
   forex:[
-    {s:'EURUSD',n:'EUR / USD',p:1.0842,c:'#003399',stripe:'linear-gradient(90deg,#003399,#0066cc)',yp:52,sp:[],yes:9200,no:8480,unit:'pair',feed:'EUR/USD'},
-    {s:'GBPUSD',n:'GBP / USD',p:1.2634,c:'#012169',stripe:'linear-gradient(90deg,#012169,#4a6ef5)',yp:54,sp:[],yes:7100,no:6050,unit:'pair',feed:'GBP/USD'},
-    {s:'USDJPY',n:'USD / JPY',p:149.82,c:'#bc002d',stripe:'linear-gradient(90deg,#bc002d,#ff6b9d)',yp:59,sp:[],yes:8300,no:5770,unit:'pair',feed:'USD/JPY'},
-    {s:'USDCAD',n:'USD / CAD',p:1.3621,c:'#d80621',stripe:'linear-gradient(90deg,#d80621,#ff6b9d)',yp:51,sp:[],yes:4200,no:4040,unit:'pair',feed:'USD/CAD'},
-    {s:'AUDUSD',n:'AUD / USD',p:0.6318,c:'#00843d',stripe:'linear-gradient(90deg,#00843d,#22c55e)',yp:49,sp:[],yes:3900,no:4020,unit:'pair',feed:'AUD/USD'},
-    {s:'USDCHF',n:'USD / CHF',p:0.9024,c:'#d52b1e',stripe:'linear-gradient(90deg,#d52b1e,#ff6b9d)',yp:53,sp:[],yes:3600,no:3190,unit:'pair',feed:'USD/CHF'},
+    {s:'EUR',  n:'EUR / USDT',    p:1.0842, c:'#003399',stripe:'linear-gradient(90deg,#003399,#0066cc)',yp:52,sp:[],yes:9200, no:8480, feed:'EUR/USDT'},
+    {s:'GBP',  n:'GBP / USDT',    p:1.2634, c:'#012169',stripe:'linear-gradient(90deg,#012169,#4a6ef5)',yp:54,sp:[],yes:7100, no:6050, feed:'GBP/USDT'},
+    {s:'DOT',  n:'Polkadot',      p:4.2,    c:'#e6007a',stripe:'linear-gradient(90deg,#e6007a,#ff6b9d)',yp:59,sp:[],yes:8300, no:5770, feed:'DOT/USDT'},
+    {s:'ADA',  n:'Cardano',       p:0.7,    c:'#0033ad',stripe:'linear-gradient(90deg,#0033ad,#4a6ef5)',yp:51,sp:[],yes:4200, no:4040, feed:'ADA/USDT'},
+    {s:'TRX',  n:'TRON',          p:0.235,  c:'#e50915',stripe:'linear-gradient(90deg,#e50915,#ff6b9d)',yp:49,sp:[],yes:3900, no:4020, feed:'TRX/USDT'},
+    {s:'LTC',  n:'Litecoin',      p:84.2,   c:'#bfbbbb',stripe:'linear-gradient(90deg,#bfbbbb,#ddd)',   yp:53,sp:[],yes:3600, no:3190, feed:'LTC/USDT'},
   ],
   defi:[
-    {s:'ETHGAS',n:'ETH Gas Price',p:18.4,c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:44,sp:[],yes:3200,no:4100,unit:'gwei',feed:'ETH Gas'},
-    {s:'BTCDOM',n:'BTC Dominance',p:54.2,c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:60,sp:[],yes:5600,no:3730,unit:'%',feed:'BTC.D'},
-    {s:'TOTAL',n:'Crypto Mkt Cap',p:3.24,c:'#2d60f0',stripe:'linear-gradient(90deg,#2d60f0,#7c3aed)',yp:66,sp:[],yes:8900,no:4590,unit:'T',feed:'TOTAL'},
-    {s:'STETH',n:'stETH APY',p:3.82,c:'#00a3ff',stripe:'linear-gradient(90deg,#00a3ff,#627eea)',yp:55,sp:[],yes:2800,no:2290,unit:'%',feed:'stETH APY'},
-    {s:'AAVE',n:'Aave Token',p:198.4,c:'#b6509e',stripe:'linear-gradient(90deg,#b6509e,#ff6b9d)',yp:58,sp:[],yes:3100,no:2250,unit:'USD',feed:'AAVE/USD'},
-    {s:'UNI',n:'Uniswap',p:8.74,c:'#ff007a',stripe:'linear-gradient(90deg,#ff007a,#ff6b9d)',yp:54,sp:[],yes:2900,no:2480,unit:'USD',feed:'UNI/USD'},
+    {s:'UNI',  n:'Uniswap',       p:8.74,   c:'#ff007a',stripe:'linear-gradient(90deg,#ff007a,#ff6b9d)',yp:54,sp:[],yes:2900, no:2480, feed:'UNI/USDT'},
+    {s:'AAVE', n:'Aave',          p:198.4,  c:'#b6509e',stripe:'linear-gradient(90deg,#b6509e,#ff6b9d)',yp:58,sp:[],yes:3100, no:2250, feed:'AAVE/USDT'},
+    {s:'INJ',  n:'Injective',     p:12.4,   c:'#00a3ff',stripe:'linear-gradient(90deg,#00a3ff,#627eea)',yp:55,sp:[],yes:2800, no:2290, feed:'INJ/USDT'},
+    {s:'SUI',  n:'Sui',           p:2.8,    c:'#4da2ff',stripe:'linear-gradient(90deg,#4da2ff,#00e5ff)',yp:60,sp:[],yes:3200, no:2140, feed:'SUI/USDT'},
+    {s:'APT',  n:'Aptos',         p:5.6,    c:'#00c2a8',stripe:'linear-gradient(90deg,#00c2a8,#00e5ff)',yp:56,sp:[],yes:2700, no:2100, feed:'APT/USDT'},
+    {s:'NEAR', n:'NEAR Protocol', p:2.4,    c:'#000000',stripe:'linear-gradient(90deg,#333,#666)',      yp:52,sp:[],yes:2500, no:2300, feed:'NEAR/USDT'},
   ],
   indices:[
-    {s:'SPX',n:'S&P 500',p:5842.6,c:'#1a56db',stripe:'linear-gradient(90deg,#1a56db,#00e5ff)',yp:60,sp:[],yes:11200,no:7470,unit:'pts',feed:'SP500'},
-    {s:'NDX',n:'Nasdaq 100',p:20341.2,c:'#2d60f0',stripe:'linear-gradient(90deg,#2d60f0,#7c3aed)',yp:63,sp:[],yes:9800,no:5750,unit:'pts',feed:'NDX'},
-    {s:'DJI',n:'Dow Jones',p:43218.4,c:'#1f4e79',stripe:'linear-gradient(90deg,#1f4e79,#2d60f0)',yp:57,sp:[],yes:7600,no:5730,unit:'pts',feed:'DJI'},
-    {s:'VIX',n:'VIX (Fear Index)',p:18.42,c:'#7c3aed',stripe:'linear-gradient(90deg,#7c3aed,#a855f7)',yp:42,sp:[],yes:4100,no:5660,unit:'pts',feed:'VIX'},
-    {s:'FTSE',n:'FTSE 100',p:8421.3,c:'#012169',stripe:'linear-gradient(90deg,#012169,#4a6ef5)',yp:55,sp:[],yes:5200,no:4260,unit:'pts',feed:'FTSE100'},
-    {s:'DAX',n:'DAX 40',p:22184.7,c:'#000000',stripe:'linear-gradient(90deg,#333,#666)',yp:58,sp:[],yes:4800,no:3480,unit:'pts',feed:'DAX'},
+    {s:'BTC',  n:'BTC Dominance', p:95480,  c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:60,sp:[],yes:11200,no:7470, feed:'BTC/USDT'},
+    {s:'ETH',  n:'ETH/BTC Ratio', p:3291,   c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:63,sp:[],yes:9800, no:5750, feed:'ETH/USDT'},
+    {s:'SOL',  n:'SOL Momentum',  p:198.6,  c:'#9945ff',stripe:'linear-gradient(90deg,#9945ff,#00e5ff)',yp:57,sp:[],yes:7600, no:5730, feed:'SOL/USDT'},
+    {s:'ATOM', n:'Cosmos',        p:4.8,    c:'#2e3148',stripe:'linear-gradient(90deg,#2e3148,#6b8fff)',yp:42,sp:[],yes:4100, no:5660, feed:'ATOM/USDT'},
+    {s:'FIL',  n:'Filecoin',      p:2.9,    c:'#0090ff',stripe:'linear-gradient(90deg,#0090ff,#00e5ff)',yp:55,sp:[],yes:5200, no:4260, feed:'FIL/USDT'},
+    {s:'RENDER',n:'Render',       p:3.8,    c:'#e62020',stripe:'linear-gradient(90deg,#e62020,#ff6b9d)',yp:58,sp:[],yes:4800, no:3480, feed:'RENDER/USDT'},
   ]
 };
 const R=(a,b)=>Math.random()*(b-a)+a;
@@ -2615,71 +2615,28 @@ render();
 renderLeaderboard();
 renderNotifs();
 
-// Ab background mein sab prices fetch karo
+// Ab background mein sab prices fetch karo — sirf Binance!
 (function(){
-  // Crypto prices via Binance REST
-  const cSyms={'BTC':'BTCUSDT','ETH':'ETHUSDT','BNB':'BNBUSDT','SOL':'SOLUSDT','XRP':'XRPUSDT',
-    'AVAX':'AVAXUSDT','DOT':'DOTUSDT','LINK':'LINKUSDT','LTC':'LTCUSDT','UNI':'UNIUSDT',
-    'AAVE':'AAVEUSDT','ATOM':'ATOMUSDT','FIL':'FILUSDT','NEAR':'NEARUSDT','ARB':'ARBUSDT',
-    'SUI':'SUIUSDT','APT':'APTUSDT','INJ':'INJUSDT','DOGE':'DOGEUSDT','ADA':'ADAUSDT',
-    'TAO':'TAOUSDT','ZEC':'ZECUSDT','LPT':'LPTUSDT','TIA':'TIAUSDT','RENDER':'RENDERUSDT',
-    'WLD':'WLDUSDT','PENDLE':'PENDLEUSDT','PYTH':'PYTHUSDT','JTO':'JTOUSDT'};
-
-  fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+Object.values(cSyms).map(v=>'"'+v+'"').join(',')+']')
+  const syms = Object.values(BSYMS).map(v=>'"'+v.toUpperCase()+'"').join(',');
+  fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+syms+']')
     .then(r=>r.json())
     .then(data=>{
-      if(!Array.isArray(data))return;
+      if(!Array.isArray(data)) return;
       data.forEach(item=>{
-        const k=Object.keys(cSyms).find(k=>cSyms[k]===item.symbol);
-        if(!k)return;
-        const a=allAssets().find(x=>x.s===k);
-        if(a&&parseFloat(item.lastPrice)>0){
-          a.p=parseFloat(item.lastPrice);
-          a.sp=Array.from({length:26},()=>a.p*(1+R(-.003,.003)));
+        const k = Object.keys(BSYMS).find(k=>BSYMS[k].toUpperCase()===item.symbol);
+        if(!k) return;
+        const a = allAssets().find(x=>x.s===k);
+        if(a && parseFloat(item.lastPrice)>0){
+          a.p = parseFloat(item.lastPrice);
+          a.sp = Array.from({length:26},()=>a.p*(1+R(-.003,.003)));
           updateAssetPrice(k, a.p, parseFloat(item.priceChangePercent));
         }
       });
       refreshTicker();
     }).catch(()=>{});
-
-  // Forex via ExchangeRate API
-  fetch('https://open.er-api.com/v6/latest/USD')
-    .then(r=>r.json())
-    .then(d=>{
-      if(d&&d.rates){
-        const r=d.rates;
-        const fmap={
-          'EURUSD': r.EUR?parseFloat((1/r.EUR).toFixed(5)):0,
-          'GBPUSD': r.GBP?parseFloat((1/r.GBP).toFixed(5)):0,
-          'USDJPY': r.JPY?parseFloat(r.JPY.toFixed(3)):0,
-          'USDCAD': r.CAD?parseFloat(r.CAD.toFixed(5)):0,
-          'AUDUSD': r.AUD?parseFloat((1/r.AUD).toFixed(5)):0,
-          'USDCHF': r.CHF?parseFloat(r.CHF.toFixed(5)):0
-        };
-        Object.entries(fmap).forEach(([sym,price])=>{
-          if(price>0){
-            const a=DATA.forex.find(x=>x.s===sym);
-            if(a){a.p=price;a.sp=Array.from({length:26},()=>a.p*(1+R(-.001,.001)));updateAssetPrice(sym,price,null);}
-          }
-        });
-      }
-    }).catch(()=>{});
-
-  // Gold & Silver via metals.live
-  fetch('https://api.metals.live/v1/spot')
-    .then(r=>r.json())
-    .then(d=>{
-      if(Array.isArray(d)&&d.length>0){
-        const m=d[0];
-        if(m.gold>0){const a=DATA.commodities.find(x=>x.s==='XAU');if(a){a.p=m.gold;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));updateAssetPrice('XAU',m.gold,null);}}
-        if(m.silver>0){const a=DATA.commodities.find(x=>x.s==='XAG');if(a){a.p=m.silver;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));updateAssetPrice('XAG',m.silver,null);}}
-        if(m.platinum>0){const a=DATA.commodities.find(x=>x.s==='PLAT');if(a){a.p=m.platinum;a.sp=Array.from({length:26},()=>a.p*(1+R(-.002,.002)));updateAssetPrice('PLAT',m.platinum,null);}}
-      }
-    }).catch(()=>{});
-
 })();
 
-setTimeout(()=>triggerAllAI(), 800);
+setTimeout(()=>triggerAllAI(), 1000);
 
 /* ── AI ANALYSIS ENGINE ── */
 const aiCache={};
@@ -2785,15 +2742,25 @@ function renderAIFallback(sym,yp,np,chg){
   });
 }
 
-// ═══ BINANCE WEBSOCKET (Crypto real-time) ═══
-const BSYMS={'BTC':'btcusdt','ETH':'ethusdt','BNB':'bnbusdt','SOL':'solusdt',
-  'XRP':'xrpusdt','AVAX':'avaxusdt','DOT':'dotusdt','LINK':'linkusdt',
-  'LTC':'ltcusdt','UNI':'uniusdt','AAVE':'aaveusdt','ATOM':'atomusdt',
-  'FIL':'filusdt','NEAR':'nearusdt','ARB':'arbusdt','SUI':'suiusdt',
-  'APT':'aptusdt','INJ':'injusdt','DOGE':'dogeusdt','ADA':'adausdt',
-  'TAO':'taousdt','ZEC':'zecusdt','LPT':'lptusdt','TIA':'tiausdt',
-  'RENDER':'renderusdt','WLD':'wldusdt','PENDLE':'pendleusdt',
-  'PYTH':'pythusdt','JTO':'jtousdt'};
+// ═══ BINANCE WEBSOCKET — SARI PRICES YAHAN SE ═══
+const BSYMS={
+  // Crypto
+  'BTC':'btcusdt','ETH':'ethusdt','BNB':'bnbusdt','SOL':'solusdt','XRP':'xrpusdt',
+  'DOGE':'dogeusdt','AVAX':'avaxusdt','LINK':'linkusdt','ARB':'arbusdt','MATIC':'maticusdt',
+  // Stocks (Binance tokenized)
+  'TSLA':'tslausdt','NVDA':'nvdausdt','MSFT':'msfrusdt','AAPL':'aaplusdt',
+  'AMZN':'amznusdt','GOOGL':'googlusdt','META':'metausdt','NFLX':'nflxusdt',
+  'AMD':'amdusdt','COIN':'coinusdt',
+  // Commodities on Binance
+  'XAU':'xauusdt','XAG':'xagusdt',
+  // Other crypto used as "forex/defi/indices" tabs
+  'EUR':'eurusdt','GBP':'gbpusdt',
+  'DOT':'dotusdt','ADA':'adausdt','TRX':'trxusdt','LTC':'ltcusdt',
+  'UNI':'uniusdt','AAVE':'aaveusdt','INJ':'injusdt','SUI':'suiusdt','APT':'aptusdt','NEAR':'nearusdt',
+  'ATOM':'atomusdt','FIL':'filusdt','RENDER':'renderusdt',
+  'TON':'tonusdt','HBAR':'hbarusdt','TRUMP':'trumpusdt',
+  'WTI':'wtiusdt',
+};
 
 (function startWS(){
   const streams=Object.values(BSYMS).map(function(s){return s+'@ticker';}).join('/');
@@ -2909,51 +2876,23 @@ function updateTicker(sym, price, dir){
 }
 
 function fetchAllNonCryptoPrices(){
-  // Forex
-  fetch('https://open.er-api.com/v6/latest/USD')
+  const syms = Object.values(BSYMS).map(v=>'"'+v.toUpperCase()+'"').join(',');
+  fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+syms+']')
     .then(r=>r.json())
-    .then(d=>{
-      if(!d||!d.rates)return;
-      const r=d.rates;
-      const fmap={
-        'EURUSD': r.EUR?parseFloat((1/r.EUR).toFixed(5)):0,
-        'GBPUSD': r.GBP?parseFloat((1/r.GBP).toFixed(5)):0,
-        'USDJPY': r.JPY?parseFloat(r.JPY.toFixed(3)):0,
-        'USDCAD': r.CAD?parseFloat(r.CAD.toFixed(5)):0,
-        'AUDUSD': r.AUD?parseFloat((1/r.AUD).toFixed(5)):0,
-        'USDCHF': r.CHF?parseFloat(r.CHF.toFixed(5)):0
-      };
-      Object.entries(fmap).forEach(([sym,price])=>{
-        if(price>0) updateAssetPrice(sym, price, null);
+    .then(data=>{
+      if(!Array.isArray(data)) return;
+      data.forEach(item=>{
+        const k = Object.keys(BSYMS).find(k=>BSYMS[k].toUpperCase()===item.symbol);
+        if(!k) return;
+        const a = allAssets().find(x=>x.s===k);
+        if(a && parseFloat(item.lastPrice)>0){
+          a.p = parseFloat(item.lastPrice);
+          updateAssetPrice(k, a.p, parseFloat(item.priceChangePercent));
+        }
       });
+      refreshTicker();
     }).catch(()=>{});
-
-  // Metals
-  fetch('https://api.metals.live/v1/spot')
-    .then(r=>r.json())
-    .then(d=>{
-      if(!Array.isArray(d)||!d.length)return;
-      const m=d[0];
-      if(m.gold>0)    updateAssetPrice('XAU', m.gold, null);
-      if(m.silver>0)  updateAssetPrice('XAG', m.silver, null);
-      if(m.platinum>0)updateAssetPrice('PLAT', m.platinum, null);
-    }).catch(()=>{});
-
-  // Stocks via Binance (USDT pairs that exist) + keep rest as simulation
-  // NVDA, AAPL etc don't trade on Binance — use small ticks
-  DATA.stocks.forEach(a=>{
-    const t=a.p*(1+(Math.random()-0.48)*0.0005);
-    updateAssetPrice(a.s, parseFloat(t.toFixed(2)), null);
-  });
-
-  // Indices simulation
-  (DATA.indices||[]).forEach(a=>{
-    const t=a.p*(1+(Math.random()-0.48)*0.0003);
-    updateAssetPrice(a.s, parseFloat(t.toFixed(1)), null);
-  });
 }
-
-// Run every 30s
 fetchAllNonCryptoPrices();
 setInterval(fetchAllNonCryptoPrices, 30000);
 

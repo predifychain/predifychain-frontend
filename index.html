@@ -137,7 +137,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .cat:hover:not(.on){background:rgba(120,140,255,.06);color:var(--t1)}
 
 /* ── LAYOUT ── */
-.layout{display:grid;grid-template-columns:1fr 360px;max-width:1440px;margin:0 auto;padding:16px 28px 60px;gap:14px;align-items:start}
+.layout{display:grid;grid-template-columns:1fr 380px;max-width:1440px;margin:0 auto;padding:16px 28px 60px;gap:14px;align-items:start}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
 
 /* ── MARKET CARD — premium glass ── */
@@ -211,8 +211,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .mc-sell-btn:active{transform:scale(.97)}
 
 /* ── RIGHT PANEL ── */
-.rpanel{position:sticky;top:76px}
-.rp-sec{background:#fff;border:1px solid rgba(15,20,50,.07);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(15,20,50,.04)}
+.rpanel{position:sticky;top:76px;max-height:calc(100vh - 80px);overflow-y:auto;scrollbar-width:thin}
+.rp-sec{background:#ffffff;border:1px solid rgba(15,20,50,.08);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(15,20,50,.04)}
 .rp-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;display:flex;align-items:center;gap:7px;font-family:var(--ff)}
 .rp-lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--b1),transparent)}
 

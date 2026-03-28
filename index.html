@@ -8,16 +8,25 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 :root{
+  --bg:#f0f5ff;--c1:#ffffff;--c2:#f5f7ff;--c3:#edf0ff;--c4:#e4e9ff;
+  --b0:rgba(30,40,100,.06);--b1:rgba(30,40,100,.1);--b2:rgba(30,40,100,.16);--b3:rgba(30,40,100,.26);
+  --t0:#0f1535;--t1:#2a3560;--t2:#5a6590;--t3:#9aa0bc;
+  --g:#059669;--gd:rgba(5,150,105,.07);--gb:rgba(5,150,105,.2);
+  --r:#e11d48;--rd:rgba(225,29,72,.07);--rb:rgba(225,29,72,.2);
+  --cl:#4f46e5;--cll:#6366f1;
+  --amber:#fbbf24;--cyan:#22d3ee;--purple:#a855f7;--pink:#ec4899;
+  --ff:"Space Grotesk",-apple-system,BlinkMacSystemFont,sans-serif;
+  --fm:"JetBrains Mono","Fira Code",monospace;
+  --fd:"Syne",sans-serif;
+}
+/* Dark mode */
+body.dark{
   --bg:#080c18;--c1:#0f1420;--c2:#141b2d;--c3:#1a2236;--c4:#202a40;
   --b0:rgba(120,140,255,.07);--b1:rgba(120,140,255,.13);--b2:rgba(120,140,255,.22);--b3:rgba(120,140,255,.36);
   --t0:#eef2ff;--t1:#b0bcdf;--t2:#5c6f9a;--t3:#2e3f66;
   --g:#00e676;--gd:rgba(0,230,118,.08);--gb:rgba(0,230,118,.22);
   --r:#ff4d6a;--rd:rgba(255,77,106,.08);--rb:rgba(255,77,106,.22);
   --cl:#6366f1;--cll:#818cf8;
-  --amber:#fbbf24;--cyan:#22d3ee;--purple:#a855f7;--pink:#ec4899;
-  --ff:"Space Grotesk",-apple-system,BlinkMacSystemFont,sans-serif;
-  --fm:"JetBrains Mono","Fira Code",monospace;
-  --fd:"Syne",sans-serif;
 }
 html,body{background:var(--bg);color:var(--t0);font-family:var(--ff);min-height:100vh;overflow-x:hidden;font-size:14px;line-height:1.5}
 .mesh{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -3367,7 +3376,7 @@ renderProfile=function(){
 let isDark=false;
 function toggleTheme(){
   isDark=!isDark;
-  document.body.classList.toggle('light',!isDark);
+  document.body.classList.toggle('dark',isDark);
   document.getElementById('theme-btn').textContent=isDark?'☀️':'🌙';
   localStorage.setItem('px-theme',isDark?'dark':'light');
 }

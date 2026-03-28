@@ -2632,6 +2632,13 @@ renderNotifs();
         }
         updateTicker(k,newP,newP>=oldP?'up':'dn');
         refreshTicker();
+        // Update live chart label if this coin is selected
+        if(typeof chartSym!=='undefined'&&chartSym===k){
+          var cl=document.getElementById('chart-price-lbl');
+          if(cl)cl.textContent=fmt(newP);
+          var cc=document.getElementById('chart-chg-lbl');
+          if(cc){var pct=parseFloat(d.P);cc.textContent=(pct>=0?'+':'')+pct.toFixed(2)+'%';cc.className='chart-chg '+(pct>=0?'cup':'cdn');}
+        }
       }catch(ex){}
     };
     ws.onerror=function(){};

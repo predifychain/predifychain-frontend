@@ -1788,25 +1788,24 @@ function spPath(d,W,H){
 }
 
 function buildTicker(){
-  const all=allAssets().slice(0,16);
+  const all=[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex].slice(0,18);
   let html='';
   for(let p=0;p<2;p++) all.forEach(a=>{
     const chg=(R(-.9,.9)).toFixed(2),up=parseFloat(chg)>=0;
-    const ico=ICONS[a.s]||`<div style="width:16px;height:16px;border-radius:4px;background:${a.c};display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff">${a.s.slice(0,3)}</div>`;
-    html+=`<div class="tk"><div class="tk-ico">${ico}</div><span class="tk-sym">${a.s}</span><span class="tk-price">${fmt(a.p)}</span><span class="${up?'tk-up':'tk-dn'}">${up?'+':''}${chg}%</span></div>`;
+    const ico=ICONS[a.s]||`<div style="width:15px;height:15px;border-radius:4px;background:${a.c};display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;color:#fff">${a.s.slice(0,3)}</div>`;
+    // Only first copy gets IDs (second copy is for infinite scroll illusion)
+    const id=p===0?`id="tk_${a.s}"`:'';
+    html+=`<div class="tk" ${id}><div class="tk-ico">${ico}</div><span class="tk-sym">${a.s}</span><span class="tk-price">${fmt(a.p)}</span><span class="${up?'tk-up':'tk-dn'}">${up?'+':''}${chg}%</span></div>`;
   });
   document.getElementById('ticker-track').innerHTML=html;
 }
-function updateTicker(){
-  const all=allAssets().slice(0,16);
-  const items=document.querySelectorAll('.tk');
-  const half=Math.floor(items.length/2);
-  items.forEach((item,i)=>{
-    const a=all[i%half];if(!a)return;
-    const chg=(R(-.9,.9)).toFixed(2),up=parseFloat(chg)>=0;
-    const pe=item.querySelector('.tk-price'),ce=item.querySelector('.tk-up,.tk-dn');
+function refreshTicker(){
+  const all=[...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex].slice(0,18);
+  all.forEach(function(a){
+    const tkEl=document.getElementById('tk_'+a.s);
+    if(!tkEl)return;
+    const pe=tkEl.querySelector('.tk-price');
     if(pe)pe.textContent=fmt(a.p);
-    if(ce){ce.textContent=(up?'+':'')+chg+'%';ce.className=up?'tk-up':'tk-dn';}
   });
 }
 
@@ -2153,12 +2152,12 @@ function render(){
     <div class="mc-clock"><div class="mc-timer" id="${tid}" style="color:${a.c}">0${AT}:00</div><div class="mc-tlbl">${AT}m expiry</div></div>
   </div>
   <div class="mc-prow">
-    <span class="mc-price">${fmt(a.p)}</span>
-    <span class="mc-chg ${up?'cup':'cdn'}">${up?'+':''}${chg}%</span>
+    <span class="mc-price" id="price_${a.s}">${fmt(a.p)}</span>
+    <span class="mc-chg ${up?'cup':'cdn'}" id="chg_${a.s}">${up?'+':''}${chg}%</span>
     <span class="mc-cl"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3L4 9.5v13L16 29l12-6.5v-13L16 3z" fill="#375bd2"/><path d="M16 7l-8 4.5v9L16 25l8-4.5v-9L16 7z" fill="#4a6ef5"/><path d="M16 11l-4 2.5v5L16 21l4-2.5v-5L16 11z" fill="#fff"/></svg>${a.feed||a.s+'/USD'}</span>
   </div>
   <div class="mc-q">${question}</div>
-  <div class="mc-spark"><svg viewBox="0 0 270 36" preserveAspectRatio="none"><defs><linearGradient id="spg_${a.s}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${a.c}" stop-opacity=".18"/><stop offset="100%" stop-color="${a.c}" stop-opacity="0"/></linearGradient></defs><path d="${sp} L270 36 L0 36 Z" fill="url(#spg_${a.s})"/><path d="${sp}" fill="none" stroke="${a.c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="mc-spark" id="spark_${a.s}"><svg viewBox="0 0 270 36" preserveAspectRatio="none"><defs><linearGradient id="spg_${a.s}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${a.c}" stop-opacity=".18"/><stop offset="100%" stop-color="${a.c}" stop-opacity="0"/></linearGradient></defs><path d="${sp} L270 36 L0 36 Z" fill="url(#spg_${a.s})"/><path d="${sp}" fill="none" stroke="${a.c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   <div class="mc-depth">
     <div class="mc-depth-label"><span class="mc-yp">YES ${a.yp}%</span><span class="mc-np">NO ${np}%</span></div>
     <div class="mc-depth-track">
@@ -2799,12 +2798,40 @@ const BSYMS={'BTC':'btcusdt','ETH':'ethusdt','BNB':'bnbusdt','SOL':'solusdt',
           if(BSYMS[keys[i]].toUpperCase()===sym){
             const a=allAssets().find(function(x){return x.s===keys[i];});
             if(a&&parseFloat(d.c)>0){
-              a._lastDir=parseFloat(d.c)>a.p?'up':'dn';
-              a.p=parseFloat(d.c);
-              a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();
-              // Update price on card directly
-              const el=document.getElementById('price_'+a.s);
-              if(el)el.textContent=a.p>1000?'$'+a.p.toFixed(2):a.p>1?'$'+a.p.toFixed(3):'$'+a.p.toFixed(5);
+              const newPrice=parseFloat(d.c);
+              const oldPrice=a.p;
+              const dir=newPrice>oldPrice?'up':'dn';
+              a._lastDir=dir;
+              a.p=newPrice;
+              a.sp.push(newPrice);if(a.sp.length>26)a.sp.shift();
+
+              // Update price element with flash animation
+              const priceEl=document.getElementById('price_'+a.s);
+              if(priceEl){
+                priceEl.textContent=fmt(newPrice);
+                priceEl.style.transition='color .3s';
+                priceEl.style.color=dir==='up'?'#059669':'#dc2626';
+                setTimeout(function(){if(priceEl)priceEl.style.color='var(--t0)';},800);
+              }
+
+              // Update change % using 24h data from WebSocket
+              const chgEl=document.getElementById('chg_'+a.s);
+              if(chgEl&&d.P){
+                const pct=parseFloat(d.P);
+                const up=pct>=0;
+                chgEl.textContent=(up?'+':'')+pct.toFixed(2)+'%';
+                chgEl.className='mc-chg '+(up?'cup':'cdn');
+              }
+
+              // Update sparkline
+              const sparkEl=document.getElementById('spark_'+a.s);
+              if(sparkEl&&a.sp.length>2){
+                const newSp=spPath(a.sp,270,36);
+                sparkEl.innerHTML=`<svg viewBox="0 0 270 36" preserveAspectRatio="none"><defs><linearGradient id="spg_${a.s}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${a.c}" stop-opacity=".18"/><stop offset="100%" stop-color="${a.c}" stop-opacity="0"/></linearGradient></defs><path d="${newSp} L270 36 L0 36 Z" fill="url(#spg_${a.s})"/><path d="${newSp}" fill="none" stroke="${a.c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+              }
+
+              // Update ticker
+              updateTicker(a.s, newPrice, dir);
             }
             break;
           }
@@ -2818,39 +2845,115 @@ const BSYMS={'BTC':'btcusdt','ETH':'ethusdt','BNB':'bnbusdt','SOL':'solusdt',
 })();
 
 // ═══ YAHOO FINANCE (Stocks, Commodities, Forex every 30s) ═══
+function updatePriceDom(sym, newPrice, oldPrice){
+  const priceEl=document.getElementById('price_'+sym);
+  if(priceEl){
+    priceEl.textContent=fmt(newPrice);
+    const dir=newPrice>oldPrice?'up':'dn';
+    priceEl.style.transition='color .4s';
+    priceEl.style.color=dir==='up'?'#059669':'#dc2626';
+    setTimeout(function(){if(priceEl)priceEl.style.color='var(--t0)';},1000);
+  }
+  const a=allAssets().find(function(x){return x.s===sym;});
+  if(a&&a.sp.length>2){
+    const sparkEl=document.getElementById('spark_'+sym);
+    if(sparkEl){
+      const newSp=spPath(a.sp,270,36);
+      sparkEl.innerHTML=`<svg viewBox="0 0 270 36" preserveAspectRatio="none"><defs><linearGradient id="spg_${sym}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${a.c}" stop-opacity=".18"/><stop offset="100%" stop-color="${a.c}" stop-opacity="0"/></linearGradient></defs><path d="${newSp} L270 36 L0 36 Z" fill="url(#spg_${sym})"/><path d="${newSp}" fill="none" stroke="${a.c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }
+  }
+}
+
 function fetchYahoo(){
   // Stocks
   const stocks=['AAPL','TSLA','NVDA','MSFT','AMZN','GOOGL','META','NFLX','AMD','COIN'];
-  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+stocks.join(',')+'&fields=regularMarketPrice')
+  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols='+stocks.join(',')+'&fields=regularMarketPrice,regularMarketChangePercent')
     .then(function(r){return r.json();})
     .then(function(data){
       (data?.quoteResponse?.result||[]).forEach(function(q){
         const a=DATA.stocks.find(function(x){return x.s===q.symbol;});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();}
+        if(a&&q.regularMarketPrice>0){
+          const old=a.p;
+          a.p=q.regularMarketPrice;
+          a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();
+          updatePriceDom(a.s, a.p, old);
+          // Update chg
+          const chgEl=document.getElementById('chg_'+a.s);
+          if(chgEl&&q.regularMarketChangePercent!=null){
+            const pct=q.regularMarketChangePercent;
+            chgEl.textContent=(pct>=0?'+':'')+pct.toFixed(2)+'%';
+            chgEl.className='mc-chg '+(pct>=0?'cup':'cdn');
+          }
+        }
       });
     }).catch(function(){});
 
   // Commodities (Yahoo futures)
   const commMap={'GC=F':'XAU','SI=F':'XAG','CL=F':'WTI','NG=F':'NG','PL=F':'PLAT'};
-  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=GC=F,SI=F,CL=F,NG=F,PL=F&fields=regularMarketPrice')
+  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=GC=F,SI=F,CL=F,NG=F,PL=F&fields=regularMarketPrice,regularMarketChangePercent')
     .then(function(r){return r.json();})
     .then(function(data){
       (data?.quoteResponse?.result||[]).forEach(function(q){
         const sym=commMap[q.symbol];if(!sym)return;
         const a=DATA.commodities.find(function(x){return x.s===sym;});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();}
+        if(a&&q.regularMarketPrice>0){
+          const old=a.p;
+          a.p=q.regularMarketPrice;
+          a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();
+          updatePriceDom(a.s, a.p, old);
+          const chgEl=document.getElementById('chg_'+a.s);
+          if(chgEl&&q.regularMarketChangePercent!=null){
+            const pct=q.regularMarketChangePercent;
+            chgEl.textContent=(pct>=0?'+':'')+pct.toFixed(2)+'%';
+            chgEl.className='mc-chg '+(pct>=0?'cup':'cdn');
+          }
+        }
       });
     }).catch(function(){});
 
   // Forex
   const forexMap={'EURUSD=X':'EURUSD','GBPUSD=X':'GBPUSD','USDJPY=X':'USDJPY','AUDUSD=X':'AUDUSD','USDCAD=X':'USDCAD','USDCHF=X':'USDCHF','NZDUSD=X':'NZDUSD','USDSGD=X':'USDSGD'};
-  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=EURUSD=X,GBPUSD=X,USDJPY=X,AUDUSD=X,USDCAD=X,USDCHF=X,NZDUSD=X,USDSGD=X&fields=regularMarketPrice')
+  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=EURUSD=X,GBPUSD=X,USDJPY=X,AUDUSD=X,USDCAD=X,USDCHF=X,NZDUSD=X,USDSGD=X&fields=regularMarketPrice,regularMarketChangePercent')
     .then(function(r){return r.json();})
     .then(function(data){
       (data?.quoteResponse?.result||[]).forEach(function(q){
         const sym=forexMap[q.symbol];if(!sym)return;
         const a=DATA.forex.find(function(x){return x.s===sym;});
-        if(a&&q.regularMarketPrice>0){a.p=q.regularMarketPrice;a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();}
+        if(a&&q.regularMarketPrice>0){
+          const old=a.p;
+          a.p=q.regularMarketPrice;
+          a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();
+          updatePriceDom(a.s, a.p, old);
+          const chgEl=document.getElementById('chg_'+a.s);
+          if(chgEl&&q.regularMarketChangePercent!=null){
+            const pct=q.regularMarketChangePercent;
+            chgEl.textContent=(pct>=0?'+':'')+pct.toFixed(2)+'%';
+            chgEl.className='mc-chg '+(pct>=0?'cup':'cdn');
+          }
+        }
+      });
+    }).catch(function(){});
+
+  // Indices
+  const indicesMap={'^GSPC':'SPX','^DJI':'DJI','^IXIC':'NASDAQ','^RUT':'RUT','^VIX':'VIX','^FTSE':'FTSE'};
+  fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGSPC,%5EDJI,%5EIXIC,%5ERUT,%5EVIX,%5EFTSE&fields=regularMarketPrice,regularMarketChangePercent')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      (data?.quoteResponse?.result||[]).forEach(function(q){
+        const sym=indicesMap[q.symbol];if(!sym)return;
+        const a=DATA.indices&&DATA.indices.find(function(x){return x.s===sym;});
+        if(a&&q.regularMarketPrice>0){
+          const old=a.p;
+          a.p=q.regularMarketPrice;
+          a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();
+          updatePriceDom(a.s, a.p, old);
+          const chgEl=document.getElementById('chg_'+a.s);
+          if(chgEl&&q.regularMarketChangePercent!=null){
+            const pct=q.regularMarketChangePercent;
+            chgEl.textContent=(pct>=0?'+':'')+pct.toFixed(2)+'%';
+            chgEl.className='mc-chg '+(pct>=0?'cup':'cdn');
+          }
+        }
       });
     }).catch(function(){});
 }
@@ -2858,6 +2961,35 @@ function fetchYahoo(){
 // Fetch Yahoo every 30 seconds
 fetchYahoo();
 setInterval(fetchYahoo, 30000);
+
+// ── TICKER LIVE UPDATE ──
+function updateTicker(sym, price, dir){
+  const tkEl=document.getElementById('tk_'+sym);
+  if(!tkEl)return;
+  const priceSpan=tkEl.querySelector('.tk-price');
+  const chgSpan=tkEl.querySelector('.tk-up,.tk-dn');
+  if(priceSpan){
+    priceSpan.textContent=fmt(price);
+    priceSpan.style.transition='color .3s';
+    priceSpan.style.color=dir==='up'?'#0ecb81':'#f6465d';
+    setTimeout(function(){if(priceSpan)priceSpan.style.color='';},600);
+  }
+  if(chgSpan){chgSpan.className=dir==='up'?'tk-up':'tk-dn';}
+}
+
+// ── SMOOTH PRICE SIMULATION (for non-crypto assets between Yahoo refreshes) ──
+setInterval(function(){
+  const nonCrypto=[...DATA.stocks,...DATA.commodities,...DATA.forex,...(DATA.indices||[]),...(DATA.defi||[])];
+  nonCrypto.forEach(function(a){
+    const volatility=a.p>1000?0.0002:a.p>10?0.0003:a.p>1?0.0004:0.0002;
+    const tick=a.p*(1+(Math.random()-0.5)*volatility*2);
+    const old=a.p;
+    a.p=parseFloat(tick.toFixed(a.p>100?2:a.p>1?4:6));
+    a.sp.push(a.p);if(a.sp.length>26)a.sp.shift();
+    updatePriceDom(a.s, a.p, old);
+  });
+  refreshTicker();
+}, 8000);
 
 // Keep odds moving
 setInterval(function(){

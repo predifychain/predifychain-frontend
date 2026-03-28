@@ -1296,14 +1296,19 @@ body.dark .levelup-box{background:#0c0c14}
     <div style="flex:1"></div>
     <div class="live-pill"><span class="ld"></span>LIVE</div>
     <div style="position:relative">
-      <button class="notif-btn" onclick="toggleNotif()" id="notif-btn">🔔<span class="notif-dot" id="notif-dot"></span></button>
-      <button class="notif-btn" onclick="openAlerts()" title="Price Alerts" style="font-size:14px">⚡</button>
+      <button class="notif-btn" onclick="toggleNotif()" id="notif-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f0b90b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot" id="notif-dot"></span>
+      </button>
+      <button class="notif-btn" onclick="openAlerts()" title="Price Alerts">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f0b90b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </button>
       <div class="notif-panel" id="notif-panel">
         <div class="notif-head"><span class="notif-title">Notifications</span><button class="notif-clear" onclick="clearNotifs()">Mark all read</button></div>
         <div id="notif-list"></div>
       </div>
     </div>
-    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">☀️</button>
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
     
     <button class="w-btn" id="wbtn" onclick="openAuth()"><div class="wdot" id="wdot"></div><span id="wbtxt">Sign In</span></button>
     <button class="nav-avatar" id="nav-av" style="display:none" onclick="setV('profile',null)">?</button>
@@ -1503,7 +1508,7 @@ body.dark .levelup-box{background:#0c0c14}
           <div>
             <div class="chart-sym" id="chart-sym-lbl">BTC/USD</div>
             <div style="display:flex;align-items:center;gap:8px;margin-top:3px">
-              <span class="chart-price" id="chart-price-lbl">$95,480</span>
+              <span class="chart-price" id="chart-price-lbl">$66,000</span>
               <span class="chart-chg cup" id="chart-chg-lbl">+1.2%</span>
             </div>
           </div>
@@ -2586,6 +2591,14 @@ buildTicker();
 render();
 renderLeaderboard();
 renderNotifs();
+// Init chart price with BTC
+(function(){
+  var btc=DATA.crypto.find(function(x){return x.s==='BTC';});
+  if(btc){
+    var cl=document.getElementById('chart-price-lbl');
+    if(cl)cl.textContent=fmt(btc.p);
+  }
+})();
 
 // Binance WebSocket - live prices
 (function(){

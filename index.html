@@ -2839,7 +2839,7 @@ const BSYMS={
   'TSLA':'tslausdt','NVDA':'nvdausdt','META':'metausdt','GOOGL':'googlusdt',
   'AMZN':'amznusdt','MSTR':'mstrusdt','COIN':'coinusdt',
   'XAU':'xauusdt','XAG':'xagusdt'
-}
+};
 
 (function startWS(){
   const streams=Object.values(BSYMS).map(function(s){return s+'@ticker';}).join('/');

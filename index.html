@@ -63,8 +63,7 @@ body::before{display:none}
 
 /* ── PREMIUM NAV ── */
 .nav{position:sticky;top:0;z-index:200;background:var(--navy);border-bottom:1px solid rgba(255,255,255,.07);box-shadow:0 2px 20px rgba(0,0,0,.25)}
-.nav-in{max-width:1440px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:6px;height:60px;flex-wrap:nowrap}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:14px}
+.nav-in{max-width:1440px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:6px;height:60px;flex-wrap:nowrap}.logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:14px}
 .logo-box{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;letter-spacing:-.5px;font-family:var(--ff);flex-shrink:0;box-shadow:0 4px 12px rgba(37,99,235,.35)}
 .logo-name{font-size:17px;font-weight:800;color:#fff;font-family:var(--ff);letter-spacing:-.4px;white-space:nowrap}
 .logo-name sup{font-size:8px;font-weight:700;letter-spacing:.1em;color:#0ecb81;vertical-align:super}
@@ -160,9 +159,9 @@ body::before{display:none}
 .mc-timer.red{color:var(--r)!important;animation:tblink .9s ease infinite}
 @keyframes tblink{0%,100%{opacity:1}50%{opacity:.4}}
 .mc-tlbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;font-weight:600}
-.mc-prow{display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.mc-price{font-size:12px;font-weight:600;color:var(--t1);font-family:var(--fm)}
-.mc-chg{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;font-family:var(--fm)}
+.mc-prow{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.mc-price{font-size:15px;font-weight:700;color:var(--t0);font-family:var(--fm);letter-spacing:-.3px}
+.mc-chg{font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;font-family:var(--fm)}
 .cup{background:rgba(14,203,129,.1);color:#059669;border:1px solid rgba(14,203,129,.2)}
 .cdn{background:rgba(246,70,93,.09);color:#e11d48;border:1px solid rgba(246,70,93,.18)}
 .mc-cl{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:600;color:var(--cl);opacity:.6;font-family:var(--fm);margin-left:2px}
@@ -652,9 +651,10 @@ body::before{display:none}
 .sr-badge{margin-left:auto;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(5,150,105,.09);color:#059669;border:1px solid rgba(5,150,105,.18);font-family:var(--ff)}
 
 /* ── NOTIFICATIONS ── */
-.notif-btn{width:32px;height:32px;border-radius:7px;border:1px solid rgba(255,255,255,.12);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.65);font-size:15px;transition:all .15s;flex-shrink:0;position:relative}
-.notif-btn:hover{background:rgba(255,255,255,.1);color:#fff}
-.notif-dot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:#f6465d;border-radius:50%;border:1.5px solid var(--navy);animation:ldpulse 2s ease infinite}
+.notif-btn{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.65);transition:all .15s;flex-shrink:0;position:relative;padding:0;line-height:1;vertical-align:middle}
+.notif-btn svg{display:block;flex-shrink:0}
+.notif-btn:hover{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}
+.notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:#f6465d;border-radius:50%;border:1.5px solid var(--navy);animation:ldpulse 2s ease infinite}
 .notif-panel{position:absolute;top:calc(100% + 8px);right:0;width:300px;background:#fff;border:1px solid var(--b1);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);z-index:300;overflow:hidden;display:none}
 .notif-panel.show{display:block}
 .notif-head{padding:12px 16px;border-bottom:1px solid var(--b0);display:flex;align-items:center;justify-content:space-between}
@@ -670,6 +670,11 @@ body::before{display:none}
 .notif-text b{font-weight:700}
 .notif-time{font-size:10px;color:var(--t3);margin-top:3px;font-family:var(--fm)}
 .notif-unread-dot{width:6px;height:6px;background:var(--cl);border-radius:50%;flex-shrink:0;margin-top:4px}
+
+/* ── THEME TOGGLE ── */
+.theme-toggle{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.65);transition:all .15s;flex-shrink:0;padding:0;line-height:1}
+.theme-toggle svg{display:block}
+.theme-toggle:hover{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}
 
 /* ── DEPOSIT/WITHDRAW PAGE ── */
 .deposit-wrap{max-width:560px;margin:0 auto;padding:24px}
@@ -855,20 +860,20 @@ body.dark .alert-price-wrap{background:#ffffff}
 .alert-empty{text-align:center;padding:20px;font-size:12px;color:var(--t3)}
 
 /* ── AI RIGHT PANEL STRIP ── */
-.rp-ai-section{background:linear-gradient(135deg,rgba(45,96,240,.06),rgba(124,58,237,.04));border:1px solid rgba(45,96,240,.14);border-radius:14px;padding:14px;margin-bottom:12px}
+.rp-ai-section{background:#fff;border:1px solid var(--b1);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px}
 .rp-ai-head{display:flex;align-items:center;gap:7px;margin-bottom:10px}
-.rp-ai-logo{width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#2d60f0,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;font-family:var(--ff);flex-shrink:0}
-.rp-ai-title{font-size:11px;font-weight:700;color:var(--cl);font-family:var(--ff);flex:1;letter-spacing:-.1px}
-.rp-ai-badge{font-size:9px;font-weight:600;padding:2px 7px;border-radius:5px;background:rgba(45,96,240,.08);border:1px solid rgba(45,96,240,.2);color:var(--cl);font-family:var(--ff)}
+.rp-ai-logo{width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;font-family:var(--ff);flex-shrink:0}
+.rp-ai-title{font-size:12px;font-weight:700;color:var(--t0);font-family:var(--ff);flex:1}
+.rp-ai-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.18);color:var(--cl);font-family:var(--ff)}
 .rp-ai-empty{font-size:11px;color:var(--t3);text-align:center;padding:10px 0;font-family:var(--ff)}
 .rp-ai-item{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--b0)}
 .rp-ai-item:last-child{margin:0;padding:0;border:none}
 .rp-ai-sym{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
 .rp-ai-sym-name{font-size:12px;font-weight:700;color:var(--t0);font-family:var(--ff)}
 .rp-ai-dir{font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;font-family:var(--ff)}
-.rp-ai-buy{background:rgba(22,163,74,.1);color:#16a34a;border:1px solid rgba(22,163,74,.2)}
-.rp-ai-sell{background:rgba(229,41,74,.09);color:#e5294a;border:1px solid rgba(229,41,74,.18)}
-.rp-ai-bar-wrap{height:4px;background:var(--b0);border-radius:2px;margin-bottom:4px}
+.rp-ai-buy{background:rgba(5,150,105,.09);color:#059669;border:1px solid rgba(5,150,105,.18)}
+.rp-ai-sell{background:rgba(220,38,38,.08);color:#dc2626;border:1px solid rgba(220,38,38,.16)}
+.rp-ai-bar-wrap{height:4px;background:var(--c3);border-radius:2px;margin-bottom:4px}
 .rp-ai-bar{height:100%;border-radius:2px;transition:width .6s}
 .rp-ai-meta{font-size:10px;color:var(--t3);font-family:var(--ff)}
 .rp-ai-reason{font-size:11px;color:var(--t2);margin-top:3px;line-height:1.45;font-family:var(--ff)}
@@ -923,8 +928,8 @@ body.dark .mc-resolved-overlay{display:none!important}
 
 /* ── CLEAN POLISH ── */
 .mc-body{padding:14px 15px 11px;background:#fff;position:relative;overflow:hidden}
-.mc-price{font-size:12px;font-weight:600;color:var(--t1);font-family:var(--fm)}
-.mc-chg{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;font-family:var(--fm);letter-spacing:.02em}
+.mc-price{font-size:15px;font-weight:700;color:var(--t0);font-family:var(--fm);letter-spacing:-.3px}
+.mc-chg{font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;font-family:var(--fm);letter-spacing:.02em}
 .mc-timer{font-size:13px;font-weight:700;font-family:var(--fm);color:var(--t1);letter-spacing:.04em}
 .mc-timer.urgent{color:#dc2626;animation:urgentPulse .7s ease infinite alternate}
 @keyframes urgentPulse{from{opacity:1}to{opacity:.5}}
@@ -1100,11 +1105,10 @@ body.dark .mission-item{background:#ffffff}
 .mission-done{font-size:11px;font-weight:700;color:#16a34a;font-family:var(--ff)}
 
 /* ── LIVE ACTIVITY FEED ── */
-.activity-feed{background:linear-gradient(145deg,rgba(20,27,45,.9),rgba(15,20,32,.95));border:1px solid var(--b0);border-radius:14px;overflow:hidden;margin-bottom:12px}
-body.dark .activity-feed{background:var(--c1)}
-.activity-head{padding:10px 14px;border-bottom:1px solid var(--b0);display:flex;align-items:center;justify-content:space-between}
+.activity-feed{background:#fff;border:1px solid var(--b1);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;box-shadow:var(--shadow-sm)}
+.activity-head{padding:10px 14px;border-bottom:1px solid var(--b0);display:flex;align-items:center;justify-content:space-between;background:#fff}
 .activity-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--ff);display:flex;align-items:center;gap:6px}
-.activity-live-dot{width:6px;height:6px;border-radius:50%;background:#e5294a;animation:lp 1s ease infinite}
+.activity-live-dot{width:6px;height:6px;border-radius:50%;background:#f6465d;animation:ldpulse 1s ease infinite}
 .activity-list{max-height:220px;overflow:hidden;position:relative}
 .activity-item{display:flex;align-items:center;gap:9px;padding:8px 14px;border-bottom:1px solid var(--b0);font-family:var(--ff);animation:slideIn .4s ease;transition:background .14s}
 .activity-item:hover{background:var(--c2)}
@@ -1260,15 +1264,22 @@ body.dark .levelup-box{background:#0c0c14}
     </div>
     <div style="flex:1"></div>
     <div class="live-pill"><span class="ld"></span>LIVE</div>
-    <div style="position:relative">
-      <button class="notif-btn" onclick="toggleNotif()" id="notif-btn">🔔<span class="notif-dot" id="notif-dot"></span></button>
-      <button class="notif-btn" onclick="openAlerts()" title="Price Alerts" style="font-size:14px">⚡</button>
+    <div style="position:relative;display:flex;align-items:center;gap:4px">
+      <button class="notif-btn" onclick="toggleNotif()" id="notif-btn" title="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot" id="notif-dot"></span>
+      </button>
+      <button class="notif-btn" onclick="openAlerts()" title="Price Alerts">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </button>
       <div class="notif-panel" id="notif-panel">
         <div class="notif-head"><span class="notif-title">Notifications</span><button class="notif-clear" onclick="clearNotifs()">Mark all read</button></div>
         <div id="notif-list"></div>
       </div>
     </div>
-    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">☀️</button>
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
     
     <button class="w-btn" id="wbtn" onclick="openAuth()"><div class="wdot" id="wdot"></div><span id="wbtxt">Sign In</span></button>
     <button class="nav-avatar" id="nav-av" style="display:none" onclick="setV('profile',null)">?</button>

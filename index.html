@@ -1963,10 +1963,7 @@ function renderAuthStep(){
         <div class="wallet-info"><div class="wallet-name">MetaMask</div><div class="wallet-tag">Browser extension</div></div>
         <span class="wallet-pop">Popular</span>
       </button>
-      <button class="wallet-opt" onclick="connectWallet('Phantom','7xKB...9mVs')">
-        <div class="wallet-ico" style="background:rgba(171,159,242,.1)">👻</div>
-        <div class="wallet-info"><div class="wallet-name">Phantom</div><div class="wallet-tag">Solana native</div></div>
-      </button>
+
       <button class="wallet-opt" onclick="connectWallet('WalletConnect','0x2a8C...bD91')">
         <div class="wallet-ico" style="background:rgba(59,153,252,.1)">🔗</div>
         <div class="wallet-info"><div class="wallet-name">WalletConnect</div><div class="wallet-tag">Any mobile wallet</div></div>
@@ -2634,10 +2631,11 @@ renderNotifs();
           sparkEl.innerHTML='<svg viewBox="0 0 270 36" preserveAspectRatio="none"><defs><linearGradient id="spg_'+k+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+a.c+'" stop-opacity=".15"/><stop offset="100%" stop-color="'+a.c+'" stop-opacity="0"/></linearGradient></defs><path d="'+ns+' L270 36 L0 36 Z" fill="url(#spg_'+k+')"/><path d="'+ns+'" fill="none" stroke="'+a.c+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
         }
         updateTicker(k,newP,newP>=oldP?'up':'dn');
+        refreshTicker();
       }catch(ex){}
     };
     ws.onerror=function(){};
-    ws.onclose=function(){setTimeout(connect,2000);};
+    ws.onclose=function(){setTimeout(connect,500);};
   }
   connect();
 })()

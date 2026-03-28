@@ -2131,7 +2131,11 @@ function render(){
   Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
   assets.forEach(a=>{
     a.yp=Math.max(22,Math.min(78,a.yp));
-    const np=100-a.yp,chg=(R(-2,2)).toFixed(2),up=parseFloat(chg)>=0;
+    // Use real 24h change if available, else small random
+    const chgVal = a._chg24 != null ? a._chg24 : parseFloat((R(-1.5,1.5)).toFixed(2));
+    const chg = chgVal.toFixed(2);
+    const up = chgVal >= 0;
+    const np=100-a.yp;
     const vol='$'+Math.round(R(50,900))+'K',traders=Math.round(R(25,520));
     const tid='tmr_'+a.s,sp=spPath(a.sp,270,36);
     const yesAmt=fmtK(a.yes),noAmt=fmtK(a.no);
@@ -2629,34 +2633,42 @@ const BSYMS={
 };
 
 buildTicker();
-
-// PEHLE RENDER KARO — phir prices background mein update hongi
-render();
 renderLeaderboard();
 renderNotifs();
 
-// Ab background mein sab prices fetch karo — sirf Binance!
+// ── BINANCE SE LIVE PRICES PEHLE FETCH KARO, PHIR RENDER ──
 (function(){
+  // Loading show karo
+  document.getElementById('mgrid').innerHTML = '<div style="grid-column:1/-1;padding:80px 20px;text-align:center"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:12px"><div style="width:40px;height:40px;border:3px solid #e8ebf2;border-top-color:#2563eb;border-radius:50%;animation:spin .7s linear infinite"></div><div style="font-size:14px;font-weight:600;color:#4b5675">Fetching live prices from Binance...</div></div></div>';
+
   const syms = Object.values(BSYMS).map(v=>'"'+v.toUpperCase()+'"').join(',');
   fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+syms+']')
     .then(r=>r.json())
     .then(data=>{
-      if(!Array.isArray(data)) return;
-      data.forEach(item=>{
-        const k = Object.keys(BSYMS).find(k=>BSYMS[k].toUpperCase()===item.symbol);
-        if(!k) return;
-        const a = allAssets().find(x=>x.s===k);
-        if(a && parseFloat(item.lastPrice)>0){
-          a.p = parseFloat(item.lastPrice);
-          a.sp = Array.from({length:26},()=>a.p*(1+R(-.003,.003)));
-          updateAssetPrice(k, a.p, parseFloat(item.priceChangePercent));
-        }
-      });
+      if(Array.isArray(data)){
+        data.forEach(item=>{
+          const k = Object.keys(BSYMS).find(k=>BSYMS[k].toUpperCase()===item.symbol);
+          if(!k) return;
+          const a = allAssets().find(x=>x.s===k);
+          if(a && parseFloat(item.lastPrice)>0){
+            a.p = parseFloat(item.lastPrice);
+            a.sp = Array.from({length:26},()=>a.p*(1+R(-.003,.003)));
+            // Store real 24h change
+            a._chg24 = parseFloat(item.priceChangePercent);
+          }
+        });
+      }
+      // Ab render karo — live prices ke saath
+      render();
       refreshTicker();
-    }).catch(()=>{});
+      setTimeout(()=>triggerAllAI(), 800);
+    })
+    .catch(()=>{
+      // Binance fail hoi tou bhi render karo
+      render();
+      setTimeout(()=>triggerAllAI(), 800);
+    });
 })();
-
-setTimeout(()=>triggerAllAI(), 1000);
 
 /* ── AI ANALYSIS ENGINE ── */
 const aiCache={};
@@ -2889,7 +2901,8 @@ function fetchAllNonCryptoPrices(){
         const a = allAssets().find(x=>x.s===k);
         if(a && parseFloat(item.lastPrice)>0){
           a.p = parseFloat(item.lastPrice);
-          updateAssetPrice(k, a.p, parseFloat(item.priceChangePercent));
+          a._chg24 = parseFloat(item.priceChangePercent);
+          updateAssetPrice(k, a.p, a._chg24);
         }
       });
       refreshTicker();

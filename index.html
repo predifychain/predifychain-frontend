@@ -2608,6 +2608,26 @@ function signOut(){
   setV('crypto',document.querySelector('.ntab'));
 }
 
+// ═══ BINANCE WEBSOCKET — SARI PRICES YAHAN SE ═══
+const BSYMS={
+  // Crypto
+  'BTC':'btcusdt','ETH':'ethusdt','BNB':'bnbusdt','SOL':'solusdt','XRP':'xrpusdt',
+  'DOGE':'dogeusdt','AVAX':'avaxusdt','LINK':'linkusdt','ARB':'arbusdt','MATIC':'maticusdt',
+  // Stocks (Binance tokenized)
+  'TSLA':'tslausdt','NVDA':'nvdausdt','MSFT':'msfrusdt','AAPL':'aaplusdt',
+  'AMZN':'amznusdt','GOOGL':'googlusdt','META':'metausdt','NFLX':'nflxusdt',
+  'AMD':'amdusdt','COIN':'coinusdt',
+  // Commodities on Binance
+  'XAU':'xauusdt','XAG':'xagusdt',
+  // Other crypto used as "forex/defi/indices" tabs
+  'EUR':'eurusdt','GBP':'gbpusdt',
+  'DOT':'dotusdt','ADA':'adausdt','TRX':'trxusdt','LTC':'ltcusdt',
+  'UNI':'uniusdt','AAVE':'aaveusdt','INJ':'injusdt','SUI':'suiusdt','APT':'aptusdt','NEAR':'nearusdt',
+  'ATOM':'atomusdt','FIL':'filusdt','RENDER':'renderusdt',
+  'TON':'tonusdt','HBAR':'hbarusdt','TRUMP':'trumpusdt',
+  'WTI':'wtiusdt',
+};
+
 buildTicker();
 
 // PEHLE RENDER KARO — phir prices background mein update hongi
@@ -2742,25 +2762,7 @@ function renderAIFallback(sym,yp,np,chg){
   });
 }
 
-// ═══ BINANCE WEBSOCKET — SARI PRICES YAHAN SE ═══
-const BSYMS={
-  // Crypto
-  'BTC':'btcusdt','ETH':'ethusdt','BNB':'bnbusdt','SOL':'solusdt','XRP':'xrpusdt',
-  'DOGE':'dogeusdt','AVAX':'avaxusdt','LINK':'linkusdt','ARB':'arbusdt','MATIC':'maticusdt',
-  // Stocks (Binance tokenized)
-  'TSLA':'tslausdt','NVDA':'nvdausdt','MSFT':'msfrusdt','AAPL':'aaplusdt',
-  'AMZN':'amznusdt','GOOGL':'googlusdt','META':'metausdt','NFLX':'nflxusdt',
-  'AMD':'amdusdt','COIN':'coinusdt',
-  // Commodities on Binance
-  'XAU':'xauusdt','XAG':'xagusdt',
-  // Other crypto used as "forex/defi/indices" tabs
-  'EUR':'eurusdt','GBP':'gbpusdt',
-  'DOT':'dotusdt','ADA':'adausdt','TRX':'trxusdt','LTC':'ltcusdt',
-  'UNI':'uniusdt','AAVE':'aaveusdt','INJ':'injusdt','SUI':'suiusdt','APT':'aptusdt','NEAR':'nearusdt',
-  'ATOM':'atomusdt','FIL':'filusdt','RENDER':'renderusdt',
-  'TON':'tonusdt','HBAR':'hbarusdt','TRUMP':'trumpusdt',
-  'WTI':'wtiusdt',
-};
+
 
 (function startWS(){
   const streams=Object.values(BSYMS).map(function(s){return s+'@ticker';}).join('/');

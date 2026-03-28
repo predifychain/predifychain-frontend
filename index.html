@@ -211,7 +211,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .mc-sell-btn:active{transform:scale(.97)}
 
 /* ── RIGHT PANEL ── */
-.rpanel{position:sticky;top:76px;max-height:calc(100vh - 80px);overflow-y:auto;scrollbar-width:thin}
+.rpanel{position:sticky;top:76px;height:calc(100vh - 76px);overflow-y:auto;scrollbar-width:thin}
 .rp-sec{background:#ffffff;border:1px solid rgba(15,20,50,.08);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(15,20,50,.04)}
 .rp-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;display:flex;align-items:center;gap:7px;font-family:var(--ff)}
 .rp-lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--b1),transparent)}
@@ -1731,8 +1731,9 @@ body.dark .levelup-box{background:#0c0c14}
 
 <div class="toast-zone"><div class="toast" id="toast"><div class="tdot" id="tdot"></div><span id="tmsg"></span></div></div>
 
-<script>
-const ICONS={
+<script>if(typeof aiCache==='undefined'){var aiCache={};}
+
+var ICONS={
   BTC:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#f7931a"/><path d="M22.2 13.6c.3-2-1.2-3.1-3.3-3.8l.7-2.7-1.6-.4-.6 2.6-1.3-.3.6-2.6-1.6-.4-.7 2.7-1-.3-2.2-.5-.4 1.7s1.2.3 1.1.3c.6.2.7.6.7.9l-1.7 6.8c-.1.2-.3.5-.8.4l-1.1-.3-.8 1.8 2.1.5 1 .3-.7 2.7 1.6.4.7-2.7 1.3.3-.7 2.7 1.6.4.7-2.7c2.8.5 4.9.3 5.8-2.2.7-2 0-3.2-1.5-3.9 1.1-.3 1.9-1 2.1-2.5zm-3.7 5.2c-.5 2-3.9 1-5 .7l.9-3.5c1.1.3 4.6.8 4.1 2.8zm.5-5.2c-.5 1.8-3.3.9-4.3.7l.8-3.2c.9.2 3.9.7 3.5 2.5z" fill="white"/></svg>`,
   ETH:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627eea"/><path d="M16 5.5l-.1.5v13.9l.1.1 6.2-3.7L16 5.5z" fill="#fff" fill-opacity=".6"/><path d="M16 5.5L9.8 16.3l6.2 3.7V5.5z" fill="#fff"/><path d="M16 21.3l-.1.1v4.6l.1.3 6.2-8.7L16 21.3z" fill="#fff" fill-opacity=".6"/><path d="M16 26.3v-5l-6.2-3.7L16 26.3z" fill="#fff"/></svg>`,
   SOL:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#9945ff"/><path d="M9 20.5h10.7c.2 0 .4.1.5.2l1.8 1.8c.3.3.1.8-.4.8H10.9c-.2 0-.4-.1-.5-.2L8.6 21.3c-.3-.3-.1-.8.4-.8zm0-5.5h10.7c.2 0 .4.1.5.2l1.8 1.8c.3.3.1.8-.4.8H10.9c-.2 0-.4-.1-.5-.2L8.6 15.8c-.3-.3-.1-.8.4-.8zm12-5.5H10.4c-.2 0-.4.1-.5.2L8.1 11.5c-.3.3-.1.8.4.8H19.2c.2 0 .4-.1.5-.2l1.8-1.8c.3-.3.1-.8-.5-.8z" fill="url(#sg)"/><defs><linearGradient id="sg" x1="8" y1="16" x2="22" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#00ffa3"/><stop offset="1" stop-color="#dc1fff"/></linearGradient></defs></svg>`,
@@ -1746,7 +1747,7 @@ const ICONS={
   AMZN:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#ff9900"/><path d="M20.3 19.3c-2.4 1.6-5.8 2.5-8.8 1.3-.2-.1-.1-.2.1-.2 2.8.6 5.5.4 7.8-.8.4-.2.6.1.9-.3zm.8-1.1c-.2-.3-1.4-.1-2-.1-.2 0-.2-.1-.1-.2.4-.5 2.5-.3 2.7 0 .2.3 0 2-.6 2-.3 0-.3-.3-.1-.5.3-.4.3-.9.1-1.2zM16 9c-3.9 0-7 3.1-7 7s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7zm-3.2 4.3h1.1v5.4h-1.1v-5.4zm2.9 0h2.6c.9 0 1.3.6 1.3 1.3 0 .8-.5 1.3-1.3 1.3h-1.4v2.7h-1.2v-5.3zm1.2 1.7h1.1c.3 0 .4-.2.4-.4s-.1-.4-.4-.4h-1.1v.8z" fill="#1a1a1a"/></svg>`,
   GOOGL:`<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#fff"/><path d="M23.5 16.2c0-.6-.1-1.2-.2-1.7H16v3.3h4.2c-.2 1-.7 1.9-1.5 2.4v2h2.4c1.5-1.3 2.4-3.3 2.4-6z" fill="#4285f4"/><path d="M16 24c2.1 0 3.9-.7 5.2-1.9l-2.4-2c-.7.5-1.7.8-2.7.8-2.1 0-3.9-1.4-4.5-3.3H9v2.1C10.3 22.4 13 24 16 24z" fill="#34a853"/><path d="M11.5 17.6c-.2-.5-.3-1-.3-1.6s.1-1.1.3-1.6V12.3H9c-.6 1.2-1 2.5-1 3.9s.4 2.7 1 3.9l2.5-2.5z" fill="#fbbc05"/><path d="M16 10.8c1.2 0 2.2.4 3 1.2l2.2-2.2C19.9 8.5 18.1 8 16 8c-3 0-5.7 1.6-7 4l2.5 2c.6-1.9 2.4-3.2 4.5-3.2z" fill="#ea4335"/></svg>`,
 };
-const DATA={
+var DATA={
   crypto:[
     {s:'BTC',n:'Bitcoin',   p:66000,c:'#f7931a',stripe:'linear-gradient(90deg,#f7931a,#ffb800)',yp:63,sp:[],yes:18420,no:10830},
     {s:'ETH',n:'Ethereum',  p:1800, c:'#627eea',stripe:'linear-gradient(90deg,#627eea,#9d6fff)',yp:56,sp:[],yes:12300,no:9640},
@@ -1755,39 +1756,39 @@ const DATA={
   ],
   stocks:[],commodities:[],forex:[],defi:[],indices:[]
 }
-const R=(a,b)=>Math.random()*(b-a)+a;
-const fmt=p=>p>=1000?'$'+p.toLocaleString('en',{maximumFractionDigits:0}):'$'+p.toFixed(p>=1?2:4);
-const fmtK=v=>v>=1000?'$'+(v/1000).toFixed(1)+'K':'$'+v;
+var R=(a,b)=>Math.random()*(b-a)+a;
+var fmt=p=>p>=1000?'$'+p.toLocaleString('en',{maximumFractionDigits:0}):'$'+p.toFixed(p>=1?2:4);
+var fmtK=v=>v>=1000?'$'+(v/1000).toFixed(1)+'K':'$'+v;
 
-let view='crypto',AT=3,dir='buy',wOn=false;
-let bal=1500,pnl=0,wins=0,total=0,wagered=0,bestWin=0;
-let positions=[],history=[],cm=null,timers={};
+var view='crypto',AT=3,dir='buy',wOn=false;
+var bal=1500,pnl=0,wins=0,total=0,wagered=0,bestWin=0;
+var positions=[],history=[],cm=null,timers={};
 
 [...DATA.crypto,...DATA.stocks,...DATA.commodities,...DATA.forex,...DATA.defi,...DATA.indices].forEach(a=>{a.sp=Array.from({length:26},()=>a.p*(1+R(-.02,.02)));});
 
 function spPath(d,W,H){
-  const mn=Math.min(...d),mx=Math.max(...d),rng=mx-mn||1;
+  var mn=Math.min(...d),mx=Math.max(...d),rng=mx-mn||1;
   return d.map((v,i)=>(i?'L':'M')+(i*(W/(d.length-1))).toFixed(1)+' '+(H*.9-((v-mn)/rng)*(H*.78)).toFixed(1)).join('');
 }
 
 function buildTicker(){
-  const all=allAssets().slice(0,16);
-  let html='';
-  for(let p=0;p<2;p++) all.forEach(a=>{
-    const chg=(R(-.9,.9)).toFixed(2),up=parseFloat(chg)>=0;
-    const ico=ICONS[a.s]||`<div style="width:16px;height:16px;border-radius:4px;background:${a.c};display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff">${a.s.slice(0,3)}</div>`;
+  var all=allAssets().slice(0,16);
+  var html='';
+  for(var p=0;p<2;p++) all.forEach(a=>{
+    var chg=(R(-.9,.9)).toFixed(2),up=parseFloat(chg)>=0;
+    var ico=ICONS[a.s]||`<div style="width:16px;height:16px;border-radius:4px;background:${a.c};display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff">${a.s.slice(0,3)}</div>`;
     html+=`<div class="tk"><div class="tk-ico">${ico}</div><span class="tk-sym">${a.s}</span><span class="tk-price">${fmt(a.p)}</span><span class="${up?'tk-up':'tk-dn'}">${up?'+':''}${chg}%</span></div>`;
   });
   document.getElementById('ticker-track').innerHTML=html;
 }
 function updateTicker(){
-  const all=allAssets().slice(0,16);
-  const items=document.querySelectorAll('.tk');
-  const half=Math.floor(items.length/2);
+  var all=allAssets().slice(0,16);
+  var items=document.querySelectorAll('.tk');
+  var half=Math.floor(items.length/2);
   items.forEach((item,i)=>{
-    const a=all[i%half];if(!a)return;
-    const chg=(R(-.9,.9)).toFixed(2),up=parseFloat(chg)>=0;
-    const pe=item.querySelector('.tk-price'),ce=item.querySelector('.tk-up,.tk-dn');
+    var a=all[i%half];if(!a)return;
+    var chg=(R(-.9,.9)).toFixed(2),up=parseFloat(chg)>=0;
+    var pe=item.querySelector('.tk-price'),ce=item.querySelector('.tk-up,.tk-dn');
     if(pe)pe.textContent=fmt(a.p);
     if(ce){ce.textContent=(up?'+':'')+chg+'%';ce.className=up?'tk-up':'tk-dn';}
   });
@@ -1796,8 +1797,8 @@ function updateTicker(){
 function setT(t,el){AT=t;document.querySelectorAll('.tp').forEach(x=>x.classList.remove('on'));el.classList.add('on');render();}
 function setCat(el){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('on'));el.classList.add('on');}
 /* ── HOW IT WORKS ── */
-let hiwStep=0;
-const hiwSteps=[
+var hiwStep=0;
+var hiwSteps=[
   {
     num:1,
     emoji:'🎯',
@@ -1839,11 +1840,11 @@ function handleHIWOverlay(e){
 }
 
 function renderHIW(){
-  const s=hiwSteps[hiwStep];
-  const isLast=hiwStep===hiwSteps.length-1;
-  const isFirst=hiwStep===0;
+  var s=hiwSteps[hiwStep];
+  var isLast=hiwStep===hiwSteps.length-1;
+  var isFirst=hiwStep===0;
 
-  const extraHTML=
+  var extraHTML=
     s.extra==='mini-card'?`
     <div class="hiw-mini-card">
       <div class="hiw-mini-q">Will BTC/USD be higher in 5 minutes?</div>
@@ -1908,8 +1909,8 @@ function hiwNext(){if(hiwStep<hiwSteps.length-1){hiwStep++;renderHIW();}}
 function hiwPrev(){if(hiwStep>0){hiwStep--;renderHIW();}}
 
 /* ── AUTH SYSTEM ── */
-let authStep='main';
-let authEmail='';
+var authStep='main';
+var authEmail='';
 
 function openAuth(){
   authStep='main';
@@ -1924,7 +1925,7 @@ function handleOverlayClick(e){
 }
 
 function renderAuthStep(){
-  const body=document.getElementById('auth-body');
+  var body=document.getElementById('auth-body');
   if(authStep==='main') body.innerHTML=`
     <div class="mode-toggle">
       <button class="mode-btn on" id="real-mode-btn" onclick="switchAuthMode('real')">🔐 Real Account</button>
@@ -1934,21 +1935,21 @@ function renderAuthStep(){
       <div class="auth-title">Sign in to PredifyChain</div>
       <div class="auth-sub">Trade prediction markets powered by Chainlink oracles.</div>
     <div class="social-btns">
-      <button class="social-btn" onclick="authSocial('Google')">
+      <button class="social-btn" onclick="toast('Social login disabled. Use MetaMask or Demo mode.','var(--amber)')">
         <div class="social-ico" style="background:#fff;border:1px solid #e0e0e0">
           <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         </div>
         <div class="social-info"><div class="social-name">Continue with Google</div><div class="social-tag">Sign in with your Google account</div></div>
         <span class="social-arr">›</span>
       </button>
-      <button class="social-btn" onclick="authSocial('Facebook')">
+      <button class="social-btn" onclick="toast('Social login disabled. Use MetaMask or Demo mode.','var(--amber)')">
         <div class="social-ico" style="background:#1877f2">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         </div>
         <div class="social-info"><div class="social-name">Continue with Facebook</div><div class="social-tag">Sign in with your Facebook account</div></div>
         <span class="social-arr">›</span>
       </button>
-      <button class="social-btn" onclick="authSocial('Apple')">
+      <button class="social-btn" onclick="toast('Social login disabled. Use MetaMask or Demo mode.','var(--amber)')">
         <div class="social-ico" style="background:#000">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         </div>
@@ -1971,11 +1972,11 @@ function renderAuthStep(){
         <span class="wallet-pop">Popular</span>
       </button>
 
-      <button class="wallet-opt" onclick="connectWallet('WalletConnect','0x2a8C...bD91')">
+      <button class="wallet-opt" onclick="toast('Only MetaMask is supported right now','var(--amber)')">
         <div class="wallet-ico" style="background:rgba(59,153,252,.1)">🔗</div>
         <div class="wallet-info"><div class="wallet-name">WalletConnect</div><div class="wallet-tag">Any mobile wallet</div></div>
       </button>
-      <button class="wallet-opt" onclick="connectWallet('Coinbase','0x5f6E...4aC1')">
+      <button class="wallet-opt" onclick="toast('Only MetaMask is supported right now','var(--amber)')">
         <div class="wallet-ico" style="background:rgba(0,82,255,.1)">◎</div>
         <div class="wallet-info"><div class="wallet-name">Coinbase Wallet</div><div class="wallet-tag">Beginner friendly</div></div>
       </button>
@@ -2013,9 +2014,9 @@ function renderAuthStep(){
 }
 
 function validateEmail(){
-  const v=document.getElementById('auth-email-inp')?.value||'';
-  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  const btn=document.getElementById('email-btn');
+  var v=document.getElementById('auth-email-inp')?.value||'';
+  var ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  var btn=document.getElementById('email-btn');
   if(btn)btn.disabled=!ok;
 }
 
@@ -2026,14 +2027,14 @@ function sendOTP(){
 }
 
 function otpInput(i){
-  const el=document.getElementById('otp'+i);
+  var el=document.getElementById('otp'+i);
   if(!el)return;
-  const v=el.value.replace(/\D/g,'');
+  var v=el.value.replace(/\D/g,'');
   el.value=v;
   if(v)el.classList.add('filled');else el.classList.remove('filled');
   if(v&&i<5)document.getElementById('otp'+(i+1))?.focus();
-  const all=[0,1,2,3,4,5].map(j=>document.getElementById('otp'+j)?.value||'').join('');
-  const btn=document.getElementById('otp-btn');
+  var all=[0,1,2,3,4,5].map(j=>document.getElementById('otp'+j)?.value||'').join('');
+  var btn=document.getElementById('otp-btn');
   if(btn)btn.disabled=all.length<6;
 }
 function otpKey(e,i){
@@ -2045,7 +2046,7 @@ function verifyOTP(){
   authStep='loading';renderAuthStep();
   setTimeout(()=>{
     authStep='success';renderAuthStep();
-    const name=authEmail.split('@')[0];
+    var name=authEmail.split('@')[0];
     setTimeout(()=>{
       closeAuth();
       finalizeLogin(name,authEmail.substring(0,3).toUpperCase()+'***','via Email');
@@ -2055,8 +2056,8 @@ function verifyOTP(){
 
 function authSocial(provider){
   authStep='loading';renderAuthStep();
-  const demos={Google:'john@gmail.com',Facebook:'mark@fb.com',Apple:'user@icloud.com'};
-  const addrs={Google:'0x7a2F...4dE9',Facebook:'0x9c1B...3aF2',Apple:'0x4e8D...7bC5'};
+  var demos={Google:'john@gmail.com',Facebook:'mark@fb.com',Apple:'user@icloud.com'};
+  var addrs={Google:'0x7a2F...4dE9',Facebook:'0x9c1B...3aF2',Apple:'0x4e8D...7bC5'};
   setTimeout(()=>{
     authStep='success';renderAuthStep();
     setTimeout(()=>{
@@ -2066,32 +2067,46 @@ function authSocial(provider){
   },1200);
 }
 
-function connectWallet(name,addr){
-  authStep='loading';renderAuthStep();
-  setTimeout(()=>{
+async function connectWallet(name,addr){
+  if(name!=='MetaMask'){toast('Only MetaMask is supported right now','var(--amber)');return;}
+  if(typeof window.ethereum==='undefined'){toast('MetaMask extension not detected','var(--r)');return;}
+  try{
+    authStep='loading';renderAuthStep();
+    var chainId=await window.ethereum.request({method:'eth_chainId'});
+    if(chainId!=='0x38'){
+      try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x38'}]});}
+      catch(swErr){
+        try{
+          await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x38',chainName:'BNB Smart Chain',nativeCurrency:{name:'BNB',symbol:'BNB',decimals:18},rpcUrls:['https://bsc-dataseed.binance.org/'],blockExplorerUrls:['https://bscscan.com']} ]});
+        }catch(addErr){throw addErr;}
+      }
+    }
+    var accs=await window.ethereum.request({method:'eth_requestAccounts'});
+    var account=(accs&&accs[0])?accs[0]:'';
+    if(!account){throw new Error('No wallet account returned');}
     authStep='success';renderAuthStep();
-    setTimeout(()=>{
-      closeAuth();
-      finalizeLogin(name,addr,'Wallet');
-    },1400);
-  },1000);
+    setTimeout(function(){closeAuth();finalizeLogin('MetaMask',account,'Wallet');localStorage.setItem('predify_wallet',account);},900);
+  }catch(err){
+    authStep='main';renderAuthStep();
+    toast((err&&err.message)||'Wallet connection failed','var(--r)');
+  }
 }
 
 function goBack(){authStep='main';renderAuthStep();}
 
 function finalizeLogin(name,identifier,method){
   wOn=true;
-  const initials=name.slice(0,2).toUpperCase();
+  var initials=name.slice(0,2).toUpperCase();
   document.getElementById('wbtn').style.display='none';
-  const av=document.getElementById('nav-av');
+  var av=document.getElementById('nav-av');
   av.style.display='flex';av.textContent=initials;
   document.getElementById('wdisc').style.display='none';
   document.getElementById('wconn').style.display='block';
   document.getElementById('waddr').textContent=identifier;
   updateStats();
-  const btn=document.getElementById('of-sub-btn');
+  var btn=document.getElementById('of-sub-btn');
   btn.disabled=false;updateBtn();
-  const dbtn=document.getElementById('dep-btn');
+  var dbtn=document.getElementById('dep-btn');
   if(dbtn)dbtn.textContent='Deposit Now';
   notifData.unshift({ico:'👋',bg:'rgba(45,96,240,.1)',text:`<b>Welcome to PredifyChain!</b> You signed in ${method}. Start trading now.`,time:'just now',read:false});
   renderNotifs();
@@ -2104,26 +2119,26 @@ function closeWmod(){closeAuth();}
 function connect(name,addr){connectWallet(name,addr);}
 
 function getAssets(){return DATA.crypto;}
-const allAssets=()=>DATA.crypto;
+var allAssets=()=>DATA.crypto;
 
 function render(){
-  const assets=getAssets();
-  const g=document.getElementById('mgrid');
+  var assets=getAssets();
+  var g=document.getElementById('mgrid');
   Object.values(timers).forEach(t=>clearInterval(t));timers={};g.innerHTML='';
   assets.forEach(a=>{
     a.yp=Math.max(22,Math.min(78,a.yp));
-    const np=100-a.yp,chg=(R(-2,2)).toFixed(2),up=parseFloat(chg)>=0;
-    const vol='$'+Math.round(R(50,900))+'K',traders=Math.round(R(25,520));
-    const tid='tmr_'+a.s,sp=spPath(a.sp,270,36);
-    const yesAmt=fmtK(a.yes),noAmt=fmtK(a.no);
-    const qMap={
+    var np=100-a.yp,chg=(R(-2,2)).toFixed(2),up=parseFloat(chg)>=0;
+    var vol='$'+Math.round(R(50,900))+'K',traders=Math.round(R(25,520));
+    var tid='tmr_'+a.s,sp=spPath(a.sp,270,36);
+    var yesAmt=fmtK(a.yes),noAmt=fmtK(a.no);
+    var qMap={
       forex:`Will <b>${a.s.slice(0,3)}/${a.s.slice(3)}</b> rate go UP in <b>${AT} min?</b>`,
       commodities:`Will <b>${a.n}</b> price go UP in <b>${AT} min?</b>`,
       defi:`Will <b>${a.n}</b> go UP in <b>${AT} min?</b>`,
       indices:`Will <b>${a.n}</b> go UP in <b>${AT} min?</b>`,
     };
-    const question=qMap[view]||`Will <b>${a.s}</b> be higher in <b>${AT} min?</b>`;
-    const el=document.createElement('div');
+    var question=qMap[view]||`Will <b>${a.s}</b> be higher in <b>${AT} min?</b>`;
+    var el=document.createElement('div');
     el.className='mcard'+(cm&&cm.s===a.s?' sel':'');el.id='mc_'+a.s;
     el.innerHTML=`
 <div class="mc-stripe" style="background:${a.stripe}"></div>
@@ -2198,38 +2213,38 @@ function render(){
       if(e.target.closest('.mc-trade'))return;
       openDetail(a.s,a.n,a.yp,np,a.p,chg,a.yes,a.no,a.sp);
     });
-    function getRSL(m){const n=Math.floor(Date.now()/1000);return(m*60)-(n%(m*60));}
-    let s=getRSL(AT);
+    function getRSL(m){var n=Math.floor(Date.now()/1000);return(m*60)-(n%(m*60));}
+    var s=getRSL(AT);
     timers[a.s]=setInterval(()=>{
       s=getRSL(AT);
       // Lock card in last 20 seconds
-      const card=document.getElementById('mc_'+a.s);
-      if(card){const co=card.querySelector('.mc-cutoff-overlay');if(co){if(s<=20&&s>0)co.classList.add('show');else co.classList.remove('show');}}
+      var card=document.getElementById('mc_'+a.s);
+      if(card){var co=card.querySelector('.mc-cutoff-overlay');if(co){if(s<=20&&s>0)co.classList.add('show');else co.classList.remove('show');}}
       if(s<0)s=AT*60;
-      const e=document.getElementById(tid);
-      if(e){const m=Math.floor(s/60),sc=s%60;e.textContent=String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');e.className='mc-timer'+(s<30?' red':'');if(s>=30)e.style.color=a.c;}
+      var e=document.getElementById(tid);
+      if(e){var m=Math.floor(s/60),sc=s%60;e.textContent=String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');e.className='mc-timer'+(s<30?' red':'');if(s>=30)e.style.color=a.c;}
     },1000);
   });
 }
 
 function calcWin(sym,yp,np){
-  const inp=document.getElementById('mci_'+sym);
-  const wEl=document.getElementById('mcw_'+sym),pEl=document.getElementById('mcp_'+sym);
+  var inp=document.getElementById('mci_'+sym);
+  var wEl=document.getElementById('mcw_'+sym),pEl=document.getElementById('mcp_'+sym);
   if(!inp||!wEl||!pEl)return;
-  const a=parseFloat(inp.value)||0,win=a/(yp/100),prof=win-a;
+  var a=parseFloat(inp.value)||0,win=a/(yp/100),prof=win-a;
   wEl.textContent='$'+win.toFixed(2);pEl.textContent='+$'+prof.toFixed(2);
 }
-function setCA(sym,v,yp,np){const inp=document.getElementById('mci_'+sym);if(inp){inp.value=v;calcWin(sym,yp,np);}}
+function setCA(sym,v,yp,np){var inp=document.getElementById('mci_'+sym);if(inp){inp.value=v;calcWin(sym,yp,np);}}
 
 function qbet(sym,name,yp,np,d){
   if(!wOn){toggleWmod();toast('Connect wallet first','var(--amber)');return;}
-  const inp=document.getElementById('mci_'+sym);
-  const a=parseFloat(inp?.value)||0;
+  var inp=document.getElementById('mci_'+sym);
+  var a=parseFloat(inp?.value)||0;
   if(a<1){toast('Enter an amount','var(--amber)');return;}
   if(a>bal){toast('Insufficient balance','var(--r)');return;}
   bal-=a;total++;wagered+=a;
-  const odds=(d==='buy'?yp:np)/100,payout=a/odds;
-  const pos={sym,name,dir:d,a,odds,payout,ts:Date.now(),expiry:AT};
+  var odds=(d==='buy'?yp:np)/100,payout=a/odds;
+  var pos={sym,name,dir:d,a,odds,payout,ts:Date.now(),expiry:AT};
   positions.push(pos);updateStats();renderPos();
   toast((d==='buy'?'▲ BUY ':'▼ SELL ')+sym+' $'+a,d==='buy'?'var(--g)':'var(--r)');
   setTimeout(()=>resolve(pos),AT*6000+2000);
@@ -2254,15 +2269,15 @@ function setDir(d){
   updateBtn();recalc();
 }
 function updateBtn(){
-  const btn=document.getElementById('of-sub-btn');
+  var btn=document.getElementById('of-sub-btn');
   if(!wOn){btn.textContent='Connect Wallet First';btn.className='of-submit buy';return;}
   btn.className='of-submit '+(dir==='buy'?'buy':'sell');
   btn.textContent=dir==='buy'?'▲ Confirm BUY':'▼ Confirm SELL';
 }
 function recalc(){
   if(!cm)return;
-  const a=parseFloat(document.getElementById('of-inp').value)||0;
-  const odds=(dir==='buy'?cm.yp:cm.np)/100,ret=a/odds,prof=ret-a;
+  var a=parseFloat(document.getElementById('of-inp').value)||0;
+  var odds=(dir==='buy'?cm.yp:cm.np)/100,ret=a/odds,prof=ret-a;
   document.getElementById('pr-dir').textContent=dir==='buy'?'BUY YES (UP)':'SELL NO (DOWN)';
   document.getElementById('pr-dir').style.color=dir==='buy'?'var(--g)':'var(--r)';
   document.getElementById('pr-odds').textContent=(dir==='buy'?cm.yp:cm.np)+'%';
@@ -2274,15 +2289,15 @@ function sa(v){document.getElementById('of-inp').value=v;recalc();}
 function place(){
   if(!wOn){toast('Connect wallet first','var(--amber)');return;}
   if(!cm){toast('Pick a market first','var(--amber)');return;}
-  const a=parseFloat(document.getElementById('of-inp').value)||0;
+  var a=parseFloat(document.getElementById('of-inp').value)||0;
   if(a<1){toast('Enter an amount','var(--amber)');return;}
   if(a>bal){toast('Insufficient balance','var(--r)');return;}
   qbet(cm.s,cm.name,cm.yp,cm.np,dir);
 }
 
 function resolve(pos){
-  const won=Math.random()<(pos.dir==='buy'?.57:.43);
-  const profit=won?(pos.payout-pos.a):-pos.a;
+  var won=Math.random()<(pos.dir==='buy'?.57:.43);
+  var profit=won?(pos.payout-pos.a):-pos.a;
   if(won){bal+=pos.payout;wins++;if(profit>bestWin)bestWin=profit;}
   pnl+=profit;
   history.unshift({...pos,won,profit,resolvedAt:Date.now()});
@@ -2306,17 +2321,17 @@ function updateStats(){
 }
 
 function renderPos(){
-  const el=document.getElementById('pos-list');
+  var el=document.getElementById('pos-list');
   if(!positions.length){el.innerHTML='<div class="pos-empty">No open positions</div>';return;}
   el.innerHTML=positions.map(p=>{
-    const rem=Math.max(0,p.expiry*60-(Date.now()-p.ts)/1000);
-    const m=Math.floor(rem/60),s=Math.floor(rem%60);
+    var rem=Math.max(0,p.expiry*60-(Date.now()-p.ts)/1000);
+    var m=Math.floor(rem/60),s=Math.floor(rem%60);
     return`<div class="pos-row"><div class="pos-sym">${p.sym}</div><div class="${p.dir==='buy'?'pos-b':'pos-s'}">${p.dir==='buy'?'BUY':'SELL'}</div><div class="pos-amt">$${p.a.toFixed(0)}</div><div class="pos-timer">${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}</div></div>`;
   }).join('');
 }
 
 /* ── PORTFOLIO ── */
-let histFilter='all';
+var histFilter='all';
 function filterHist(f,el){
   histFilter=f;
   document.querySelectorAll('.ph-f').forEach(x=>x.classList.remove('on'));el.classList.add('on');
@@ -2332,18 +2347,18 @@ function renderPortfolio(){
   renderHistList();
 }
 function renderHistList(){
-  const el=document.getElementById('hist-list');
-  const sampleHistory=[
+  var el=document.getElementById('hist-list');
+  var sampleHistory=[
     {sym:'BTC',name:'Bitcoin',dir:'buy',a:100,won:true,profit:58.7,resolvedAt:Date.now()-180000},
     {sym:'ETH',name:'Ethereum',dir:'sell',a:50,won:false,profit:-50,resolvedAt:Date.now()-420000},
     {sym:'NVDA',name:'NVIDIA',dir:'buy',a:200,won:true,profit:70.3,resolvedAt:Date.now()-660000},
     {sym:'SOL',name:'Solana',dir:'buy',a:75,won:false,profit:-75,resolvedAt:Date.now()-900000},
     {sym:'AAPL',name:'Apple',dir:'sell',a:150,won:true,profit:105.0,resolvedAt:Date.now()-1140000},
   ];
-  const all=[...history,...(history.length<3?sampleHistory:[])];
-  const filtered=all.filter(h=>histFilter==='all'||(histFilter==='win'&&h.won)||(histFilter==='loss'&&!h.won));
+  var all=[...history,...(history.length<3?sampleHistory:[])];
+  var filtered=all.filter(h=>histFilter==='all'||(histFilter==='win'&&h.won)||(histFilter==='loss'&&!h.won));
   if(!filtered.length){el.innerHTML='<div class="pos-empty">No trades match this filter</div>';return;}
-  const ago=ms=>{const s=Math.floor((Date.now()-ms)/1000);return s<60?s+'s ago':Math.floor(s/60)+'m ago';};
+  var ago=ms=>{var s=Math.floor((Date.now()-ms)/1000);return s<60?s+'s ago':Math.floor(s/60)+'m ago';};
   el.innerHTML=filtered.map(h=>`
   <div class="ph-row">
     <div class="ph-ico">${ICONS[h.sym]||''}</div>
@@ -2360,7 +2375,7 @@ function renderHistList(){
 
 /* ── LEADERBOARD ── */
 function renderLeaderboard(){
-  const traders=[
+  var traders=[
     {n:'CryptoKing',e:'🔥',c:'#f7931a',bg:'rgba(247,147,26,.12)',pnl:12480,acc:74,trades:342},
     {n:'AlgoGod',e:'⚡',c:'#00e5ff',bg:'rgba(0,229,255,.1)',pnl:9640,acc:71,trades:288},
     {n:'BullRun99',e:'🚀',c:'#c8ff00',bg:'rgba(200,255,0,.1)',pnl:7820,acc:68,trades:219},
@@ -2370,8 +2385,8 @@ function renderLeaderboard(){
     {n:'DeFiQueen',e:'👑',c:'#ff6b9d',bg:'rgba(255,107,157,.1)',pnl:2240,acc:58,trades:76},
     {n:'You',e:'○',c:'#3a3a58',bg:'rgba(58,58,88,.2)',pnl:wOn?pnl:0,acc:wOn&&total>0?Math.round(wins/total*100):0,trades:total},
   ];
-  const medals=['gold','silver','bronze','','','','',''];
-  const ranks=['1','2','3','4','5','6','7','—'];
+  var medals=['gold','silver','bronze','','','','',''];
+  var ranks=['1','2','3','4','5','6','7','—'];
   document.getElementById('lb-list').innerHTML=traders.map((t,i)=>`
   <div class="lb-row">
     <div class="lb-rank ${medals[i]}">${ranks[i]}</div>
@@ -2387,9 +2402,9 @@ function renderLeaderboard(){
   </div>`).join('');
 }
 
-let tT;
+var tT;
 function toast(msg,col){
-  const t=document.getElementById('toast');
+  var t=document.getElementById('toast');
   document.getElementById('tmsg').textContent=msg;
   document.getElementById('tdot').style.background=col||'var(--g)';
   t.style.borderColor=col||'var(--g)';t.classList.add('show');
@@ -2400,7 +2415,7 @@ function setV(v,el){
   view=v;
   document.querySelectorAll('.ntab').forEach(x=>x.classList.remove('on'));
   if(el)el.classList.add('on');
-  const isMarket=['crypto','stocks','commodities','forex','defi','indices'].includes(v);
+  var isMarket=['crypto','stocks','commodities','forex','defi','indices'].includes(v);
   document.getElementById('view-markets').style.display=isMarket?'block':'none';
   document.getElementById('view-portfolio').style.display=v==='portfolio'?'block':'none';
   document.getElementById('view-leaderboard').style.display=v==='leaderboard'?'block':'none';
@@ -2414,7 +2429,7 @@ function setV(v,el){
   if(v==='leaderboard')renderLeaderboard();
   if(v==='profile')renderProfile();
   if(v==='deposit')renderDepHistory();
-  const dbtn=document.getElementById('dep-btn');
+  var dbtn=document.getElementById('dep-btn');
   if(dbtn)dbtn.textContent=wOn?'Deposit Now':'Sign In to Deposit';
 }
 
@@ -2425,9 +2440,9 @@ function setMobNav(id){
 
 /* ── SEARCH ── */
 function handleSearch(q){
-  const panel=document.getElementById('search-results');
+  var panel=document.getElementById('search-results');
   if(!q.trim()){panel.classList.remove('show');return;}
-  const res=allAssets().filter(a=>a.s.toLowerCase().includes(q.toLowerCase())||a.n.toLowerCase().includes(q.toLowerCase())).slice(0,8);
+  var res=allAssets().filter(a=>a.s.toLowerCase().includes(q.toLowerCase())||a.n.toLowerCase().includes(q.toLowerCase())).slice(0,8);
   if(!res.length){panel.classList.remove('show');return;}
   panel.innerHTML=res.map(a=>`
     <div class="sr-item" onmousedown="searchPick('${a.s}','${a.n}',${a.yp},${100-a.yp})">
@@ -2445,14 +2460,14 @@ function hideSearch(){document.getElementById('search-results').classList.remove
 function searchPick(sym,name,yp,np){
   document.getElementById('search-inp').value='';
   hideSearch();
-  const a=allAssets().find(x=>x.s===sym);
+  var a=allAssets().find(x=>x.s===sym);
   if(a)openDetail(sym,name,yp,np,a.p,(R(-2,2)).toFixed(2),a.yes,a.no,a.sp);
 }
 
 function triggerAllAI(){
-  const assets=getAssets();
+  var assets=getAssets();
   assets.forEach((a,i)=>{
-    const chg=(R(-2,2)).toFixed(2);
+    var chg=(R(-2,2)).toFixed(2);
     setTimeout(()=>{
       if(typeof fetchAI==='function')fetchAI(a.s,a.n,a.p.toFixed(2),a.yp,100-a.yp,chg,a.yes,a.no);
     },i*600);
@@ -2460,7 +2475,7 @@ function triggerAllAI(){
 }
 
 /* ── NOTIFICATIONS ── */
-let notifData=[
+var notifData=[
   {ico:'🏆',bg:'rgba(245,158,11,.1)',text:'<b>WIN!</b> Your BTC/USD YES bet resolved correctly. +$29.37 credited.',time:'2m ago',read:false},
   {ico:'📊',bg:'rgba(45,96,240,.1)',text:'<b>Market alert:</b> ETH/USD odds shifted — YES now at 71%.',time:'8m ago',read:false},
   {ico:'💸',bg:'rgba(22,163,74,.1)',text:'<b>Deposit confirmed.</b> $100 USDC added to your wallet.',time:'1h ago',read:true},
@@ -2477,12 +2492,12 @@ function renderNotifs(){
       </div>
       ${!n.read?'<div class="notif-unread-dot"></div>':''}
     </div>`).join('');
-  const unread=notifData.filter(n=>!n.read).length;
-  const dot=document.getElementById('notif-dot');
+  var unread=notifData.filter(n=>!n.read).length;
+  var dot=document.getElementById('notif-dot');
   if(dot)dot.style.display=unread?'block':'none';
 }
 function toggleNotif(){
-  const p=document.getElementById('notif-panel');
+  var p=document.getElementById('notif-panel');
   p.classList.toggle('show');
   if(p.classList.contains('show'))renderNotifs();
 }
@@ -2495,7 +2510,7 @@ document.addEventListener('click',e=>{
 });
 
 /* ── DEPOSIT ── */
-let depMode='deposit';
+var depMode='deposit';
 function switchDepTab(mode){
   depMode=mode;
   document.getElementById('dep-tab-dep').classList.toggle('on',mode==='deposit');
@@ -2510,7 +2525,7 @@ function selDepAmt(el,v){
 }
 function submitDeposit(){
   if(!wOn){openAuth();return;}
-  const amt=parseFloat(document.getElementById('dep-inp').value)||0;
+  var amt=parseFloat(document.getElementById('dep-inp').value)||0;
   if(amt<10){toast('Minimum deposit is $10','var(--amber)');return;}
   bal+=amt;updateStats();
   notifData.unshift({ico:'💸',bg:'rgba(22,163,74,.1)',text:`<b>Deposit confirmed.</b> $${amt} USDC added to your wallet.`,time:'just now',read:false});
@@ -2518,13 +2533,13 @@ function submitDeposit(){
   toast(`$${amt} USDC deposited successfully!`,'var(--g)');
 }
 function renderDepHistory(){
-  const hist=[
+  var hist=[
     {ico:'💸',bg:'rgba(22,163,74,.1)',name:'Deposit via Card',time:'Today 2:30 PM',amt:'+$100',c:'#16a34a'},
     {ico:'🏆',bg:'rgba(245,158,11,.1)',name:'Winning payout — BTC YES',time:'Today 1:15 PM',amt:'+$58.73',c:'#16a34a'},
     {ico:'🎯',bg:'rgba(229,41,74,.1)',name:'Bet placed — ETH NO',time:'Today 12:40 PM',amt:'-$50',c:'#e5294a'},
     {ico:'💸',bg:'rgba(22,163,74,.1)',name:'Deposit via Bank',time:'Yesterday',amt:'+$250',c:'#16a34a'},
   ];
-  const el=document.getElementById('dep-history');
+  var el=document.getElementById('dep-history');
   if(!el)return;
   el.innerHTML=hist.map(h=>`
     <div class="dep-hist-item">
@@ -2539,10 +2554,10 @@ function renderDepHistory(){
 
 /* ── PROFILE ── */
 function renderProfile(){
-  const el=document.getElementById('profile-content');
+  var el=document.getElementById('profile-content');
   if(!el)return;
-  const name=wOn?(document.getElementById('waddr')?.textContent||'Trader'):'Guest';
-  const initials=name.slice(0,2).toUpperCase();
+  var name=wOn?(document.getElementById('waddr')?.textContent||'Trader'):'Guest';
+  var initials=name.slice(0,2).toUpperCase();
   el.innerHTML=`
   <div class="profile-header">
     <div class="profile-top">
@@ -2570,8 +2585,8 @@ function renderProfile(){
   <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:var(--ff)">Trade History</div>
   <div class="port-history"><div id="hist-list-profile"></div></div>`;
   renderHistList();
-  const hl=document.getElementById('hist-list');
-  const hp=document.getElementById('hist-list-profile');
+  var hl=document.getElementById('hist-list');
+  var hp=document.getElementById('hist-list-profile');
   if(hl&&hp)hp.innerHTML=hl.innerHTML||'<div class="pos-empty">No trades yet</div>';
 }
 
@@ -2665,7 +2680,7 @@ renderNotifs();
 setTimeout(function(){if(typeof triggerAllAI==='function')triggerAllAI();},2000);
 
 /* ── DETAIL MODAL ── */
-const SAMPLE_COMMENTS=[
+var SAMPLE_COMMENTS=[
   {name:'CryptoKing',av:'CK',color:'#2d60f0',badge:'buy',badgeTxt:'BUY YES',time:'2m ago',text:'BTC has been consolidating above $95K for 3 hours. Classic bull flag — expecting a breakout UP in the next few minutes.',likes:24},
   {name:'AlgoGod',av:'AG',color:'#7c3aed',badge:'buy',badgeTxt:'BUY YES',time:'5m ago',text:'RSI just crossed 60 on the 1-min chart. Volume spike too. I\'m in YES at 63%.',likes:17},
   {name:'BearHunter',av:'BH',color:'#e5294a',badge:'sell',badgeTxt:'SELL NO',time:'8m ago',text:'Don\'t fall for it guys. Resistance at $95,800 is strong. This thing is going down. Sold NO at 37%.',likes:11},
@@ -2675,13 +2690,13 @@ const SAMPLE_COMMENTS=[
   {name:'MoonShot',av:'MS',color:'#0284c7',badge:'buy',badgeTxt:'BUY YES',time:'31m ago',text:'Polymarket whales are piling into YES. Follow the smart money! 🚀',likes:32},
 ];
 
-let detailComments=[...SAMPLE_COMMENTS];
-let detailMarket=null;
-let activeTab='overview';
-let commentLikes={};
+var detailComments=[...SAMPLE_COMMENTS];
+var detailMarket=null;
+var activeTab='overview';
+var commentLikes={};
 
 function openDetail(sym,name,yp,np,price,chg,yesAmt,noAmt,sp){
-  const a=([...DATA.crypto,...DATA.stocks]).find(x=>x.s===sym)||{};
+  var a=([...DATA.crypto,...DATA.stocks]).find(x=>x.s===sym)||{};
   detailMarket={sym,name,yp,np,price,chg,yesAmt,noAmt,sp:a.sp||sp||[],c:a.c||'#2d60f0',stripe:a.stripe||''};
   activeTab='overview';
   renderDetailHead();
@@ -2701,8 +2716,8 @@ function handleDetailOverlay(e){
 }
 
 function renderDetailHead(){
-  const m=detailMarket;
-  const up=parseFloat(m.chg)>=0;
+  var m=detailMarket;
+  var up=parseFloat(m.chg)>=0;
   document.getElementById('dm-head').innerHTML=`
     <div class="dm-coin-ico">${ICONS[m.sym]||''}</div>
     <div class="dm-coin-info">
@@ -2717,12 +2732,12 @@ function renderDetailHead(){
 }
 
 function renderDetailLeft(){
-  const m=detailMarket;
-  const left=document.getElementById('dm-left');
-  const yesAmt=fmtK(m.yesAmt||8000);
-  const noAmt=fmtK(m.noAmt||5000);
-  const vol=fmtK((m.yesAmt||8000)+(m.noAmt||5000));
-  const sp=spPath(m.sp.length>2?m.sp:Array.from({length:20},(_,i)=>m.price*(1+R(-.015,.015))),680,78);
+  var m=detailMarket;
+  var left=document.getElementById('dm-left');
+  var yesAmt=fmtK(m.yesAmt||8000);
+  var noAmt=fmtK(m.noAmt||5000);
+  var vol=fmtK((m.yesAmt||8000)+(m.noAmt||5000));
+  var sp=spPath(m.sp.length>2?m.sp:Array.from({length:20},(_,i)=>m.price*(1+R(-.015,.015))),680,78);
 
   left.innerHTML=`
   <!-- TABS -->
@@ -2820,10 +2835,10 @@ function renderDetailLeft(){
   <div class="dm-section">
     <div class="dm-sec-title">Top Position Holders</div>
     ${['CryptoKing','AlgoGod','WhaleAlert','DeFiQueen','MoonShot'].map((n,i)=>{
-      const isBuy=i%2===0||i===3;
-      const amt=Math.round(R(500,5000));
-      const colors=['#2d60f0','#7c3aed','#d97706','#db2777','#0284c7'];
-      const av=n.slice(0,2).toUpperCase();
+      var isBuy=i%2===0||i===3;
+      var amt=Math.round(R(500,5000));
+      var colors=['#2d60f0','#7c3aed','#d97706','#db2777','#0284c7'];
+      var av=n.slice(0,2).toUpperCase();
       return`<div class="dm-comment" style="align-items:center">
         <div class="dm-c-av" style="background:${colors[i]}">${av}</div>
         <div class="dm-c-body">
@@ -2841,12 +2856,12 @@ function renderDetailLeft(){
   <div class="dm-section">
     <div class="dm-sec-title">Recent Activity</div>
     ${Array.from({length:8},(_,i)=>{
-      const isBuy=Math.random()>.45;
-      const amt=Math.round(R(25,500));
-      const pct=isBuy?m.yp:100-m.yp;
-      const mins=Math.round(R(1,45));
-      const names=['Trader_'+Math.floor(R(100,999)),'0x'+Math.floor(R(1000,9999))+'...','User_'+Math.floor(R(10,99))];
-      const name=names[Math.floor(R(0,3))];
+      var isBuy=Math.random()>.45;
+      var amt=Math.round(R(25,500));
+      var pct=isBuy?m.yp:100-m.yp;
+      var mins=Math.round(R(1,45));
+      var names=['Trader_'+Math.floor(R(100,999)),'0x'+Math.floor(R(1000,9999))+'...','User_'+Math.floor(R(10,99))];
+      var name=names[Math.floor(R(0,3))];
       return`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--b0)">
         <div style="width:28px;height:28px;border-radius:7px;background:${isBuy?'rgba(22,163,74,.1)':'rgba(229,41,74,.09)'};display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">${isBuy?'↑':'↓'}</div>
         <div style="flex:1">
@@ -2863,12 +2878,12 @@ function renderDetailLeft(){
 }
 
 function renderDetailRight(){
-  const m=detailMarket;
-  const aiData=aiCache[m.sym+'_'+AT];
-  const isBuy=aiData?aiData.data.direction==='BUY':m.yp>=50;
-  const conf=aiData?aiData.data.confidence:Math.round(50+Math.abs(m.yp-50)*.8);
-  const sugPct=aiData?aiData.data.suggest_pct:Math.round((conf-50)/2+5);
-  const reason=aiData?aiData.data.reason:`${m.sym} ${isBuy?'YES':'NO'} pool dominant at ${isBuy?m.yp:100-m.yp}%`;
+  var m=detailMarket;
+  var aiData=aiCache[m.sym+'_'+AT];
+  var isBuy=aiData?aiData.data.direction==='BUY':m.yp>=50;
+  var conf=aiData?aiData.data.confidence:Math.round(50+Math.abs(m.yp-50)*.8);
+  var sugPct=aiData?aiData.data.suggest_pct:Math.round((conf-50)/2+5);
+  var reason=aiData?aiData.data.reason:`${m.sym} ${isBuy?'YES':'NO'} pool dominant at ${isBuy?m.yp:100-m.yp}%`;
 
   document.getElementById('dm-right').innerHTML=`
   <div class="dm-trade-wrap">
@@ -2927,7 +2942,7 @@ function renderDetailRight(){
   recalcDetail();
 }
 
-let detailDir='buy';
+var detailDir='buy';
 
 function setDetailDir(d){
   detailDir=d;
@@ -2936,10 +2951,10 @@ function setDetailDir(d){
 
 function recalcDetail(){
   if(!detailMarket)return;
-  const a=parseFloat(document.getElementById('dm-amt')?.value)||0;
-  const odds=(detailDir==='buy'?detailMarket.yp:100-detailMarket.yp)/100;
-  const ret=a/odds,prof=ret-a;
-  const el=id=>document.getElementById(id);
+  var a=parseFloat(document.getElementById('dm-amt')?.value)||0;
+  var odds=(detailDir==='buy'?detailMarket.yp:100-detailMarket.yp)/100;
+  var ret=a/odds,prof=ret-a;
+  var el=id=>document.getElementById(id);
   if(el('dm-pr-odds'))el('dm-pr-odds').textContent=(detailDir==='buy'?detailMarket.yp:100-detailMarket.yp)+'%';
   if(el('dm-pr-pay'))el('dm-pr-pay').textContent='$'+a.toFixed(2);
   if(el('dm-pr-ret'))el('dm-pr-ret').textContent='$'+ret.toFixed(2);
@@ -2947,13 +2962,13 @@ function recalcDetail(){
 }
 
 function setDMAmt(v){
-  const inp=document.getElementById('dm-amt');
+  var inp=document.getElementById('dm-amt');
   if(inp){inp.value=v;recalcDetail();}
 }
 
 function placeDetailBet(){
   if(!wOn){closeDetail();openAuth();return;}
-  const a=parseFloat(document.getElementById('dm-amt')?.value)||0;
+  var a=parseFloat(document.getElementById('dm-amt')?.value)||0;
   if(a<1){toast('Enter an amount','var(--amber)');return;}
   if(a>bal){toast('Insufficient balance','var(--r)');return;}
   qbet(detailMarket.sym,detailMarket.name,detailMarket.yp,100-detailMarket.yp,detailDir);
@@ -2967,8 +2982,8 @@ function switchTab(tab){
 
 function postComment(){
   if(!wOn)return;
-  const inp=document.getElementById('dm-comment-inp');
-  const text=inp?.value?.trim();
+  var inp=document.getElementById('dm-comment-inp');
+  var text=inp?.value?.trim();
   if(!text)return;
   detailComments.unshift({
     name:'You',av:'ME',color:'#2d60f0',
@@ -2982,23 +2997,23 @@ function postComment(){
 function likeComment(i,btn){
   if(commentLikes[i]){commentLikes[i]=false;detailComments[i].likes--;}
   else{commentLikes[i]=true;detailComments[i].likes++;}
-  const cnt=document.getElementById('like-count-'+i);
-  const heart=btn.querySelector('span');
+  var cnt=document.getElementById('like-count-'+i);
+  var heart=btn.querySelector('span');
   if(cnt)cnt.textContent=detailComments[i].likes;
   if(heart)heart.textContent=commentLikes[i]?'♥':'♡';
 }
 
 /* ── DEMO MODE ── */
-const DEMO_BAL=50000;
-let isDemoMode=false;
-let demoAuthMode='real';
+var DEMO_BAL=50000;
+var isDemoMode=false;
+var demoAuthMode='real';
 
 function switchAuthMode(mode){
   demoAuthMode=mode;
-  const realBtn=document.getElementById('real-mode-btn');
-  const demoBtn=document.getElementById('demo-mode-btn');
-  const realContent=document.getElementById('auth-mode-content');
-  const demoSection=document.getElementById('demo-signin-section');
+  var realBtn=document.getElementById('real-mode-btn');
+  var demoBtn=document.getElementById('demo-mode-btn');
+  var realContent=document.getElementById('auth-mode-content');
+  var demoSection=document.getElementById('demo-signin-section');
   if(!realBtn)return;
   if(mode==='demo'){
     realBtn.classList.remove('on');
@@ -3026,7 +3041,7 @@ function startDemo(){
 
   /* Update nav */
   document.getElementById('wbtn').style.display='none';
-  const av=document.getElementById('nav-av');
+  var av=document.getElementById('nav-av');
   av.style.display='flex';av.textContent='🎮';
   av.style.background='linear-gradient(135deg,#7c3aed,#2d60f0)';
 
@@ -3037,9 +3052,9 @@ function startDemo(){
   document.getElementById('waddr').style.color='#7c3aed';
 
   /* Enable trading */
-  const btn=document.getElementById('of-sub-btn');
+  var btn=document.getElementById('of-sub-btn');
   if(btn){btn.disabled=false;updateBtn();}
-  const dbtn=document.getElementById('dep-btn');
+  var dbtn=document.getElementById('dep-btn');
   if(dbtn)dbtn.textContent='Add Demo Funds';
 
   updateStats();
@@ -3057,7 +3072,7 @@ function startDemo(){
 }
 
 function updateDemoBal(){
-  const el=document.getElementById('demo-bal-display');
+  var el=document.getElementById('demo-bal-display');
   if(el)el.textContent='$'+bal.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
@@ -3076,7 +3091,7 @@ function closeDemo(){
   wOn=false;bal=1500;pnl=0;wins=0;total=0;
   positions=[];history=[];
   document.getElementById('wbtn').style.display='flex';
-  const av=document.getElementById('nav-av');
+  var av=document.getElementById('nav-av');
   av.style.display='none';
   document.getElementById('wdisc').style.display='block';
   document.getElementById('wconn').style.display='none';
@@ -3084,20 +3099,20 @@ function closeDemo(){
 }
 
 /* Override updateStats to also update demo balance display */
-const _origUpdateStats=updateStats;
+var _origUpdateStats=updateStats;
 updateStats=function(){
   _origUpdateStats();
   if(isDemoMode)updateDemoBal();
 };
 
 /* Add "DEMO" tag on cards in demo mode */
-const _origRender=render;
+var _origRender=render;
 render=function(){
   _origRender();
   if(isDemoMode){
     document.querySelectorAll('.mcard').forEach(card=>{
       if(!card.querySelector('.demo-card-tag')){
-        const tag=document.createElement('div');
+        var tag=document.createElement('div');
         tag.className='demo-card-tag';
         tag.textContent='DEMO';
         card.style.position='relative';
@@ -3108,10 +3123,10 @@ render=function(){
 };
 
 /* Demo deposit — add more fake USDC */
-const _origSubmitDeposit=submitDeposit;
+var _origSubmitDeposit=submitDeposit;
 submitDeposit=function(){
   if(isDemoMode){
-    const amt=parseFloat(document.getElementById('dep-inp')?.value)||0;
+    var amt=parseFloat(document.getElementById('dep-inp')?.value)||0;
     if(amt<10){toast('Minimum $10','var(--amber)');return;}
     bal+=amt;updateStats();
     notifData.unshift({ico:'💸',bg:'rgba(22,163,74,.1)',text:`<b>Demo deposit!</b> $${amt.toFixed(0)} fake USDC added.`,time:'just now',read:false});
@@ -3123,14 +3138,14 @@ submitDeposit=function(){
 };
 
 /* Show demo leaderboard entry */
-const _origRenderLeaderboard=renderLeaderboard;
+var _origRenderLeaderboard=renderLeaderboard;
 renderLeaderboard=function(){
   _origRenderLeaderboard();
   /* Add demo rank note */
   if(isDemoMode){
-    const lbList=document.getElementById('lb-list');
+    var lbList=document.getElementById('lb-list');
     if(lbList&&!lbList.querySelector('.demo-lb-note')){
-      const note=document.createElement('div');
+      var note=document.createElement('div');
       note.className='demo-lb-note';
       note.style.cssText='text-align:center;padding:10px;font-size:11px;color:var(--t3);border-top:1px solid var(--b0);font-family:var(--ff)';
       note.innerHTML='🎮 <b style="color:#7c3aed">Demo mode</b> — scores not counted on real leaderboard';
@@ -3140,20 +3155,20 @@ renderLeaderboard=function(){
 };
 
 /* Show demo badge in profile */
-const _origRenderProfile=renderProfile;
+var _origRenderProfile=renderProfile;
 renderProfile=function(){
   _origRenderProfile();
   if(isDemoMode){
-    const profileHeader=document.querySelector('.profile-header');
+    var profileHeader=document.querySelector('.profile-header');
     if(profileHeader&&!profileHeader.querySelector('.demo-stat-badge')){
-      const badge=document.createElement('div');
+      var badge=document.createElement('div');
       badge.className='demo-stat-badge';
       badge.innerHTML='🎮 Demo Account — $50K Fake USDC';
       profileHeader.insertBefore(badge,profileHeader.querySelector('.profile-top'));
     }
   }
 };
-let isDark=false;
+var isDark=false;
 function toggleTheme(){
   isDark=!isDark;
   document.body.classList.toggle('dark',isDark);
@@ -3164,8 +3179,8 @@ function toggleTheme(){
 
 /* ── ORDER CONFIRMATION POPUP ── */
 function showOrderConfirm(sym,name,dir,amt,yp,payout){
-  const isBuy=dir==='buy';
-  const profit=payout-amt;
+  var isBuy=dir==='buy';
+  var profit=payout-amt;
   document.getElementById('oc-icon').className='oc-icon '+(isBuy?'oc-icon-buy':'oc-icon-sell');
   document.getElementById('oc-icon').textContent=isBuy?'✅':'🎯';
   document.getElementById('oc-title').textContent=isBuy?'BUY YES placed!':'SELL NO placed!';
@@ -3183,10 +3198,10 @@ function showOrderConfirm(sym,name,dir,amt,yp,payout){
 function closeOC(){document.getElementById('oc-overlay').classList.remove('show');}
 function handleOCOverlay(e){if(e.target===document.getElementById('oc-overlay'))closeOC();}
 function spawnConfetti(){
-  const box=document.getElementById('oc-box');
-  const colors=['#2d60f0','#16a34a','#f59e0b','#e5294a','#7c3aed','#06b6d4'];
-  for(let i=0;i<18;i++){
-    const d=document.createElement('div');
+  var box=document.getElementById('oc-box');
+  var colors=['#2d60f0','#16a34a','#f59e0b','#e5294a','#7c3aed','#06b6d4'];
+  for(var i=0;i<18;i++){
+    var d=document.createElement('div');
     d.className='confetti-piece';
     d.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*30-20}px;background:${colors[i%colors.length]};border-radius:${Math.random()>0.5?'50%':'2px'};animation-delay:${Math.random()*0.5}s;animation-duration:${0.9+Math.random()*0.5}s`;
     box.appendChild(d);
@@ -3195,8 +3210,8 @@ function spawnConfetti(){
 }
 
 /* ── PRICE ALERTS ── */
-let priceAlerts=[];
-let alertCond='above';
+var priceAlerts=[];
+var alertCond='above';
 function openAlerts(){
   renderAlertAssets();
   renderAlertList();
@@ -3210,15 +3225,15 @@ function setAlertCond(c,el){
   document.getElementById('alert-below').classList.toggle('on',c==='below');
 }
 function renderAlertAssets(){
-  const sel=document.getElementById('alert-asset-sel');
+  var sel=document.getElementById('alert-asset-sel');
   if(!sel)return;
   sel.innerHTML=allAssets().map(a=>`<option value="${a.s}">${a.s} — ${a.n} ($${fmt(a.p).replace('$','')})</option>`).join('');
 }
 function createAlert(){
-  const sym=document.getElementById('alert-asset-sel')?.value;
-  const price=parseFloat(document.getElementById('alert-price-inp')?.value);
+  var sym=document.getElementById('alert-asset-sel')?.value;
+  var price=parseFloat(document.getElementById('alert-price-inp')?.value);
   if(!sym||!price||price<=0){toast('Enter a valid price','var(--amber)');return;}
-  const asset=allAssets().find(a=>a.s===sym);
+  var asset=allAssets().find(a=>a.s===sym);
   priceAlerts.push({sym,name:asset?.n||sym,cond:alertCond,price,triggered:false,id:Date.now()});
   document.getElementById('alert-price-inp').value='';
   renderAlertList();
@@ -3226,7 +3241,7 @@ function createAlert(){
 }
 function deleteAlert(id){priceAlerts=priceAlerts.filter(a=>a.id!==id);renderAlertList();}
 function renderAlertList(){
-  const el=document.getElementById('alert-list');
+  var el=document.getElementById('alert-list');
   if(!el)return;
   if(!priceAlerts.length){el.innerHTML='<div class="alert-empty">No alerts set yet.<br>Create one above!</div>';return;}
   el.innerHTML=priceAlerts.map(a=>`
@@ -3245,9 +3260,9 @@ function renderAlertList(){
 setInterval(()=>{
   priceAlerts.forEach(alert=>{
     if(alert.triggered)return;
-    const asset=allAssets().find(a=>a.s===alert.sym);
+    var asset=allAssets().find(a=>a.s===alert.sym);
     if(!asset)return;
-    const hit=(alert.cond==='above'&&asset.p>=alert.price)||(alert.cond==='below'&&asset.p<=alert.price);
+    var hit=(alert.cond==='above'&&asset.p>=alert.price)||(alert.cond==='below'&&asset.p<=alert.price);
     if(hit){
       alert.triggered=true;
       notifData.unshift({ico:'⚡',bg:'rgba(245,158,11,.1)',text:`<b>Price Alert!</b> ${alert.sym} has gone ${alert.cond} $${alert.price.toLocaleString()}. Current: $${fmt(asset.p)}`,time:'just now',read:false});
@@ -3259,18 +3274,18 @@ setInterval(()=>{
 
 /* ── AI RIGHT PANEL ── */
 function updateRPAI(){
-  const content=document.getElementById('rp-ai-content');
-  const badge=document.getElementById('rp-ai-badge');
+  var content=document.getElementById('rp-ai-content');
+  var badge=document.getElementById('rp-ai-badge');
   if(!content||!badge)return;
-  const cached=Object.entries(aiCache).filter(([k,v])=>Date.now()-v.ts<90000).slice(0,4);
+  var cached=Object.entries(aiCache).filter(([k,v])=>Date.now()-v.ts<90000).slice(0,4);
   if(!cached.length){badge.textContent='Loading...';content.innerHTML='<div class="rp-ai-empty">AI analyzing markets...</div>';return;}
   badge.textContent=`${cached.length} signals`;
   content.innerHTML=cached.map(([key,v])=>{
-    const sym=key.split('_')[0];
-    const d=v.data;
-    const isBuy=d.direction==='BUY';
-    const conf=Math.min(91,Math.max(52,d.confidence||65));
-    const asset=allAssets().find(a=>a.s===sym);
+    var sym=key.split('_')[0];
+    var d=v.data;
+    var isBuy=d.direction==='BUY';
+    var conf=Math.min(91,Math.max(52,d.confidence||65));
+    var asset=allAssets().find(a=>a.s===sym);
     return`<div class="rp-ai-item">
       <div class="rp-ai-sym">
         <span class="rp-ai-sym-name">${sym} <span style="font-size:10px;color:var(--t3);font-weight:400">${asset?.n||''}</span></span>
@@ -3285,14 +3300,14 @@ function updateRPAI(){
 if(typeof renderAI==="function"){var _origRenderAI=renderAI;renderAI=function(sym,d){_origRenderAI(sym,d);setTimeout(updateRPAI,100);};}
 
 /* ── PROPER MARKET RESOLUTION ── */
-const _origResolve=resolve;
+var _origResolve=resolve;
 resolve=function(pos){
   _origResolve(pos);
   /* Show resolved overlay on card */
-  const card=document.getElementById('mc_'+pos.sym);
+  var card=document.getElementById('mc_'+pos.sym);
   if(!card)return;
-  const won=history.find(h=>h.ts===pos.ts&&h.sym===pos.sym)?.won;
-  const overlay=document.createElement('div');
+  var won=history.find(h=>h.ts===pos.ts&&h.sym===pos.sym)?.won;
+  var overlay=document.createElement('div');
   overlay.className='mc-resolved-overlay';
   overlay.innerHTML=`
     <div class="mc-res-ico">${won?'🏆':'❌'}</div>
@@ -3305,15 +3320,15 @@ resolve=function(pos){
 };
 
 /* ── OVERRIDE qbet TO SHOW CONFIRMATION ── */
-const _origQbet=qbet;
+var _origQbet=qbet;
 qbet=function(sym,name,yp,np,d){
   if(!wOn){toggleWmod();toast('Connect wallet first','var(--amber)');return;}
-  const inp=document.getElementById('mci_'+sym);
-  const amt=parseFloat(inp?.value)||0;
+  var inp=document.getElementById('mci_'+sym);
+  var amt=parseFloat(inp?.value)||0;
   if(amt<1){toast('Enter an amount','var(--amber)');return;}
   if(amt>bal){toast('Insufficient balance','var(--r)');return;}
-  const odds=(d==='buy'?yp:np)/100;
-  const payout=amt/odds;
+  var odds=(d==='buy'?yp:np)/100;
+  var payout=amt/odds;
   _origQbet(sym,name,yp,np,d);
   showOrderConfirm(sym,name,d,amt,yp,payout);
 };
@@ -3323,21 +3338,21 @@ qbet=function(sym,name,yp,np,d){
    ══════════════════════════════════════════════ */
 
 /* ── USER LEVELS ── */
-const LEVELS=[
+var LEVELS=[
   {name:'Bronze',   icon:'🥉',min:0,    color:'#cd7f32'},
   {name:'Silver',   icon:'🥈',min:5,    color:'#8899aa'},
   {name:'Gold',     icon:'🥇',min:15,   color:'#d4ac0d'},
   {name:'Platinum', icon:'💎',min:30,   color:'#0284c7'},
   {name:'Diamond',  icon:'👑',min:60,   color:'#7c3aed'},
 ];
-let userStreak=0;
-let streakHistory=[]; // true=won, false=lost
-let missionProgress={trades:0,wins:0,bigWin:false};
+var userStreak=0;
+var streakHistory=[]; // true=won, false=lost
+var missionProgress={trades:0,wins:0,bigWin:false};
 
 function getLevel(){
-  const t=total||0;
-  let lv=LEVELS[0];
-  for(const l of LEVELS) if(t>=l.min) lv=l;
+  var t=total||0;
+  var lv=LEVELS[0];
+  for(var l of LEVELS) if(t>=l.min) lv=l;
   return lv;
 }
 function getLevelClass(lv){
@@ -3345,8 +3360,8 @@ function getLevelClass(lv){
 }
 
 function checkLevelUp(prevTotal){
-  const prevLv=LEVELS.filter(l=>l.min<=prevTotal).pop()||LEVELS[0];
-  const newLv=getLevel();
+  var prevLv=LEVELS.filter(l=>l.min<=prevTotal).pop()||LEVELS[0];
+  var newLv=getLevel();
   if(newLv.name!==prevLv.name){
     document.getElementById('lu-badge').textContent=newLv.icon;
     document.getElementById('lu-title').textContent=`Level Up! You are now ${newLv.name}`;
@@ -3367,9 +3382,9 @@ function updateStreak(won){
 }
 
 function renderStreakInProfile(){
-  const el=document.getElementById('streak-section');
+  var el=document.getElementById('streak-section');
   if(!el)return;
-  const dots=streakHistory.map(w=>`<div class="streak-dot ${w?'won':'lost'}"></div>`).join('');
+  var dots=streakHistory.map(w=>`<div class="streak-dot ${w?'won':'lost'}"></div>`).join('');
   el.innerHTML=`
   <div class="streak-bar">
     <span class="streak-fire">${userStreak>0?'🔥':'💤'}</span>
@@ -3382,7 +3397,7 @@ function renderStreakInProfile(){
 }
 
 /* ── DAILY MISSIONS ── */
-const MISSIONS=[
+var MISSIONS=[
   {id:'trade5',  ico:'🎯', name:'Place 5 trades',      reward:'+2 USDT', goal:5,  get:()=>missionProgress.trades},
   {id:'win3',    ico:'🏆', name:'Win 3 predictions',   reward:'+5 USDT', goal:3,  get:()=>missionProgress.wins},
   {id:'bet100',  ico:'💸', name:'Bet $100 total',       reward:'+3 USDT', goal:100,get:()=>wagered},
@@ -3390,12 +3405,12 @@ const MISSIONS=[
 ];
 
 function renderMissions(){
-  const el=document.getElementById('missions-section');
+  var el=document.getElementById('missions-section');
   if(!el)return;
   el.innerHTML=`<div class="missions-wrap">`+MISSIONS.map(m=>{
-    const prog=Math.min(m.goal,m.get());
-    const pct=Math.round((prog/m.goal)*100);
-    const done=prog>=m.goal;
+    var prog=Math.min(m.goal,m.get());
+    var pct=Math.round((prog/m.goal)*100);
+    var done=prog>=m.goal;
     return`<div class="mission-item">
       <div class="mission-ico" style="background:${done?'rgba(22,163,74,.1)':'rgba(45,96,240,.08)'}">
         ${m.ico}
@@ -3413,22 +3428,22 @@ function renderMissions(){
 }
 
 /* ── LIVE ACTIVITY FEED ── */
-const ACTIVITY_NAMES=['CryptoKing','AlgoGod','WhaleAlert','DeFiQueen','MoonShot','BullRun99','Trader_X','SolanaMax','0x4f2a...','BitWizard'];
-const ACTIVITY_COLORS=['#2d60f0','#7c3aed','#d97706','#db2777','#0284c7','#16a34a','#e5294a','#9945ff','#f7931a','#627eea'];
-let activityItems=[];
-let activityTotal=0;
+var ACTIVITY_NAMES=['CryptoKing','AlgoGod','WhaleAlert','DeFiQueen','MoonShot','BullRun99','Trader_X','SolanaMax','0x4f2a...','BitWizard'];
+var ACTIVITY_COLORS=['#2d60f0','#7c3aed','#d97706','#db2777','#0284c7','#16a34a','#e5294a','#9945ff','#f7931a','#627eea'];
+var activityItems=[];
+var activityTotal=0;
 
 function generateActivityItem(){
-  const names=ACTIVITY_NAMES;
-  const idx=Math.floor(R(0,names.length));
-  const sym=['BTC','ETH','BNB','SOL','XAU'][Math.floor(R(0,5))];
-  const isWin=Math.random()>.45;
-  const isWhale=Math.random()>.88;
-  const amt=isWhale?Math.round(R(1000,5000)):Math.round(R(10,500));
-  const type=isWin?'win':Math.random()>.5?'bet':'loss';
-  const color=ACTIVITY_COLORS[idx];
-  const av=names[idx].slice(0,2).toUpperCase();
-  let text='';
+  var names=ACTIVITY_NAMES;
+  var idx=Math.floor(R(0,names.length));
+  var sym=['BTC','ETH','BNB','SOL','XAU'][Math.floor(R(0,5))];
+  var isWin=Math.random()>.45;
+  var isWhale=Math.random()>.88;
+  var amt=isWhale?Math.round(R(1000,5000)):Math.round(R(10,500));
+  var type=isWin?'win':Math.random()>.5?'bet':'loss';
+  var color=ACTIVITY_COLORS[idx];
+  var av=names[idx].slice(0,2).toUpperCase();
+  var text='';
   if(type==='win') text=`<b>${names[idx]}</b> won <span class="win-amt">+$${Math.round(amt*0.6)}</span> on ${sym}`;
   else if(type==='bet') text=`<b>${names[idx]}</b> placed ${isWhale?'<span class="whale">🐳 $'+amt+'</span>':'$'+amt} on ${sym} ${Math.random()>.5?'UP':'DOWN'}`;
   else text=`<b>${names[idx]}</b> lost $${amt} on ${sym}`;
@@ -3438,8 +3453,8 @@ function generateActivityItem(){
 }
 
 function renderActivityFeed(){
-  const el=document.getElementById('activity-list');
-  const cnt=document.getElementById('activity-count');
+  var el=document.getElementById('activity-list');
+  var cnt=document.getElementById('activity-count');
   if(!el)return;
   if(cnt)cnt.textContent=activityTotal+' trades today';
   el.innerHTML=activityItems.slice(0,8).map(a=>`
@@ -3451,7 +3466,7 @@ function renderActivityFeed(){
 }
 
 function addActivity(){
-  const item=generateActivityItem();
+  var item=generateActivityItem();
   activityItems.unshift(item);
   if(activityItems.length>20)activityItems.pop();
   renderActivityFeed();
@@ -3461,13 +3476,13 @@ function addActivity(){
 setInterval(addActivity, R(4000,8000));
 setInterval(addActivity, R(6000,12000));
 // Init with 5 items
-for(let i=0;i<5;i++) activityItems.push(generateActivityItem());
+for(var i=0;i<5;i++) activityItems.push(generateActivityItem());
 setTimeout(renderActivityFeed, 500);
 
 /* ── WHALE ALERT ── */
 var whaleT;
 function showWhaleAlert(name,amt,sym){
-  const el=document.getElementById('whale-alert');
+  var el=document.getElementById('whale-alert');
   document.getElementById('whale-text').textContent=`${name} placed`;
   document.getElementById('whale-amt').textContent=`$${amt.toLocaleString()} on ${sym}`;
   el.classList.add('show');
@@ -3476,13 +3491,13 @@ function showWhaleAlert(name,amt,sym){
 }
 
 /* ── GAMIFY POPUP ── */
-let gamifyT;
+var gamifyT;
 function showGamifyPopup(ico,title,sub,badge,bgColor,textColor){
-  const el=document.getElementById('gamify-popup');
+  var el=document.getElementById('gamify-popup');
   document.getElementById('gp-ico').textContent=ico;
   document.getElementById('gp-title').textContent=title;
   document.getElementById('gp-sub').textContent=sub;
-  const b=document.getElementById('gp-badge');
+  var b=document.getElementById('gp-badge');
   b.textContent=badge;
   b.style.cssText=`background:${bgColor};color:${textColor};border:1px solid ${textColor}40`;
   el.classList.add('show');
@@ -3491,40 +3506,40 @@ function showGamifyPopup(ico,title,sub,badge,bgColor,textColor){
 }
 
 /* ── LIVE CHART (Chart.js) ── */
-let rpChart=null;
-let chartSym='BTC';
-let chartData={};
+var rpChart=null;
+var chartSym='BTC';
+var chartData={};
 
 function initChartData(){
   allAssets().forEach(a=>{
-    const pts=Array.from({length:60},(_,i)=>a.p*(1+R(-.008,.008)));
-    chartData[a.s]={pts,labels:pts.map((_,i)=>{const d=new Date(Date.now()-(59-i)*60000);return d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');})};
+    var pts=Array.from({length:60},(_,i)=>a.p*(1+R(-.008,.008)));
+    chartData[a.s]={pts,labels:pts.map((_,i)=>{var d=new Date(Date.now()-(59-i)*60000);return d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');})};
   });
 }
 
 function buildChart(){
-  const canvas=document.getElementById('rp-chart');
+  var canvas=document.getElementById('rp-chart');
   if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const sym=chartSym;
-  const a=allAssets().find(x=>x.s===sym)||allAssets()[0];
-  const d=chartData[sym]||{pts:[],labels:[]};
-  const pts=d.pts;
-  const up=pts[pts.length-1]>=pts[0];
-  const color=up?'#16a34a':'#e5294a';
-  const high=Math.max(...pts),low=Math.min(...pts);
-  const chgPct=(((pts[pts.length-1]-pts[0])/pts[0])*100).toFixed(2);
+  var ctx=canvas.getContext('2d');
+  var sym=chartSym;
+  var a=allAssets().find(x=>x.s===sym)||allAssets()[0];
+  var d=chartData[sym]||{pts:[],labels:[]};
+  var pts=d.pts;
+  var up=pts[pts.length-1]>=pts[0];
+  var color=up?'#16a34a':'#e5294a';
+  var high=Math.max(...pts),low=Math.min(...pts);
+  var chgPct=(((pts[pts.length-1]-pts[0])/pts[0])*100).toFixed(2);
 
   // Update stats
-  const fmtStat=p=>p>=1000?'$'+(p/1000).toFixed(1)+'K':'$'+p.toFixed(p>10?0:2);
-  const cs=id=>document.getElementById(id);
+  var fmtStat=p=>p>=1000?'$'+(p/1000).toFixed(1)+'K':'$'+p.toFixed(p>10?0:2);
+  var cs=id=>document.getElementById(id);
   if(cs('cs-high'))cs('cs-high').textContent=fmtStat(high);
   if(cs('cs-low'))cs('cs-low').textContent=fmtStat(low);
   if(cs('cs-vol'))cs('cs-vol').textContent='$'+Math.round(R(50,900))+'K';
   if(cs('cs-chg')){cs('cs-chg').textContent=(up?'+':'')+chgPct+'%';cs('cs-chg').style.color=up?'#16a34a':'#e5294a';}
   if(cs('chart-price-lbl'))cs('chart-price-lbl').textContent=fmt(a.p);
   if(cs('chart-sym-lbl'))cs('chart-sym-lbl').textContent=sym+'/USD';
-  const chgEl=cs('chart-chg-lbl');
+  var chgEl=cs('chart-chg-lbl');
   if(chgEl){chgEl.textContent=(up?'+':'')+chgPct+'%';chgEl.className='chart-chg '+(up?'cup':'cdn');}
 
   if(rpChart)rpChart.destroy();
@@ -3539,7 +3554,7 @@ function buildChart(){
         pointRadius:0,
         fill:true,
         backgroundColor:(ctx2=>{
-          const g=ctx2.chart.ctx.createLinearGradient(0,0,0,120);
+          var g=ctx2.chart.ctx.createLinearGradient(0,0,0,120);
           g.addColorStop(0,up?'rgba(22,163,74,.18)':'rgba(229,41,74,.15)');
           g.addColorStop(1,'rgba(0,0,0,0)');
           return g;
@@ -3567,23 +3582,23 @@ function setChartPeriod(p,el){
   document.querySelectorAll('.chart-period').forEach(b=>b.classList.remove('on'));
   if(el)el.classList.add('on');
   // Regenerate data for period
-  const a=allAssets().find(x=>x.s===chartSym)||allAssets()[0];
-  const pts=Array.from({length:60},()=>a.p*(1+R(-.006,.006)));
+  var a=allAssets().find(x=>x.s===chartSym)||allAssets()[0];
+  var pts=Array.from({length:60},()=>a.p*(1+R(-.006,.006)));
   chartData[chartSym]={pts,labels:pts.map((_,i)=>i+'')};
   buildChart();
 }
 
 // Load Chart.js and init
-const chartScript=document.createElement('script');
+var chartScript=document.createElement('script');
 chartScript.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
 chartScript.onload=()=>{initChartData();setTimeout(buildChart,200);};
 document.head.appendChild(chartScript);
 
 // Update chart every 5 seconds
 setInterval(()=>{
-  const a=allAssets().find(x=>x.s===chartSym);
+  var a=allAssets().find(x=>x.s===chartSym);
   if(a&&chartData[chartSym]){
-    const d=chartData[chartSym];
+    var d=chartData[chartSym];
     d.pts.push(a.p*(1+R(-.003,.003)));
     d.pts.shift();
     buildChart();
@@ -3592,21 +3607,21 @@ setInterval(()=>{
 
 /* ── ENTRY CUTOFF ── */
 // Show cutoff overlay when <20s remain
-const _origRender2=render;
+var _origRender2=render;
 render=function(){
   _origRender2();
   // Add multiplier display + cutoff + early exit to cards
   getAssets().forEach(a=>{
-    const card=document.getElementById('mc_'+a.s);
+    var card=document.getElementById('mc_'+a.s);
     if(!card)return;
-    const np=100-a.yp;
-    const upMult=(a.yp+np)/a.yp;
-    const dnMult=(a.yp+np)/np;
+    var np=100-a.yp;
+    var upMult=(a.yp+np)/a.yp;
+    var dnMult=(a.yp+np)/np;
     // Add multiplier display after mc-depth if not exists
     if(!card.querySelector('.mc-mult')){
-      const depth=card.querySelector('.mc-depth');
+      var depth=card.querySelector('.mc-depth');
       if(depth){
-        const mult=document.createElement('div');
+        var mult=document.createElement('div');
         mult.className='mc-mult';
         mult.innerHTML=`
           <div class="mc-mult-up">
@@ -3625,13 +3640,13 @@ render=function(){
 
 /* ── EARLY EXIT ── */
 function earlyExit(sym,posIdx){
-  const pos=positions.find(p=>p.sym===sym);
+  var pos=positions.find(p=>p.sym===sym);
   if(!pos){toast('No open position','var(--amber)');return;}
-  const timeLeft=Math.max(0,pos.expiry*60-(Date.now()-pos.ts)/1000);
-  const timeRatio=timeLeft/(pos.expiry*60);
+  var timeLeft=Math.max(0,pos.expiry*60-(Date.now()-pos.ts)/1000);
+  var timeRatio=timeLeft/(pos.expiry*60);
   // Value decreases as time passes (simplified)
-  const currentValue=pos.a*(0.5+timeRatio*0.45);
-  const exitProfit=currentValue-pos.a;
+  var currentValue=pos.a*(0.5+timeRatio*0.45);
+  var exitProfit=currentValue-pos.a;
   if(confirm(`Exit position now?\nCurrent value: $${currentValue.toFixed(2)}\nYou paid: $${pos.a.toFixed(2)}\nP&L: ${exitProfit>=0?'+':''}$${exitProfit.toFixed(2)}`)){
     bal+=currentValue;
     pnl+=exitProfit;
@@ -3643,7 +3658,7 @@ function earlyExit(sym,posIdx){
 }
 
 /* ── COPY TRADING ── */
-let copiedTrader=null;
+var copiedTrader=null;
 function copyTrader(name){
   if(copiedTrader===name){
     copiedTrader=null;
@@ -3656,30 +3671,30 @@ function copyTrader(name){
 }
 
 /* ── REPEAT BET ── */
-let lastBet=null;
-const _origQbet2=qbet;
+var lastBet=null;
+var _origQbet2=qbet;
 qbet=function(sym,name,yp,np,d){
   lastBet={sym,name,yp,np,d,amt:parseFloat(document.getElementById('mci_'+sym)?.value)||50};
   missionProgress.trades++;
   renderMissions();
-  const prevTotal=total;
+  var prevTotal=total;
   _origQbet2(sym,name,yp,np,d);
   setTimeout(()=>checkLevelUp(prevTotal),100);
 };
 
 function repeatBet(){
   if(!lastBet){toast('No previous bet to repeat','var(--amber)');return;}
-  const inp=document.getElementById('mci_'+lastBet.sym);
+  var inp=document.getElementById('mci_'+lastBet.sym);
   if(inp)inp.value=lastBet.amt;
   qbet(lastBet.sym,lastBet.name,lastBet.yp,lastBet.np,lastBet.d);
   toast('↺ Bet repeated!','var(--cl)');
 }
 
 /* ── UPDATE resolve to track missions ── */
-const _origResolve2=resolve;
+var _origResolve2=resolve;
 resolve=function(pos){
   _origResolve2(pos);
-  const h=history[0];
+  var h=history[0];
   if(h?.won){
     missionProgress.wins++;
     updateStreak(true);
@@ -3703,19 +3718,19 @@ resolve=function(pos){
 };
 
 /* ── UPDATE renderPortfolio with streak + missions ── */
-const _origRenderPortfolio2=renderPortfolio;
+var _origRenderPortfolio2=renderPortfolio;
 renderPortfolio=function(){
   _origRenderPortfolio2();
   // Inject streak section
-  const hist=document.getElementById('hist-list');
+  var hist=document.getElementById('hist-list');
   if(hist&&!document.getElementById('streak-section')){
-    const lv=getLevel();
-    const streakDiv=document.createElement('div');
+    var lv=getLevel();
+    var streakDiv=document.createElement('div');
     streakDiv.id='streak-section';
     streakDiv.style.marginBottom='12px';
     hist.parentElement.insertBefore(streakDiv,hist.parentElement.firstChild);
     // Level badge
-    const lvDiv=document.createElement('div');
+    var lvDiv=document.createElement('div');
     lvDiv.style.cssText='display:flex;align-items:center;gap:10px;margin-bottom:12px';
     lvDiv.innerHTML=`<span class="user-level ${getLevelClass(lv)}">${lv.icon} ${lv.name}</span><span style="font-size:11px;color:var(--t3);font-family:var(--ff)">${total} trades · ${LEVELS.find((l,i)=>LEVELS[i+1]?.min>total)?.name||'Max level'} next at ${(LEVELS.find(l=>l.min>total)||{min:'∞'}).min} trades</span>`;
     hist.parentElement.insertBefore(lvDiv,hist.parentElement.firstChild);
@@ -3723,13 +3738,13 @@ renderPortfolio=function(){
   renderStreakInProfile();
   // Missions section
   if(!document.getElementById('missions-section')){
-    const el=document.querySelector('.port-history');
+    var el=document.querySelector('.port-history');
     if(el){
-      const missDiv=document.createElement('div');
+      var missDiv=document.createElement('div');
       missDiv.id='missions-section';
       missDiv.style.marginBottom='14px';
       el.before(missDiv);
-      const title=document.createElement('div');
+      var title=document.createElement('div');
       title.style.cssText='font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:var(--ff)';
       title.textContent='Daily Missions';
       missDiv.before(title);
@@ -3739,15 +3754,15 @@ renderPortfolio=function(){
 };
 
 /* ── LEADERBOARD copy trading buttons ── */
-const _origRenderLeaderboard2=renderLeaderboard;
+var _origRenderLeaderboard2=renderLeaderboard;
 renderLeaderboard=function(){
   _origRenderLeaderboard2();
   // Add copy buttons
   document.querySelectorAll('.lb-row').forEach((row,i)=>{
     if(row.querySelector('.copy-btn'))return;
-    const name=row.querySelector('.lb-name')?.textContent;
+    var name=row.querySelector('.lb-name')?.textContent;
     if(!name||name==='You')return;
-    const btn=document.createElement('button');
+    var btn=document.createElement('button');
     btn.className='copy-btn'+(copiedTrader===name?' active':'');
     btn.innerHTML='📋 Copy';
     btn.onclick=()=>copyTrader(name);
@@ -3756,12 +3771,12 @@ renderLeaderboard=function(){
 };
 
 /* ── NAV LEVEL BADGE ── */
-const _origFinalizeLogin2=finalizeLogin;
+var _origFinalizeLogin2=finalizeLogin;
 finalizeLogin=function(name,identifier,method){
   _origFinalizeLogin2(name,identifier,method);
   // Show level badge in nav
-  const lv=getLevel();
-  const av=document.getElementById('nav-av');
+  var lv=getLevel();
+  var av=document.getElementById('nav-av');
   if(av)av.title=`${lv.icon} ${lv.name} Level`;
 };
 
@@ -3775,6 +3790,19 @@ setTimeout(()=>{
 setInterval(()=>{
   addActivity();
 },R(5000,10000));
+
+
+(function restorePredifyWallet(){
+  try{
+    var saved=localStorage.getItem('predify_wallet');
+    if(saved && typeof finalizeLogin==='function' && !wOn){finalizeLogin('MetaMask',saved,'Wallet');}
+    if(typeof window.ethereum!=='undefined'){
+      window.ethereum.on && window.ethereum.on('accountsChanged', function(accs){
+        if(accs && accs.length){localStorage.setItem('predify_wallet',accs[0]); if(typeof finalizeLogin==='function'){finalizeLogin('MetaMask',accs[0],'Wallet');}}
+      });
+    }
+  }catch(e){}
+})();
 </script>
 </body>
 </html>

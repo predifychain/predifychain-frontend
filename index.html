@@ -2660,6 +2660,21 @@ function signOut(){
   setV('crypto',document.querySelector('.ntab'));
 }
 
+// ── BINANCE SYMBOL MAP ──
+const BSYMS={
+  'BTC':'btcusdt','ETH':'ethusdt','SOL':'solusdt','XRP':'xrpusdt','BNB':'bnbusdt',
+  'DOT':'dotusdt','AAVE':'aaveusdt','AVAX':'avaxusdt','ADA':'adausdt','APE':'apeusdt',
+  'ARB':'arbusdt','ATOM':'atomusdt','BCH':'bchusdt','DASH':'dashusdt','DOGE':'dogeusdt',
+  'ENA':'enausdt','ENS':'ensusdt','ETC':'etcusdt','FET':'fetusdt','FIL':'filusdt',
+  'ICP':'icpusdt','INJ':'injusdt','JTO':'jtousdt','LINK':'linkusdt','LPT':'lptusdt',
+  'LTC':'ltcusdt','NEAR':'nearusdt','ONDO':'ondousdt','PENDLE':'pendleusdt',
+  'RENDER':'renderusdt','SUI':'suiusdt','TAO':'taousdt','TIA':'tiausdt','TRB':'trbusdt',
+  'UNI':'uniusdt','WLD':'wldusdt','YFI':'yfiusdt','ZEC':'zecusdt',
+  'TSLA':'tslausdt','NVDA':'nvdausdt','META':'metausdt','GOOGL':'googlusdt',
+  'AMZN':'amznusdt','MSTR':'mstrusdt','COIN':'coinusdt',
+  'XAU':'xauusdt','XAG':'xagusdt',
+};
+
 buildTicker();
 render();
 renderLeaderboard();

@@ -8,25 +8,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#08111f;
-      --bg2:#0c1629;
-      --panel:#0f1b33;
-      --panel2:#122240;
-      --panel3:#16294d;
+      --bg:#07101d;
+      --bg2:#0a1426;
+      --panel:#0f1c35;
+      --panel2:#132442;
+      --panel3:#182b4f;
       --line:rgba(255,255,255,.08);
       --line2:rgba(255,255,255,.12);
       --ink:#f8fafc;
-      --muted:#8ea3c7;
+      --muted:#93a8cb;
       --green:#16a34a;
       --green2:#22c55e;
       --red:#ef4444;
       --red2:#dc2626;
       --blue:#4f46e5;
       --blue2:#3861fb;
-      --blueGlow:rgba(56,97,251,.32);
-      --shadow:0 18px 44px rgba(0,0,0,.32);
+      --gold:#f5c84c;
+      --shadow:0 18px 46px rgba(0,0,0,.34);
       --fm:"JetBrains Mono", monospace;
       --ff:Inter, system-ui, -apple-system, sans-serif;
     }
@@ -36,23 +36,23 @@
       color:var(--ink);
       min-height:100vh;
       background:
-        radial-gradient(circle at top left, rgba(56,97,251,.18), transparent 22%),
-        radial-gradient(circle at 80% 0, rgba(79,70,229,.15), transparent 18%),
-        radial-gradient(circle at bottom right, rgba(34,197,94,.08), transparent 20%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+        radial-gradient(circle at 0 0, rgba(56,97,251,.16), transparent 22%),
+        radial-gradient(circle at 100% 0, rgba(79,70,229,.14), transparent 22%),
+        radial-gradient(circle at 70% 100%, rgba(34,197,94,.05), transparent 24%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
     }
 
     .nav{
       position:sticky;
       top:0;
-      z-index:30;
+      z-index:50;
+      background:rgba(7,16,29,.78);
       backdrop-filter:blur(16px);
-      background:rgba(8,17,31,.78);
       border-bottom:1px solid var(--line);
     }
 
     .nav-in{
-      max-width:1460px;
+      max-width:1480px;
       margin:0 auto;
       height:74px;
       padding:0 18px;
@@ -70,14 +70,15 @@
     }
 
     .logo{
-      width:36px;
-      height:36px;
-      border-radius:11px;
+      width:38px;
+      height:38px;
+      border-radius:12px;
       display:grid;
       place-items:center;
       background:linear-gradient(135deg,var(--blue2),#7c3aed);
-      box-shadow:0 10px 30px rgba(56,97,251,.35);
+      box-shadow:0 12px 32px rgba(56,97,251,.34);
       font-size:14px;
+      font-weight:800;
     }
 
     .live-pill{
@@ -87,7 +88,7 @@
       padding:7px 12px;
       border-radius:999px;
       background:rgba(34,197,94,.12);
-      border:1px solid rgba(34,197,94,.24);
+      border:1px solid rgba(34,197,94,.22);
       color:#86efac;
       font-size:12px;
       font-weight:800;
@@ -101,21 +102,21 @@
       box-shadow:0 0 0 6px rgba(34,197,94,.12);
     }
 
-    .grow{ flex:1; }
+    .grow{flex:1}
 
     .btn{
       border:none;
       outline:none;
       cursor:pointer;
-      border-radius:14px;
+      border-radius:15px;
       padding:11px 16px;
-      font-weight:700;
+      font-weight:800;
       font-family:var(--ff);
       transition:.18s ease;
     }
 
-    .btn:hover{ transform:translateY(-1px); }
-    .btn:active{ transform:translateY(0); }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0)}
 
     .btn-dark{
       background:rgba(255,255,255,.05);
@@ -126,11 +127,11 @@
     .btn-primary{
       background:linear-gradient(135deg,var(--blue2),var(--blue));
       color:#fff;
-      box-shadow:0 10px 30px rgba(56,97,251,.24);
+      box-shadow:0 10px 28px rgba(56,97,251,.24);
     }
 
     .wrap{
-      max-width:1460px;
+      max-width:1480px;
       margin:0 auto;
       padding:20px 18px 40px;
     }
@@ -143,27 +144,23 @@
     }
 
     .stat{
-      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+      background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018));
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:24px;
       box-shadow:var(--shadow);
-      padding:18px 18px 16px;
+      padding:18px;
       position:relative;
       overflow:hidden;
     }
 
-    .stat:before{
+    .stat::before{
       content:"";
       position:absolute;
-      inset:0;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent);
-      transform:translateX(-100%);
-      animation:shimmer 5s linear infinite;
+      inset:auto -10% 0 auto;
+      width:120px;
+      height:120px;
+      background:radial-gradient(circle, rgba(56,97,251,.14), transparent 70%);
       pointer-events:none;
-    }
-
-    @keyframes shimmer{
-      100%{ transform:translateX(100%); }
     }
 
     .stat .k{
@@ -183,7 +180,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns:minmax(0,1fr) 360px;
+      grid-template-columns:minmax(0,1fr) 370px;
       gap:16px;
       align-items:start;
     }
@@ -192,18 +189,19 @@
       display:flex;
       align-items:center;
       gap:10px;
-      flex-wrap:wrap;
       margin-bottom:16px;
+      flex-wrap:wrap;
     }
 
     .chip{
+      border:none;
+      cursor:pointer;
       background:rgba(255,255,255,.05);
-      border:1px solid var(--line2);
       color:#dbeafe;
+      border:1px solid var(--line2);
       padding:10px 16px;
       border-radius:999px;
       font-weight:800;
-      cursor:pointer;
       transition:.18s ease;
     }
 
@@ -216,14 +214,14 @@
 
     .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+      grid-template-columns:repeat(auto-fill,minmax(335px,1fr));
       gap:14px;
     }
 
     .card{
-      background:linear-gradient(180deg, rgba(18,34,64,.98), rgba(15,27,51,.98));
+      background:linear-gradient(180deg,rgba(19,36,66,.98),rgba(15,28,53,.98));
       border:1px solid var(--line);
-      border-radius:24px;
+      border-radius:26px;
       box-shadow:var(--shadow);
       overflow:hidden;
       transition:.18s ease;
@@ -237,16 +235,16 @@
     }
 
     .card.active{
-      border-color:rgba(79,70,229,.9);
-      box-shadow:0 20px 54px rgba(56,97,251,.18), 0 0 0 1px rgba(79,70,229,.16) inset;
+      border-color:rgba(79,70,229,.95);
+      box-shadow:0 18px 54px rgba(56,97,251,.16), 0 0 0 1px rgba(79,70,229,.18) inset;
     }
 
     .card-top{
-      padding:16px 16px 14px;
+      padding:17px 17px 14px;
       border-bottom:1px solid var(--line);
     }
 
-    .row-flex{
+    .row{
       display:flex;
       justify-content:space-between;
       gap:10px;
@@ -254,7 +252,7 @@
     }
 
     .sym{
-      font-size:30px;
+      font-size:32px;
       font-weight:800;
       letter-spacing:-.05em;
     }
@@ -272,19 +270,26 @@
       font-weight:700;
     }
 
-    .count.red{ color:#fca5a5; }
+    .count.red{color:#fca5a5}
 
     .price{
       margin-top:14px;
-      font-size:32px;
-      letter-spacing:-.045em;
+      font-size:34px;
       font-weight:800;
       font-family:var(--fm);
+      letter-spacing:-.045em;
+    }
+
+    .price-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:10px;
     }
 
     .live-tag{
       display:inline-flex;
-      margin-top:10px;
       padding:5px 10px;
       border-radius:999px;
       background:rgba(34,197,94,.1);
@@ -295,15 +300,15 @@
     }
 
     .card-mid{
-      padding:16px;
+      padding:17px;
     }
 
     .question{
       font-size:16px;
       line-height:1.45;
       font-weight:600;
-      margin-bottom:14px;
       min-height:46px;
+      margin-bottom:14px;
     }
 
     .odds{
@@ -316,8 +321,8 @@
     .odd{
       border:1px solid var(--line);
       background:rgba(255,255,255,.022);
-      border-radius:16px;
-      padding:12px;
+      border-radius:17px;
+      padding:13px;
     }
 
     .odd .label{
@@ -330,13 +335,13 @@
     }
 
     .odd .val{
-      font-size:34px;
+      font-size:35px;
       font-weight:800;
       letter-spacing:-.05em;
     }
 
-    .odd.yes .val{ color:#4ade80; }
-    .odd.no .val{ color:#f87171; }
+    .odd.yes .val{color:#4ade80}
+    .odd.no .val{color:#f87171}
 
     .poolgrid{
       display:grid;
@@ -367,14 +372,10 @@
       font-weight:700;
     }
 
-    .amount-wrap{
-      position:relative;
-    }
-
     .amount{
       width:100%;
-      height:50px;
-      border-radius:14px;
+      height:52px;
+      border-radius:15px;
       border:1px solid var(--line2);
       background:rgba(255,255,255,.04);
       color:#fff;
@@ -394,12 +395,12 @@
     }
 
     .amount:focus{
-      border-color:rgba(79,70,229,.9);
+      border-color:rgba(79,70,229,.95);
       box-shadow:0 0 0 4px rgba(79,70,229,.14);
       background:rgba(255,255,255,.055);
     }
 
-    .amount::placeholder{ color:#8fa0be; }
+    .amount::placeholder{color:#8fa0be}
 
     .actions{
       display:grid;
@@ -424,9 +425,9 @@
     }
 
     .panel{
-      background:linear-gradient(180deg, rgba(18,34,64,.98), rgba(15,27,51,.98));
+      background:linear-gradient(180deg,rgba(19,36,66,.98),rgba(15,28,53,.98));
       border:1px solid var(--line);
-      border-radius:24px;
+      border-radius:26px;
       box-shadow:var(--shadow);
       padding:18px;
     }
@@ -462,7 +463,7 @@
       border-bottom:1px solid var(--line);
     }
 
-    .line:last-child{ border-bottom:none; }
+    .line:last-child{border-bottom:none}
 
     .mono{
       font-family:var(--fm);
@@ -476,11 +477,14 @@
       line-height:1.55;
     }
 
-    .error-box,.empty-box{
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
+    .empty-box,.error-box{
       border-radius:18px;
       padding:16px;
+      border:1px solid var(--line);
+    }
+
+    .empty-box{
+      background:rgba(255,255,255,.04);
       color:#dbe6f5;
     }
 
@@ -491,14 +495,14 @@
     }
 
     @media (max-width:1100px){
-      .layout{ grid-template-columns:1fr; }
-      .side{ position:static; }
-      .topstats{ grid-template-columns:1fr 1fr; }
+      .layout{grid-template-columns:1fr}
+      .side{position:static}
+      .topstats{grid-template-columns:1fr 1fr}
     }
 
-    @media (max-width:700px){
-      .topstats{ grid-template-columns:1fr; }
-      .grid{ grid-template-columns:1fr; }
+    @media (max-width:720px){
+      .topstats{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -563,7 +567,7 @@
           <div class="line"><span>Round Pool</span><strong class="mono" id="selRoundPool">—</strong></div>
           <div class="line"><span>Time Left</span><strong class="mono" id="selTimer">—</strong></div>
 
-          <div class="hint" id="uiMsg">Demo login se 50,000 demo balance milta hai. Amount type karo aur phir prediction place karo.</div>
+          <div class="hint" id="uiMsg">Demo login se 50,000 demo balance milta hai. Amount enter karo aur phir BUY YES ya SELL NO dabao.</div>
         </div>
       </div>
     </div>
@@ -580,6 +584,7 @@
     let isDemo = false;
     let balance = 0;
     let amountDrafts = {};
+    let isRendering = false;
 
     function fmtMoney(v){
       return "$" + Number(v || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
@@ -656,7 +661,20 @@
       amountDrafts[marketId] = value;
     }
 
+    function captureDraftsFromDom(){
+      activeMarkets().forEach(m => {
+        const inputId = "amt_" + String(m.id).replace(/[^a-zA-Z0-9]/g, "");
+        const el = document.getElementById(inputId);
+        if(el){
+          amountDrafts[m.id] = el.value;
+        }
+      });
+    }
+
     function renderMarkets(){
+      if(isRendering) return;
+      isRendering = true;
+
       const grid = document.getElementById("marketGrid");
       const list = activeMarkets();
 
@@ -664,6 +682,7 @@
         grid.innerHTML = '<div class="empty-box">No active markets for this duration right now.</div>';
         syncSelectedPanel();
         updateStats();
+        isRendering = false;
         return;
       }
 
@@ -680,7 +699,7 @@
         return `
           <div class="card ${selectedMarketId === m.id ? "active" : ""}" onclick="selectMarket('${m.id}')">
             <div class="card-top">
-              <div class="row-flex">
+              <div class="row">
                 <div>
                   <div class="sym">${m.symbol.replace("/USD","")}</div>
                   <div class="sub">${m.category}</div>
@@ -690,7 +709,11 @@
                   <div class="sub">${m.duration_minutes}M expiry</div>
                 </div>
               </div>
-              <div class="price" data-price="${m.id}">${fmtMoney(m.currentPrice || m.open_price)}</div>
+
+              <div class="price-row">
+                <div class="price" data-price="${m.id}">${fmtMoney(m.currentPrice || m.open_price)}</div>
+              </div>
+
               <div class="live-tag">LIVE</div>
             </div>
 
@@ -723,20 +746,18 @@
                 </div>
               </div>
 
-              <div class="amount-wrap">
-                <input
-                  class="amount"
-                  id="${inputId}"
-                  type="number"
-                  inputmode="decimal"
-                  min="1"
-                  step="0.01"
-                  placeholder="Amount in USDC"
-                  value="${draft}"
-                  onclick="event.stopPropagation()"
-                  oninput="handleAmountInput('${m.id}', this.value)"
-                />
-              </div>
+              <input
+                class="amount"
+                id="${inputId}"
+                type="number"
+                inputmode="decimal"
+                min="1"
+                step="0.01"
+                placeholder="Amount in USDC"
+                value="${draft}"
+                onclick="event.stopPropagation()"
+                oninput="handleAmountInput('${m.id}', this.value)"
+              />
 
               <div class="actions">
                 <button class="btn buy" onclick="event.stopPropagation(); placeTrade('${m.id}', '${inputId}', 'YES')">BUY YES</button>
@@ -749,6 +770,7 @@
 
       syncSelectedPanel();
       updateStats();
+      isRendering = false;
     }
 
     function patchLiveValues(){
@@ -783,6 +805,8 @@
 
     async function loadMarkets(){
       try{
+        captureDraftsFromDom();
+
         const res = await fetch(API + "/markets?ts=" + Date.now(), { cache: "no-store" });
         const data = await res.json();
 
@@ -927,7 +951,7 @@
       await loadMe();
       await loadMarkets();
       setInterval(patchLiveValues, 1000);
-      setInterval(loadMarkets, 5000);
+      setInterval(loadMarkets, 8000);
     }
 
     init();

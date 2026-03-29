@@ -10,49 +10,52 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root{
-      --bg:#0b1220;
-      --bg2:#0f172a;
-      --panel:#111c34;
-      --panel2:#16233f;
+      --bg:#08111f;
+      --bg2:#0c1629;
+      --panel:#0f1b33;
+      --panel2:#122240;
+      --panel3:#16294d;
       --line:rgba(255,255,255,.08);
       --line2:rgba(255,255,255,.12);
       --ink:#f8fafc;
-      --muted:#94a3b8;
+      --muted:#8ea3c7;
       --green:#16a34a;
       --green2:#22c55e;
       --red:#ef4444;
       --red2:#dc2626;
       --blue:#4f46e5;
       --blue2:#3861fb;
-      --shadow:0 14px 40px rgba(0,0,0,.28);
+      --blueGlow:rgba(56,97,251,.32);
+      --shadow:0 18px 44px rgba(0,0,0,.32);
       --fm:"JetBrains Mono", monospace;
       --ff:Inter, system-ui, -apple-system, sans-serif;
     }
 
     body{
       font-family:var(--ff);
-      background:
-        radial-gradient(circle at top left, rgba(56,97,251,.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(79,70,229,.16), transparent 24%),
-        linear-gradient(180deg, #0a1222 0%, #0b1325 100%);
       color:var(--ink);
       min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56,97,251,.18), transparent 22%),
+        radial-gradient(circle at 80% 0, rgba(79,70,229,.15), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,.08), transparent 20%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
     }
 
     .nav{
       position:sticky;
       top:0;
-      z-index:20;
-      backdrop-filter: blur(14px);
-      background:rgba(11,18,32,.78);
+      z-index:30;
+      backdrop-filter:blur(16px);
+      background:rgba(8,17,31,.78);
       border-bottom:1px solid var(--line);
     }
 
     .nav-in{
-      max-width:1440px;
+      max-width:1460px;
       margin:0 auto;
-      height:72px;
-      padding:0 20px;
+      height:74px;
+      padding:0 18px;
       display:flex;
       align-items:center;
       gap:14px;
@@ -63,13 +66,13 @@
       align-items:center;
       gap:12px;
       font-weight:800;
-      letter-spacing:-.02em;
+      letter-spacing:-.03em;
     }
 
     .logo{
-      width:34px;
-      height:34px;
-      border-radius:10px;
+      width:36px;
+      height:36px;
+      border-radius:11px;
       display:grid;
       place-items:center;
       background:linear-gradient(135deg,var(--blue2),#7c3aed);
@@ -78,17 +81,16 @@
     }
 
     .live-pill{
-      margin-left:6px;
       display:inline-flex;
       align-items:center;
       gap:8px;
       padding:7px 12px;
       border-radius:999px;
       background:rgba(34,197,94,.12);
-      border:1px solid rgba(34,197,94,.26);
+      border:1px solid rgba(34,197,94,.24);
       color:#86efac;
       font-size:12px;
-      font-weight:700;
+      font-weight:800;
     }
 
     .live-dot{
@@ -96,7 +98,7 @@
       height:8px;
       border-radius:999px;
       background:#22c55e;
-      box-shadow:0 0 0 6px rgba(34,197,94,.14);
+      box-shadow:0 0 0 6px rgba(34,197,94,.12);
     }
 
     .grow{ flex:1; }
@@ -116,7 +118,7 @@
     .btn:active{ transform:translateY(0); }
 
     .btn-dark{
-      background:rgba(255,255,255,.06);
+      background:rgba(255,255,255,.05);
       color:#fff;
       border:1px solid rgba(255,255,255,.09);
     }
@@ -124,13 +126,13 @@
     .btn-primary{
       background:linear-gradient(135deg,var(--blue2),var(--blue));
       color:#fff;
-      box-shadow:0 10px 30px rgba(56,97,251,.25);
+      box-shadow:0 10px 30px rgba(56,97,251,.24);
     }
 
     .wrap{
-      max-width:1440px;
+      max-width:1460px;
       margin:0 auto;
-      padding:22px 20px 44px;
+      padding:20px 18px 40px;
     }
 
     .topstats{
@@ -141,26 +143,42 @@
     }
 
     .stat{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.03));
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
       border:1px solid var(--line);
-      border-radius:20px;
+      border-radius:22px;
       box-shadow:var(--shadow);
-      padding:18px;
+      padding:18px 18px 16px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .stat:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent);
+      transform:translateX(-100%);
+      animation:shimmer 5s linear infinite;
+      pointer-events:none;
+    }
+
+    @keyframes shimmer{
+      100%{ transform:translateX(100%); }
     }
 
     .stat .k{
       color:var(--muted);
       font-size:11px;
       text-transform:uppercase;
-      letter-spacing:.12em;
-      font-weight:700;
+      letter-spacing:.13em;
+      font-weight:800;
       margin-bottom:10px;
     }
 
     .stat .v{
       font-size:24px;
       font-weight:800;
-      letter-spacing:-.03em;
+      letter-spacing:-.04em;
     }
 
     .layout{
@@ -184,7 +202,7 @@
       color:#dbeafe;
       padding:10px 16px;
       border-radius:999px;
-      font-weight:700;
+      font-weight:800;
       cursor:pointer;
       transition:.18s ease;
     }
@@ -193,6 +211,7 @@
       background:#fff;
       color:#0f172a;
       border-color:#fff;
+      box-shadow:0 8px 24px rgba(255,255,255,.12);
     }
 
     .grid{
@@ -202,13 +221,14 @@
     }
 
     .card{
-      background:linear-gradient(180deg, rgba(22,35,63,.96), rgba(17,28,52,.96));
+      background:linear-gradient(180deg, rgba(18,34,64,.98), rgba(15,27,51,.98));
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:24px;
       box-shadow:var(--shadow);
       overflow:hidden;
       transition:.18s ease;
       cursor:pointer;
+      position:relative;
     }
 
     .card:hover{
@@ -217,8 +237,8 @@
     }
 
     .card.active{
-      border-color:rgba(79,70,229,.85);
-      box-shadow:0 14px 44px rgba(56,97,251,.18);
+      border-color:rgba(79,70,229,.9);
+      box-shadow:0 20px 54px rgba(56,97,251,.18), 0 0 0 1px rgba(79,70,229,.16) inset;
     }
 
     .card-top{
@@ -234,9 +254,9 @@
     }
 
     .sym{
-      font-size:28px;
+      font-size:30px;
       font-weight:800;
-      letter-spacing:-.04em;
+      letter-spacing:-.05em;
     }
 
     .sub{
@@ -248,7 +268,7 @@
     .count{
       text-align:right;
       font-family:var(--fm);
-      font-size:15px;
+      font-size:14px;
       font-weight:700;
     }
 
@@ -256,20 +276,20 @@
 
     .price{
       margin-top:14px;
-      font-size:33px;
-      letter-spacing:-.04em;
+      font-size:32px;
+      letter-spacing:-.045em;
       font-weight:800;
       font-family:var(--fm);
     }
 
     .live-tag{
       display:inline-flex;
-      margin-top:8px;
-      padding:5px 9px;
+      margin-top:10px;
+      padding:5px 10px;
       border-radius:999px;
-      background:rgba(34,197,94,.11);
+      background:rgba(34,197,94,.1);
       color:#86efac;
-      border:1px solid rgba(34,197,94,.22);
+      border:1px solid rgba(34,197,94,.2);
       font-size:11px;
       font-weight:800;
     }
@@ -295,7 +315,7 @@
 
     .odd{
       border:1px solid var(--line);
-      background:rgba(255,255,255,.025);
+      background:rgba(255,255,255,.022);
       border-radius:16px;
       padding:12px;
     }
@@ -312,7 +332,7 @@
     .odd .val{
       font-size:34px;
       font-weight:800;
-      letter-spacing:-.04em;
+      letter-spacing:-.05em;
     }
 
     .odd.yes .val{ color:#4ade80; }
@@ -327,7 +347,7 @@
 
     .poolbox{
       border:1px solid var(--line);
-      background:rgba(255,255,255,.025);
+      background:rgba(255,255,255,.022);
       border-radius:16px;
       padding:11px;
     }
@@ -347,9 +367,13 @@
       font-weight:700;
     }
 
+    .amount-wrap{
+      position:relative;
+    }
+
     .amount{
       width:100%;
-      height:48px;
+      height:50px;
       border-radius:14px;
       border:1px solid var(--line2);
       background:rgba(255,255,255,.04);
@@ -358,6 +382,21 @@
       font-size:16px;
       font-family:var(--fm);
       outline:none;
+      transition:.16s ease;
+      appearance:textfield;
+      -moz-appearance:textfield;
+    }
+
+    .amount::-webkit-outer-spin-button,
+    .amount::-webkit-inner-spin-button{
+      -webkit-appearance:none;
+      margin:0;
+    }
+
+    .amount:focus{
+      border-color:rgba(79,70,229,.9);
+      box-shadow:0 0 0 4px rgba(79,70,229,.14);
+      background:rgba(255,255,255,.055);
     }
 
     .amount::placeholder{ color:#8fa0be; }
@@ -381,13 +420,13 @@
 
     .side{
       position:sticky;
-      top:90px;
+      top:92px;
     }
 
     .panel{
-      background:linear-gradient(180deg, rgba(22,35,63,.96), rgba(17,28,52,.96));
+      background:linear-gradient(180deg, rgba(18,34,64,.98), rgba(15,27,51,.98));
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:24px;
       box-shadow:var(--shadow);
       padding:18px;
     }
@@ -524,7 +563,7 @@
           <div class="line"><span>Round Pool</span><strong class="mono" id="selRoundPool">—</strong></div>
           <div class="line"><span>Time Left</span><strong class="mono" id="selTimer">—</strong></div>
 
-          <div class="hint" id="uiMsg">Demo login se 50,000 demo balance milta hai. Duration select karo aur phir prediction place karo.</div>
+          <div class="hint" id="uiMsg">Demo login se 50,000 demo balance milta hai. Amount type karo aur phir prediction place karo.</div>
         </div>
       </div>
     </div>
@@ -540,6 +579,7 @@
     let currentUser = null;
     let isDemo = false;
     let balance = 0;
+    let amountDrafts = {};
 
     function fmtMoney(v){
       return "$" + Number(v || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
@@ -567,6 +607,10 @@
       return allMarkets.filter(m => Number(m.duration_minutes) === Number(selectedDuration));
     }
 
+    function selectedMarket(){
+      return allMarkets.find(x => x.id === selectedMarketId) || null;
+    }
+
     function updateStats(){
       const list = activeMarkets();
       const totalPool = list.reduce((sum, m) => sum + Number(m.totalPool || 0), 0);
@@ -577,7 +621,8 @@
     }
 
     function syncSelectedPanel(){
-      const m = allMarkets.find(x => x.id === selectedMarketId);
+      const m = selectedMarket();
+
       if(!m){
         document.getElementById("selSymbol").textContent = "—";
         document.getElementById("selQuestion").textContent = "Select a market.";
@@ -602,6 +647,15 @@
       document.getElementById("selTimer").textContent = fmtTimer(secondsLeft(m.expiry_time));
     }
 
+    function selectMarket(id){
+      selectedMarketId = id;
+      renderMarkets();
+    }
+
+    function handleAmountInput(marketId, value){
+      amountDrafts[marketId] = value;
+    }
+
     function renderMarkets(){
       const grid = document.getElementById("marketGrid");
       const list = activeMarkets();
@@ -621,6 +675,8 @@
         const secs = secondsLeft(m.expiry_time);
         const countClass = secs <= 30 ? "count red" : "count";
         const inputId = "amt_" + String(m.id).replace(/[^a-zA-Z0-9]/g, "");
+        const draft = amountDrafts[m.id] || "";
+
         return `
           <div class="card ${selectedMarketId === m.id ? "active" : ""}" onclick="selectMarket('${m.id}')">
             <div class="card-top">
@@ -630,11 +686,11 @@
                   <div class="sub">${m.category}</div>
                 </div>
                 <div>
-                  <div class="${countClass}">${fmtTimer(secs)}</div>
+                  <div class="${countClass}" data-timer="${m.id}">${fmtTimer(secs)}</div>
                   <div class="sub">${m.duration_minutes}M expiry</div>
                 </div>
               </div>
-              <div class="price">${fmtMoney(m.currentPrice || m.open_price)}</div>
+              <div class="price" data-price="${m.id}">${fmtMoney(m.currentPrice || m.open_price)}</div>
               <div class="live-tag">LIVE</div>
             </div>
 
@@ -644,30 +700,43 @@
               <div class="odds">
                 <div class="odd yes">
                   <div class="label">YES</div>
-                  <div class="val">${fmtPct(m.yesOdds)}</div>
+                  <div class="val" data-yesodds="${m.id}">${fmtPct(m.yesOdds)}</div>
                 </div>
                 <div class="odd no">
                   <div class="label">NO</div>
-                  <div class="val">${fmtPct(m.noOdds)}</div>
+                  <div class="val" data-noodds="${m.id}">${fmtPct(m.noOdds)}</div>
                 </div>
               </div>
 
               <div class="poolgrid">
                 <div class="poolbox">
                   <div class="label">YES Pool</div>
-                  <div class="val">${fmtMoney(m.yes_pool)}</div>
+                  <div class="val" data-yespool="${m.id}">${fmtMoney(m.yes_pool)}</div>
                 </div>
                 <div class="poolbox">
                   <div class="label">NO Pool</div>
-                  <div class="val">${fmtMoney(m.no_pool)}</div>
+                  <div class="val" data-nopool="${m.id}">${fmtMoney(m.no_pool)}</div>
                 </div>
                 <div class="poolbox">
                   <div class="label">Round Pool</div>
-                  <div class="val">${fmtMoney(m.totalPool)}</div>
+                  <div class="val" data-roundpool="${m.id}">${fmtMoney(m.totalPool)}</div>
                 </div>
               </div>
 
-              <input class="amount" id="${inputId}" type="number" min="1" step="0.01" placeholder="Amount in USDC" />
+              <div class="amount-wrap">
+                <input
+                  class="amount"
+                  id="${inputId}"
+                  type="number"
+                  inputmode="decimal"
+                  min="1"
+                  step="0.01"
+                  placeholder="Amount in USDC"
+                  value="${draft}"
+                  onclick="event.stopPropagation()"
+                  oninput="handleAmountInput('${m.id}', this.value)"
+                />
+              </div>
 
               <div class="actions">
                 <button class="btn buy" onclick="event.stopPropagation(); placeTrade('${m.id}', '${inputId}', 'YES')">BUY YES</button>
@@ -682,9 +751,34 @@
       updateStats();
     }
 
-    function selectMarket(id){
-      selectedMarketId = id;
-      renderMarkets();
+    function patchLiveValues(){
+      const list = activeMarkets();
+
+      list.forEach(m => {
+        const timerEl = document.querySelector(`[data-timer="${m.id}"]`);
+        const priceEl = document.querySelector(`[data-price="${m.id}"]`);
+        const yesOddsEl = document.querySelector(`[data-yesodds="${m.id}"]`);
+        const noOddsEl = document.querySelector(`[data-noodds="${m.id}"]`);
+        const yesPoolEl = document.querySelector(`[data-yespool="${m.id}"]`);
+        const noPoolEl = document.querySelector(`[data-nopool="${m.id}"]`);
+        const roundPoolEl = document.querySelector(`[data-roundpool="${m.id}"]`);
+
+        if(timerEl){
+          const secs = secondsLeft(m.expiry_time);
+          timerEl.textContent = fmtTimer(secs);
+          timerEl.className = secs <= 30 ? "count red" : "count";
+        }
+
+        if(priceEl) priceEl.textContent = fmtMoney(m.currentPrice || m.open_price);
+        if(yesOddsEl) yesOddsEl.textContent = fmtPct(m.yesOdds);
+        if(noOddsEl) noOddsEl.textContent = fmtPct(m.noOdds);
+        if(yesPoolEl) yesPoolEl.textContent = fmtMoney(m.yes_pool);
+        if(noPoolEl) noPoolEl.textContent = fmtMoney(m.no_pool);
+        if(roundPoolEl) roundPoolEl.textContent = fmtMoney(m.totalPool);
+      });
+
+      syncSelectedPanel();
+      updateStats();
     }
 
     async function loadMarkets(){
@@ -804,18 +898,13 @@
           return;
         }
 
+        amountDrafts[marketId] = "";
         setMsg(side + " placed successfully.");
         await loadMe();
         await loadMarkets();
       }catch(err){
         console.error("placeTrade error", err);
         alert("Trade failed");
-      }
-    }
-
-    function tick(){
-      if(allMarkets.length){
-        renderMarkets();
       }
     }
 
@@ -837,7 +926,7 @@
     async function init(){
       await loadMe();
       await loadMarkets();
-      setInterval(tick, 1000);
+      setInterval(patchLiveValues, 1000);
       setInterval(loadMarkets, 5000);
     }
 

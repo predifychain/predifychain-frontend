@@ -1,202 +1,847 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PredifyChain</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PredifyChain — Live Prediction Markets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root{
+      --bg:#0b1220;
+      --bg2:#0f172a;
+      --panel:#111c34;
+      --panel2:#16233f;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.12);
+      --ink:#f8fafc;
+      --muted:#94a3b8;
+      --green:#16a34a;
+      --green2:#22c55e;
+      --red:#ef4444;
+      --red2:#dc2626;
+      --blue:#4f46e5;
+      --blue2:#3861fb;
+      --shadow:0 14px 40px rgba(0,0,0,.28);
+      --fm:"JetBrains Mono", monospace;
+      --ff:Inter, system-ui, -apple-system, sans-serif;
+    }
 
-<style>
-body{
-  font-family: Arial;
-  background:#0f172a;
-  color:white;
-  margin:0;
-}
+    body{
+      font-family:var(--ff);
+      background:
+        radial-gradient(circle at top left, rgba(56,97,251,.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(79,70,229,.16), transparent 24%),
+        linear-gradient(180deg, #0a1222 0%, #0b1325 100%);
+      color:var(--ink);
+      min-height:100vh;
+    }
 
-.header{
-  display:flex;
-  justify-content:space-between;
-  padding:15px;
-  background:#1e293b;
-}
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter: blur(14px);
+      background:rgba(11,18,32,.78);
+      border-bottom:1px solid var(--line);
+    }
 
-.container{
-  padding:20px;
-}
+    .nav-in{
+      max-width:1440px;
+      margin:0 auto;
+      height:72px;
+      padding:0 20px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
 
-.filters button{
-  margin-right:10px;
-  padding:8px 14px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      letter-spacing:-.02em;
+    }
 
-.active{
-  background:#22c55e;
-  color:black;
-}
+    .logo{
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--blue2),#7c3aed);
+      box-shadow:0 10px 30px rgba(56,97,251,.35);
+      font-size:14px;
+    }
 
-.card{
-  background:#1e293b;
-  padding:15px;
-  margin:10px 0;
-  border-radius:10px;
-}
+    .live-pill{
+      margin-left:6px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.26);
+      color:#86efac;
+      font-size:12px;
+      font-weight:700;
+    }
 
-.btn{
-  padding:8px 12px;
-  border:none;
-  margin-top:10px;
-  cursor:pointer;
-  border-radius:6px;
-}
+    .live-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#22c55e;
+      box-shadow:0 0 0 6px rgba(34,197,94,.14);
+    }
 
-.buy{ background:#16a34a; }
-.sell{ background:#dc2626; }
+    .grow{ flex:1; }
 
-.side{
-  position:fixed;
-  right:0;
-  top:70px;
-  width:300px;
-  background:#1e293b;
-  padding:15px;
-  height:100%;
-}
-</style>
+    .btn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      border-radius:14px;
+      padding:11px 16px;
+      font-weight:700;
+      font-family:var(--ff);
+      transition:.18s ease;
+    }
+
+    .btn:hover{ transform:translateY(-1px); }
+    .btn:active{ transform:translateY(0); }
+
+    .btn-dark{
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.09);
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--blue2),var(--blue));
+      color:#fff;
+      box-shadow:0 10px 30px rgba(56,97,251,.25);
+    }
+
+    .wrap{
+      max-width:1440px;
+      margin:0 auto;
+      padding:22px 20px 44px;
+    }
+
+    .topstats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .stat{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+
+    .stat .k{
+      color:var(--muted);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+
+    .stat .v{
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 360px;
+      gap:16px;
+      align-items:start;
+    }
+
+    .toolbar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .chip{
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line2);
+      color:#dbeafe;
+      padding:10px 16px;
+      border-radius:999px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+
+    .chip.active{
+      background:#fff;
+      color:#0f172a;
+      border-color:#fff;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+      gap:14px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(22,35,63,.96), rgba(17,28,52,.96));
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      transition:.18s ease;
+      cursor:pointer;
+    }
+
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.16);
+    }
+
+    .card.active{
+      border-color:rgba(79,70,229,.85);
+      box-shadow:0 14px 44px rgba(56,97,251,.18);
+    }
+
+    .card-top{
+      padding:16px 16px 14px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .row-flex{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+    }
+
+    .sym{
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:-.04em;
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .count{
+      text-align:right;
+      font-family:var(--fm);
+      font-size:15px;
+      font-weight:700;
+    }
+
+    .count.red{ color:#fca5a5; }
+
+    .price{
+      margin-top:14px;
+      font-size:33px;
+      letter-spacing:-.04em;
+      font-weight:800;
+      font-family:var(--fm);
+    }
+
+    .live-tag{
+      display:inline-flex;
+      margin-top:8px;
+      padding:5px 9px;
+      border-radius:999px;
+      background:rgba(34,197,94,.11);
+      color:#86efac;
+      border:1px solid rgba(34,197,94,.22);
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .card-mid{
+      padding:16px;
+    }
+
+    .question{
+      font-size:16px;
+      line-height:1.45;
+      font-weight:600;
+      margin-bottom:14px;
+      min-height:46px;
+    }
+
+    .odds{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .odd{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.025);
+      border-radius:16px;
+      padding:12px;
+    }
+
+    .odd .label{
+      font-size:11px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .odd .val{
+      font-size:34px;
+      font-weight:800;
+      letter-spacing:-.04em;
+    }
+
+    .odd.yes .val{ color:#4ade80; }
+    .odd.no .val{ color:#f87171; }
+
+    .poolgrid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .poolbox{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.025);
+      border-radius:16px;
+      padding:11px;
+    }
+
+    .poolbox .label{
+      font-size:10px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.09em;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+
+    .poolbox .val{
+      font-size:15px;
+      font-family:var(--fm);
+      font-weight:700;
+    }
+
+    .amount{
+      width:100%;
+      height:48px;
+      border-radius:14px;
+      border:1px solid var(--line2);
+      background:rgba(255,255,255,.04);
+      color:#fff;
+      padding:0 14px;
+      font-size:16px;
+      font-family:var(--fm);
+      outline:none;
+    }
+
+    .amount::placeholder{ color:#8fa0be; }
+
+    .actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .buy{
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:#fff;
+    }
+
+    .sell{
+      background:linear-gradient(135deg,var(--red2),var(--red));
+      color:#fff;
+    }
+
+    .side{
+      position:sticky;
+      top:90px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(22,35,63,.96), rgba(17,28,52,.96));
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+
+    .panel h3{
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:14px;
+    }
+
+    .big{
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.04em;
+      margin-bottom:6px;
+    }
+
+    .small{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      margin-bottom:12px;
+    }
+
+    .line{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:12px 0;
+      border-bottom:1px solid var(--line);
+    }
+
+    .line:last-child{ border-bottom:none; }
+
+    .mono{
+      font-family:var(--fm);
+      font-weight:700;
+    }
+
+    .hint{
+      margin-top:14px;
+      color:#b7c4da;
+      font-size:12px;
+      line-height:1.55;
+    }
+
+    .error-box,.empty-box{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      color:#dbe6f5;
+    }
+
+    .error-box{
+      background:rgba(239,68,68,.1);
+      border-color:rgba(239,68,68,.24);
+      color:#fecaca;
+    }
+
+    @media (max-width:1100px){
+      .layout{ grid-template-columns:1fr; }
+      .side{ position:static; }
+      .topstats{ grid-template-columns:1fr 1fr; }
+    }
+
+    @media (max-width:700px){
+      .topstats{ grid-template-columns:1fr; }
+      .grid{ grid-template-columns:1fr; }
+    }
+  </style>
 </head>
-
 <body>
-
-<div class="header">
-  <div>PredifyChain 🔥</div>
-  <div>
-    <button onclick="demoLogin()">Demo Login</button>
-  </div>
-</div>
-
-<div class="container">
-
-<div>
-  Balance: $<span id="balance">0</span> |
-  Mode: <span id="mode">Guest</span>
-</div>
-
-<div class="filters">
-  <button onclick="setDuration(3)">3 min</button>
-  <button onclick="setDuration(5)">5 min</button>
-  <button onclick="setDuration(15)">15 min</button>
-</div>
-
-<div id="markets">Loading...</div>
-
-</div>
-
-<div class="side">
-  <h3 id="selTitle">Select Market</h3>
-  <div id="selPrice"></div>
-  <div id="selTime"></div>
-</div>
-
-<script>
-const API = "https://predifychain-server-production.up.railway.app";
-
-let allMarkets = [];
-let duration = 3;
-let selected = null;
-let token = localStorage.getItem("predify_token");
-let balance = 0;
-
-async function init(){
-  await loadMarkets();
-
-  if(token){
-    document.getElementById("mode").innerText = "Demo";
-    balance = 50000;
-    document.getElementById("balance").innerText = balance;
-  }
-}
-
-async function loadMarkets(){
-  const res = await fetch(API+"/api/markets");
-  const data = await res.json();
-
-  allMarkets = data.markets || [];
-
-  render();
-}
-
-function setDuration(d){
-  duration = d;
-  render();
-}
-
-function render(){
-  const list = allMarkets.filter(m=>m.duration_minutes===duration);
-
-  const el = document.getElementById("markets");
-
-  if(!list.length){
-    el.innerHTML = "No markets";
-    return;
-  }
-
-  el.innerHTML = list.map(m=>`
-    <div class="card" onclick="selectMarket('${m.id}')">
-      <b>${m.symbol}</b><br/>
-      Price: ${m.open_price}<br/>
-      Ends: ${formatTime(m.expiry_time)}<br/>
-
-      <button class="btn buy" onclick="event.stopPropagation(); trade('${m.id}','YES')">BUY YES</button>
-      <button class="btn sell" onclick="event.stopPropagation(); trade('${m.id}','NO')">SELL NO</button>
+  <div class="nav">
+    <div class="nav-in">
+      <div class="brand">
+        <div class="logo">PC</div>
+        <div>PredifyChain</div>
+      </div>
+      <div class="live-pill"><span class="live-dot"></span> LIVE</div>
+      <div class="grow"></div>
+      <button class="btn btn-dark" id="refreshBtn">Refresh</button>
+      <button class="btn btn-primary" id="demoBtn">Demo Login</button>
     </div>
-  `).join("");
-}
+  </div>
 
-function selectMarket(id){
-  selected = allMarkets.find(m=>m.id===id);
+  <div class="wrap">
+    <div class="topstats">
+      <div class="stat">
+        <div class="k">Live Markets</div>
+        <div class="v" id="statMarkets">--</div>
+      </div>
+      <div class="stat">
+        <div class="k">Total Pool</div>
+        <div class="v" id="statPool">$0</div>
+      </div>
+      <div class="stat">
+        <div class="k">Balance</div>
+        <div class="v" id="statBalance">$0</div>
+      </div>
+      <div class="stat">
+        <div class="k">Mode</div>
+        <div class="v" id="statMode">Guest</div>
+      </div>
+    </div>
 
-  document.getElementById("selTitle").innerText = selected.symbol;
-  document.getElementById("selPrice").innerText = "Price: "+selected.open_price;
-  document.getElementById("selTime").innerText = "Ends: "+formatTime(selected.expiry_time);
-}
+    <div class="layout">
+      <div>
+        <div class="toolbar">
+          <button class="chip active" data-min="3">3 min</button>
+          <button class="chip" data-min="5">5 min</button>
+          <button class="chip" data-min="15">15 min</button>
+        </div>
 
-function formatTime(t){
-  return new Date(t).toLocaleTimeString();
-}
+        <div class="grid" id="marketGrid">
+          <div class="empty-box">Loading markets...</div>
+        </div>
+      </div>
 
-async function demoLogin(){
-  const res = await fetch(API+"/api/auth/demo-login",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:"{}"
-  });
+      <div class="side">
+        <div class="panel">
+          <h3>Selected Market</h3>
+          <div class="big" id="selSymbol">—</div>
+          <div class="small" id="selQuestion">Select a market.</div>
 
-  const json = await res.json();
+          <div class="line"><span>Current Price</span><strong class="mono" id="selPrice">—</strong></div>
+          <div class="line"><span>YES Odds</span><strong class="mono" id="selYesOdds">—</strong></div>
+          <div class="line"><span>NO Odds</span><strong class="mono" id="selNoOdds">—</strong></div>
+          <div class="line"><span>YES Pool</span><strong class="mono" id="selYesPool">—</strong></div>
+          <div class="line"><span>NO Pool</span><strong class="mono" id="selNoPool">—</strong></div>
+          <div class="line"><span>Round Pool</span><strong class="mono" id="selRoundPool">—</strong></div>
+          <div class="line"><span>Time Left</span><strong class="mono" id="selTimer">—</strong></div>
 
-  localStorage.setItem("predify_token",json.token);
+          <div class="hint" id="uiMsg">Demo login se 50,000 demo balance milta hai. Duration select karo aur phir prediction place karo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  alert("Logged in");
-  location.reload();
-}
+  <script>
+    const API = "https://predifychain-server-production.up.railway.app/api";
 
-function trade(id,side){
-  if(!token){
-    alert("Login first");
-    return;
-  }
+    let allMarkets = [];
+    let selectedDuration = 3;
+    let selectedMarketId = "";
+    let token = localStorage.getItem("predify_token") || "";
+    let currentUser = null;
+    let isDemo = false;
+    let balance = 0;
 
-  const amount = 100;
+    function fmtMoney(v){
+      return "$" + Number(v || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
+    }
 
-  balance -= amount;
-  document.getElementById("balance").innerText = balance;
+    function fmtPct(v){
+      return Number(v || 0).toFixed(0) + "%";
+    }
 
-  alert(side+" trade placed ($100)");
-}
+    function secondsLeft(expiry){
+      return Math.max(0, Math.floor((new Date(expiry).getTime() - Date.now()) / 1000));
+    }
 
-init();
-</script>
+    function fmtTimer(sec){
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    }
 
+    function setMsg(text){
+      document.getElementById("uiMsg").textContent = text;
+    }
+
+    function activeMarkets(){
+      return allMarkets.filter(m => Number(m.duration_minutes) === Number(selectedDuration));
+    }
+
+    function updateStats(){
+      const list = activeMarkets();
+      const totalPool = list.reduce((sum, m) => sum + Number(m.totalPool || 0), 0);
+      document.getElementById("statMarkets").textContent = String(list.length);
+      document.getElementById("statPool").textContent = fmtMoney(totalPool);
+      document.getElementById("statBalance").textContent = fmtMoney(balance);
+      document.getElementById("statMode").textContent = isDemo ? "Demo" : (currentUser ? "Live" : "Guest");
+    }
+
+    function syncSelectedPanel(){
+      const m = allMarkets.find(x => x.id === selectedMarketId);
+      if(!m){
+        document.getElementById("selSymbol").textContent = "—";
+        document.getElementById("selQuestion").textContent = "Select a market.";
+        document.getElementById("selPrice").textContent = "—";
+        document.getElementById("selYesOdds").textContent = "—";
+        document.getElementById("selNoOdds").textContent = "—";
+        document.getElementById("selYesPool").textContent = "—";
+        document.getElementById("selNoPool").textContent = "—";
+        document.getElementById("selRoundPool").textContent = "—";
+        document.getElementById("selTimer").textContent = "—";
+        return;
+      }
+
+      document.getElementById("selSymbol").textContent = m.symbol;
+      document.getElementById("selQuestion").textContent = m.question || "Prediction market";
+      document.getElementById("selPrice").textContent = fmtMoney(m.currentPrice || m.open_price);
+      document.getElementById("selYesOdds").textContent = fmtPct(m.yesOdds);
+      document.getElementById("selNoOdds").textContent = fmtPct(m.noOdds);
+      document.getElementById("selYesPool").textContent = fmtMoney(m.yes_pool);
+      document.getElementById("selNoPool").textContent = fmtMoney(m.no_pool);
+      document.getElementById("selRoundPool").textContent = fmtMoney(m.totalPool);
+      document.getElementById("selTimer").textContent = fmtTimer(secondsLeft(m.expiry_time));
+    }
+
+    function renderMarkets(){
+      const grid = document.getElementById("marketGrid");
+      const list = activeMarkets();
+
+      if(!list.length){
+        grid.innerHTML = '<div class="empty-box">No active markets for this duration right now.</div>';
+        syncSelectedPanel();
+        updateStats();
+        return;
+      }
+
+      if(!selectedMarketId || !list.some(x => x.id === selectedMarketId)){
+        selectedMarketId = list[0].id;
+      }
+
+      grid.innerHTML = list.map(m => {
+        const secs = secondsLeft(m.expiry_time);
+        const countClass = secs <= 30 ? "count red" : "count";
+        const inputId = "amt_" + String(m.id).replace(/[^a-zA-Z0-9]/g, "");
+        return `
+          <div class="card ${selectedMarketId === m.id ? "active" : ""}" onclick="selectMarket('${m.id}')">
+            <div class="card-top">
+              <div class="row-flex">
+                <div>
+                  <div class="sym">${m.symbol.replace("/USD","")}</div>
+                  <div class="sub">${m.category}</div>
+                </div>
+                <div>
+                  <div class="${countClass}">${fmtTimer(secs)}</div>
+                  <div class="sub">${m.duration_minutes}M expiry</div>
+                </div>
+              </div>
+              <div class="price">${fmtMoney(m.currentPrice || m.open_price)}</div>
+              <div class="live-tag">LIVE</div>
+            </div>
+
+            <div class="card-mid">
+              <div class="question">${m.question || "Prediction market"}</div>
+
+              <div class="odds">
+                <div class="odd yes">
+                  <div class="label">YES</div>
+                  <div class="val">${fmtPct(m.yesOdds)}</div>
+                </div>
+                <div class="odd no">
+                  <div class="label">NO</div>
+                  <div class="val">${fmtPct(m.noOdds)}</div>
+                </div>
+              </div>
+
+              <div class="poolgrid">
+                <div class="poolbox">
+                  <div class="label">YES Pool</div>
+                  <div class="val">${fmtMoney(m.yes_pool)}</div>
+                </div>
+                <div class="poolbox">
+                  <div class="label">NO Pool</div>
+                  <div class="val">${fmtMoney(m.no_pool)}</div>
+                </div>
+                <div class="poolbox">
+                  <div class="label">Round Pool</div>
+                  <div class="val">${fmtMoney(m.totalPool)}</div>
+                </div>
+              </div>
+
+              <input class="amount" id="${inputId}" type="number" min="1" step="0.01" placeholder="Amount in USDC" />
+
+              <div class="actions">
+                <button class="btn buy" onclick="event.stopPropagation(); placeTrade('${m.id}', '${inputId}', 'YES')">BUY YES</button>
+                <button class="btn sell" onclick="event.stopPropagation(); placeTrade('${m.id}', '${inputId}', 'NO')">SELL NO</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      syncSelectedPanel();
+      updateStats();
+    }
+
+    function selectMarket(id){
+      selectedMarketId = id;
+      renderMarkets();
+    }
+
+    async function loadMarkets(){
+      try{
+        const res = await fetch(API + "/markets?ts=" + Date.now(), { cache: "no-store" });
+        const data = await res.json();
+
+        if(!res.ok){
+          throw new Error(data.error || "Failed to load markets");
+        }
+
+        allMarkets = Array.isArray(data.markets) ? data.markets : [];
+        renderMarkets();
+      }catch(err){
+        console.error("loadMarkets error", err);
+        document.getElementById("marketGrid").innerHTML = '<div class="error-box">Failed to load markets: ' + String(err.message) + '</div>';
+      }
+    }
+
+    async function loadMe(){
+      if(!token){
+        currentUser = null;
+        isDemo = false;
+        balance = 0;
+        updateStats();
+        return;
+      }
+
+      try{
+        const res = await fetch(API + "/users/me", {
+          headers: { Authorization: "Bearer " + token }
+        });
+
+        if(!res.ok){
+          token = "";
+          localStorage.removeItem("predify_token");
+          currentUser = null;
+          isDemo = false;
+          balance = 0;
+          updateStats();
+          return;
+        }
+
+        const data = await res.json();
+        currentUser = data.user || null;
+        isDemo = !!currentUser?.is_demo;
+        balance = Number(isDemo ? currentUser?.demo_balance : currentUser?.live_balance || 0);
+        updateStats();
+      }catch(err){
+        console.error("loadMe error", err);
+      }
+    }
+
+    async function demoLogin(){
+      try{
+        const res = await fetch(API + "/auth/demo-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: "{}"
+        });
+
+        const data = await res.json();
+
+        if(!res.ok){
+          alert(data.error || "Demo login failed");
+          return;
+        }
+
+        if(!data.token){
+          alert("Demo login response invalid");
+          return;
+        }
+
+        token = data.token;
+        localStorage.setItem("predify_token", token);
+
+        await loadMe();
+        setMsg("Demo account ready with $50,000.");
+      }catch(err){
+        console.error("demoLogin error", err);
+        alert("Demo login failed");
+      }
+    }
+
+    async function placeTrade(marketId, inputId, side){
+      if(!token){
+        alert("Demo login ya wallet login first.");
+        return;
+      }
+
+      const amount = Number(document.getElementById(inputId).value || 0);
+
+      if(!amount || amount <= 0){
+        alert("Enter valid amount");
+        return;
+      }
+
+      try{
+        const res = await fetch(API + "/predictions/place", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({
+            marketId,
+            side,
+            asset: "USDC",
+            amount
+          })
+        });
+
+        const data = await res.json();
+
+        if(!res.ok){
+          alert(data.error || "Trade failed");
+          return;
+        }
+
+        setMsg(side + " placed successfully.");
+        await loadMe();
+        await loadMarkets();
+      }catch(err){
+        console.error("placeTrade error", err);
+        alert("Trade failed");
+      }
+    }
+
+    function tick(){
+      if(allMarkets.length){
+        renderMarkets();
+      }
+    }
+
+    document.getElementById("demoBtn").addEventListener("click", demoLogin);
+    document.getElementById("refreshBtn").addEventListener("click", async () => {
+      await loadMe();
+      await loadMarkets();
+    });
+
+    document.querySelectorAll(".chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach(x => x.classList.remove("active"));
+        btn.classList.add("active");
+        selectedDuration = Number(btn.dataset.min);
+        renderMarkets();
+      });
+    });
+
+    async function init(){
+      await loadMe();
+      await loadMarkets();
+      setInterval(tick, 1000);
+      setInterval(loadMarkets, 5000);
+    }
+
+    init();
+  </script>
 </body>
 </html>

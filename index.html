@@ -561,7 +561,7 @@
             <button class="chip" data-min="5">5 min</button>
             <button class="chip" data-min="15">15 min</button>
           </div>
-          <div class="toolbar-note">Duration select karo — us duration ke saare active markets dikhenge.</div>
+          <div class="toolbar-note">Major markets hamesha top par rahenge. Duration change karo aur us duration ke active cards dekho.</div>
         </div>
 
         <div class="grid" id="marketGrid">
@@ -602,6 +602,45 @@
     let amountDrafts = {};
     let isRendering = false;
 
+    const MARKET_PRIORITY = [
+      "BTC/USD",
+      "ETH/USD",
+      "XAU/USD",
+      "SOL/USD",
+      "XRP/USD",
+      "HYPE/USD",
+      "BNB/USD",
+      "DOGE/USD",
+      "ADA/USD",
+      "LINK/USD",
+      "AVAX/USD",
+      "LTC/USD",
+      "BCH/USD",
+      "TRX/USD",
+      "DOT/USD",
+      "ATOM/USD",
+      "UNI/USD",
+      "AAVE/USD",
+      "SUI/USD",
+      "INJ/USD",
+      "ARB/USD",
+      "OP/USD",
+      "NEAR/USD",
+      "FIL/USD",
+      "ICP/USD",
+      "XLM/USD",
+      "ETC/USD",
+      "APT/USD",
+      "TON/USD",
+      "ASTER/USD",
+      "XAG/USD"
+    ];
+
+    function marketPriorityIndex(symbol){
+      const i = MARKET_PRIORITY.indexOf(symbol);
+      return i === -1 ? 9999 : i;
+    }
+
     function fmtMoney(v){
       return "$" + Number(v || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
     }
@@ -625,7 +664,21 @@
     }
 
     function activeMarkets(){
-      return allMarkets.filter(m => Number(m.duration_minutes) === Number(selectedDuration));
+      return allMarkets
+        .filter(m => Number(m.duration_minutes) === Number(selectedDuration))
+        .sort((a, b) => {
+          const pa = marketPriorityIndex(a.symbol);
+          const pb = marketPriorityIndex(b.symbol);
+
+          if (pa !== pb) return pa - pb;
+
+          const ta = new Date(a.expiry_time).getTime();
+          const tb = new Date(b.expiry_time).getTime();
+
+          if (ta !== tb) return ta - tb;
+
+          return String(a.symbol).localeCompare(String(b.symbol));
+        });
     }
 
     function selectedMarket(){
@@ -829,7 +882,24 @@
           throw new Error(data.error || "Failed to load markets");
         }
 
-        allMarkets = Array.isArray(data.markets) ? data.markets : [];
+        allMarkets = (Array.isArray(data.markets) ? data.markets : []).sort((a, b) => {
+          if (Number(a.duration_minutes) !== Number(b.duration_minutes)) {
+            return Number(a.duration_minutes) - Number(b.duration_minutes);
+          }
+
+          const pa = marketPriorityIndex(a.symbol);
+          const pb = marketPriorityIndex(b.symbol);
+
+          if (pa !== pb) return pa - pb;
+
+          const ta = new Date(a.expiry_time).getTime();
+          const tb = new Date(b.expiry_time).getTime();
+
+          if (ta !== tb) return ta - tb;
+
+          return String(a.symbol).localeCompare(String(b.symbol));
+        });
+
         renderMarkets();
       }catch(err){
         console.error("loadMarkets error", err);

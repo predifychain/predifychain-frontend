@@ -65,6 +65,7 @@ html,body{background:linear-gradient(180deg,#f8fbff 0%, #edf3fb 100%);color:var(
 .row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:none}
 .msg{margin-top:10px;font-size:12px;color:#475569}
+.error-box{background:#fff1f2;border:1px solid #fecdd3;color:#9f1239;padding:14px;border-radius:14px}
 @media (max-width:1100px){.layout{grid-template-columns:1fr}.right{position:static;height:auto}}
 </style>
 </head>
@@ -138,7 +139,7 @@ function setMsg(t){document.getElementById("uiMsg").textContent=t}
 function updateStats(){
   var visible=getVisible();
   var total=visible.reduce(function(s,m){return s+Number(m.totalPool||0)},0);
-  document.getElementById("statMarkets").textContent=String(visible.length);
+  document.getElementById("statMarkets").textContent=visible.length ? String(visible.length) : "--";
   document.getElementById("statPool").textContent=fmtMoney(total);
   document.getElementById("statBalance").textContent=fmtMoney(balance);
   document.getElementById("statMode").textContent=isDemo?"Demo":(currentUser?"Live":"Guest");
@@ -160,18 +161,42 @@ function selectMarket(id){
 }
 
 async function loadMarkets(){
-  var res=await fetch(API_BASE+"/markets?ts="+Date.now(),{cache:"no-store"});
-  var json=await res.json();
-  currentMarkets=json.markets||[];
-  if(!selectedMarketId && currentMarkets.length) selectedMarketId=currentMarkets[0].id;
-  render();
-  selectMarket(selectedMarketId);
-  updateStats();
+  try{
+    var res=await fetch(API_BASE+"/markets?ts="+Date.now(),{cache:"no-store"});
+    var text=await res.text();
+    var json={};
+
+    try{
+      json=text ? JSON.parse(text) : {};
+    }catch(parseErr){
+      throw new Error("Invalid markets JSON response");
+    }
+
+    if(!res.ok){
+      throw new Error(json.error || "Markets request failed");
+    }
+
+    currentMarkets=Array.isArray(json.markets) ? json.markets : [];
+    if(!selectedMarketId && currentMarkets.length) selectedMarketId=currentMarkets[0].id;
+    render();
+    selectMarket(selectedMarketId);
+    updateStats();
+  }catch(err){
+    console.error("loadMarkets error:", err);
+    document.getElementById("marketGrid").innerHTML='<div class="error-box">Failed to load markets: '+String(err.message)+'</div>';
+    document.getElementById("statMarkets").textContent="--";
+  }
 }
 
 function render(){
   var grid=document.getElementById("marketGrid");
   var visible=getVisible();
+
+  if(!visible.length){
+    grid.innerHTML='<div>No markets available right now.</div>';
+    return;
+  }
+
   grid.innerHTML=visible.map(function(m){
     var sym=m.symbol.replace("/USD","");
     var sec=secsLeft(m.expiry_time);
@@ -184,29 +209,32 @@ function render(){
       '<div class="trade"><input id="'+iid+'" type="number" min="1" step="0.01" placeholder="Amount"></div>'+
       '<div class="actions"><button class="btn buy" onclick="event.stopPropagation();placePrediction(\\''+m.id+'\\',\\''+iid+'\\',\\'YES\\')">BUY YES</button><button class="btn sell" onclick="event.stopPropagation();placePrediction(\\''+m.id+'\\',\\''+iid+'\\',\\'NO\\')">SELL NO</button></div>'+
       '</div></div>';
-  }).join('') || '<div>No markets</div>';
+  }).join('');
 }
 
 async function loadMe(){
   if(!token) return;
-  var res=await fetch(API_BASE+"/users/me",{headers:{Authorization:"Bearer "+token}});
-  if(!res.ok){
-    token="";
-    currentUser=null;
-    isDemo=false;
-    balance=0;
-    localStorage.removeItem("predify_token");
+  try{
+    var res=await fetch(API_BASE+"/users/me",{headers:{Authorization:"Bearer "+token}});
+    if(!res.ok){
+      token="";
+      currentUser=null;
+      isDemo=false;
+      balance=0;
+      localStorage.removeItem("predify_token");
+      updateStats();
+      return;
+    }
+    var json=await res.json();
+    if(!json || !json.user) return;
+
+    currentUser=json.user;
+    isDemo=!!json.user.is_demo;
+    balance=Number(isDemo ? json.user.demo_balance : (json.user.live_balance||0));
     updateStats();
-    return;
+  }catch(err){
+    console.error("loadMe error:", err);
   }
-  var json=await res.json();
-  if(!json || !json.user){
-    return;
-  }
-  currentUser=json.user;
-  isDemo=!!json.user.is_demo;
-  balance=Number(isDemo ? json.user.demo_balance : (json.user.live_balance||0));
-  updateStats();
 }
 
 async function demoLogin(){
@@ -217,7 +245,14 @@ async function demoLogin(){
       body:"{}"
     });
 
-    var json=await res.json();
+    var text=await res.text();
+    var json={};
+
+    try{
+      json=text ? JSON.parse(text) : {};
+    }catch(parseErr){
+      throw new Error("Invalid demo login response");
+    }
 
     if(!res.ok){
       alert(json.error||"Demo login failed");
@@ -244,7 +279,7 @@ async function demoLogin(){
     await loadMe();
     setMsg("Demo account ready with $50,000.");
   }catch(err){
-    console.error(err);
+    console.error("demoLogin error:", err);
     alert("Demo login failed");
   }
 }
@@ -254,27 +289,32 @@ async function placePrediction(marketId,inputId,side){
   var amount=Number(document.getElementById(inputId).value||0);
   if(!amount||amount<=0){alert("Enter valid amount");return}
 
-  var res=await fetch(API_BASE+"/predictions/place",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer "+token
-    },
-    body:JSON.stringify({marketId,side,asset:"USDC",amount})
-  });
+  try{
+    var res=await fetch(API_BASE+"/predictions/place",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+token
+      },
+      body:JSON.stringify({marketId,side,asset:"USDC",amount})
+    });
 
-  var json=await res.json();
+    var json=await res.json();
 
-  if(!res.ok){
-    alert(json.error||"Prediction failed");
-    return;
+    if(!res.ok){
+      alert(json.error||"Prediction failed");
+      return;
+    }
+
+    balance=Number(json.balance||0);
+    updateStats();
+    setMsg(side+" placed successfully.");
+    await loadMarkets();
+    await loadMe();
+  }catch(err){
+    console.error("placePrediction error:", err);
+    alert("Prediction failed");
   }
-
-  balance=Number(json.balance||0);
-  updateStats();
-  setMsg(side+" placed successfully.");
-  await loadMarkets();
-  await loadMe();
 }
 
 document.getElementById("demoBtn").addEventListener("click",demoLogin);
@@ -295,9 +335,11 @@ document.querySelectorAll("#expiryChips .chip").forEach(function(chip){
 });
 
 setInterval(function(){
-  render();
-  selectMarket(selectedMarketId);
-  updateStats();
+  if(currentMarkets.length){
+    render();
+    selectMarket(selectedMarketId);
+    updateStats();
+  }
 },1000);
 
 setInterval(loadMarkets,5000);

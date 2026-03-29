@@ -25,7 +25,6 @@
       --red2:#dc2626;
       --blue:#4f46e5;
       --blue2:#3861fb;
-      --gold:#f5c84c;
       --shadow:0 18px 46px rgba(0,0,0,.34);
       --fm:"JetBrains Mono", monospace;
       --ff:Inter, system-ui, -apple-system, sans-serif;
@@ -52,7 +51,7 @@
     }
 
     .nav-in{
-      max-width:1480px;
+      max-width:1520px;
       margin:0 auto;
       height:74px;
       padding:0 18px;
@@ -131,7 +130,7 @@
     }
 
     .wrap{
-      max-width:1480px;
+      max-width:1520px;
       margin:0 auto;
       padding:20px 18px 40px;
     }
@@ -180,7 +179,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns:minmax(0,1fr) 370px;
+      grid-template-columns:minmax(0,1fr) 380px;
       gap:16px;
       align-items:start;
     }
@@ -188,8 +187,15 @@
     .toolbar{
       display:flex;
       align-items:center;
-      gap:10px;
+      justify-content:space-between;
+      gap:14px;
       margin-bottom:16px;
+      flex-wrap:wrap;
+    }
+
+    .toolbar-left{
+      display:flex;
+      gap:10px;
       flex-wrap:wrap;
     }
 
@@ -210,6 +216,12 @@
       color:#0f172a;
       border-color:#fff;
       box-shadow:0 8px 24px rgba(255,255,255,.12);
+    }
+
+    .toolbar-note{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
     }
 
     .grid{
@@ -252,7 +264,7 @@
     }
 
     .sym{
-      font-size:32px;
+      font-size:30px;
       font-weight:800;
       letter-spacing:-.05em;
     }
@@ -272,20 +284,19 @@
 
     .count.red{color:#fca5a5}
 
-    .price{
-      margin-top:14px;
-      font-size:34px;
-      font-weight:800;
-      font-family:var(--fm);
-      letter-spacing:-.045em;
-    }
-
     .price-row{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      margin-top:10px;
+      margin-top:14px;
+    }
+
+    .price{
+      font-size:32px;
+      font-weight:800;
+      font-family:var(--fm);
+      letter-spacing:-.045em;
     }
 
     .live-tag{
@@ -297,6 +308,7 @@
       border:1px solid rgba(34,197,94,.2);
       font-size:11px;
       font-weight:800;
+      white-space:nowrap;
     }
 
     .card-mid{
@@ -503,6 +515,7 @@
     @media (max-width:720px){
       .topstats{grid-template-columns:1fr}
       .grid{grid-template-columns:1fr}
+      .toolbar{align-items:flex-start}
     }
   </style>
 </head>
@@ -543,9 +556,12 @@
     <div class="layout">
       <div>
         <div class="toolbar">
-          <button class="chip active" data-min="3">3 min</button>
-          <button class="chip" data-min="5">5 min</button>
-          <button class="chip" data-min="15">15 min</button>
+          <div class="toolbar-left">
+            <button class="chip active" data-min="3">3 min</button>
+            <button class="chip" data-min="5">5 min</button>
+            <button class="chip" data-min="15">15 min</button>
+          </div>
+          <div class="toolbar-note">Duration select karo — us duration ke saare active markets dikhenge.</div>
         </div>
 
         <div class="grid" id="marketGrid">
@@ -712,9 +728,8 @@
 
               <div class="price-row">
                 <div class="price" data-price="${m.id}">${fmtMoney(m.currentPrice || m.open_price)}</div>
+                <div class="live-tag">LIVE</div>
               </div>
-
-              <div class="live-tag">LIVE</div>
             </div>
 
             <div class="card-mid">

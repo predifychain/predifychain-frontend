@@ -1,72 +1,198 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>PredifyChain</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PredifyChain</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#0f172a;
+  color:white;
+  margin:0;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  padding:15px;
+  background:#1e293b;
+}
+
+.container{
+  padding:20px;
+}
+
+.filters button{
+  margin-right:10px;
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.active{
+  background:#22c55e;
+  color:black;
+}
+
+.card{
+  background:#1e293b;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+}
+
+.btn{
+  padding:8px 12px;
+  border:none;
+  margin-top:10px;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+.buy{ background:#16a34a; }
+.sell{ background:#dc2626; }
+
+.side{
+  position:fixed;
+  right:0;
+  top:70px;
+  width:300px;
+  background:#1e293b;
+  padding:15px;
+  height:100%;
+}
+</style>
 </head>
+
 <body>
 
-<h2>PredifyChain</h2>
-<button onclick="demoLogin()">Demo Login</button>
+<div class="header">
+  <div>PredifyChain 🔥</div>
+  <div>
+    <button onclick="demoLogin()">Demo Login</button>
+  </div>
+</div>
 
-<div id="status">Loading...</div>
-<div id="markets"></div>
+<div class="container">
+
+<div>
+  Balance: $<span id="balance">0</span> |
+  Mode: <span id="mode">Guest</span>
+</div>
+
+<div class="filters">
+  <button onclick="setDuration(3)">3 min</button>
+  <button onclick="setDuration(5)">5 min</button>
+  <button onclick="setDuration(15)">15 min</button>
+</div>
+
+<div id="markets">Loading...</div>
+
+</div>
+
+<div class="side">
+  <h3 id="selTitle">Select Market</h3>
+  <div id="selPrice"></div>
+  <div id="selTime"></div>
+</div>
 
 <script>
 const API = "https://predifychain-server-production.up.railway.app";
 
+let allMarkets = [];
+let duration = 3;
+let selected = null;
 let token = localStorage.getItem("predify_token");
-let markets = [];
+let balance = 0;
 
-async function init() {
+async function init(){
   await loadMarkets();
 
-  if (token) {
-    document.getElementById("status").innerText = "Logged in (Demo)";
-  } else {
-    document.getElementById("status").innerText = "Guest";
+  if(token){
+    document.getElementById("mode").innerText = "Demo";
+    balance = 50000;
+    document.getElementById("balance").innerText = balance;
   }
 }
 
-async function loadMarkets() {
-  const res = await fetch(API + "/api/markets");
+async function loadMarkets(){
+  const res = await fetch(API+"/api/markets");
   const data = await res.json();
 
-  markets = data.markets || [];
+  allMarkets = data.markets || [];
 
-  renderMarkets();
+  render();
 }
 
-function renderMarkets() {
+function setDuration(d){
+  duration = d;
+  render();
+}
+
+function render(){
+  const list = allMarkets.filter(m=>m.duration_minutes===duration);
+
   const el = document.getElementById("markets");
 
-  if (!markets.length) {
+  if(!list.length){
     el.innerHTML = "No markets";
     return;
   }
 
-  el.innerHTML = markets.map(m => `
-    <div style="border:1px solid #ccc;padding:10px;margin:10px;">
+  el.innerHTML = list.map(m=>`
+    <div class="card" onclick="selectMarket('${m.id}')">
       <b>${m.symbol}</b><br/>
       Price: ${m.open_price}<br/>
-      Ends: ${m.expiry_time}
+      Ends: ${formatTime(m.expiry_time)}<br/>
+
+      <button class="btn buy" onclick="event.stopPropagation(); trade('${m.id}','YES')">BUY YES</button>
+      <button class="btn sell" onclick="event.stopPropagation(); trade('${m.id}','NO')">SELL NO</button>
     </div>
   `).join("");
 }
 
-async function demoLogin() {
-  const res = await fetch(API + "/api/auth/demo-login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: "{}"
+function selectMarket(id){
+  selected = allMarkets.find(m=>m.id===id);
+
+  document.getElementById("selTitle").innerText = selected.symbol;
+  document.getElementById("selPrice").innerText = "Price: "+selected.open_price;
+  document.getElementById("selTime").innerText = "Ends: "+formatTime(selected.expiry_time);
+}
+
+function formatTime(t){
+  return new Date(t).toLocaleTimeString();
+}
+
+async function demoLogin(){
+  const res = await fetch(API+"/api/auth/demo-login",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:"{}"
   });
 
   const json = await res.json();
 
-  localStorage.setItem("predify_token", json.token);
+  localStorage.setItem("predify_token",json.token);
 
-  alert("Logged in!");
+  alert("Logged in");
   location.reload();
+}
+
+function trade(id,side){
+  if(!token){
+    alert("Login first");
+    return;
+  }
+
+  const amount = 100;
+
+  balance -= amount;
+  document.getElementById("balance").innerText = balance;
+
+  alert(side+" trade placed ($100)");
 }
 
 init();
